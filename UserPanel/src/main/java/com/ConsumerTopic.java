@@ -25,22 +25,22 @@ public class ConsumerTopic
     private boolean accessStateSet;
     private Integer receivedId;
     private Gson gson;
-    
+
     public boolean getAccessState()
     {
-    	return accessAllowed;
+    	  return accessAllowed;
     }
-    
+
     public boolean getAccessStateSet()
     {
-    	return accessStateSet;
+    	  return accessStateSet;
     }
-    
+
     public void setAccessStateSetOff()
     {
-    	accessStateSet = false;
+        accessStateSet = false;
     }
-    
+
     public void sendMonitorState(boolean state)
     {
         String routingKey = Types.MONITOR_STATE_TOPIC;
@@ -49,15 +49,15 @@ public class ConsumerTopic
         mon.setState(state);
         String json = gson.toJson(mon);
         System.out.println("Message is : " + json);
-        try 
+        try
         {
 			channel.basicPublish(EXCHANGE_NAME, routingKey, null, json.getBytes());
-		} 
-        catch (IOException e) 
+		}
+        catch (IOException e)
         {
 			System.out.println("We have had issues publishing");
 			e.printStackTrace();
-		}   	
+		}
     }
 
     public void askForAccess(Integer key, Integer val)
@@ -69,32 +69,32 @@ public class ConsumerTopic
         req.setPin(val);
         String json = gson.toJson(req);
         System.out.println("Message is : " + json);
-        try 
+        try
         {
 			channel.basicPublish(EXCHANGE_NAME, routingKey, null, json.getBytes());
-		} 
-        catch (IOException e) 
+		}
+        catch (IOException e)
         {
 			System.out.println("We have had issues publishing");
 			e.printStackTrace();
 		}
     }
-    
+
     private void accessResponse(String delivery, String routingKey)
     {
     	System.out.println(delivery);
-        accessStateSet = true; 
+        accessStateSet = true;
 		AccessResponse data = gson.fromJson(delivery, AccessResponse.class);
-        receivedId = data.getId();        		
+        receivedId = data.getId();
         if(!data.getResult().equals(Types.PASS))
         {
         	accessAllowed = false;
             String pubMessage = createEventUpMessage();
-            try 
+            try
             {
 				channel.basicPublish(EXCHANGE_NAME, Types.PUB_EVENT_TOPIC, null, pubMessage.getBytes());
-			} 
-            catch (IOException e) 
+			}
+            catch (IOException e)
             {
 				e.printStackTrace();
 			}
@@ -104,23 +104,23 @@ public class ConsumerTopic
         	accessAllowed = true;
         }
     }
-    
-    private String createEventUpMessage() 
+
+    private String createEventUpMessage()
     {
         EventTopic user_event = new EventTopic();
         user_event.setComponent(Types.COMPONENT_NAME);
         user_event.setError(Types.RequestFailure);
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");  
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
         Date date = new Date();
         user_event.setTime(formatter.format(date));
         user_event.setSeverity(Types.ACCESS_NOT_RECEIVED);
-        String pubMessage = gson.toJson(user_event);		
+        String pubMessage = gson.toJson(user_event);
 		return pubMessage;
 	}
 
 	public void consumeRequired()
     {
-        try 
+        try
         {
         	Gson gson = new Gson();
 			subscribeQueueName = channel.queueDeclare().getQueue();
@@ -133,36 +133,36 @@ public class ConsumerTopic
 	        	this.accessResponse(received, key);
 	        };
 	        channel.basicConsume(subscribeQueueName, true, deliverCallback, consumerTag -> { });
-		} 
-        catch (IOException e) 
-        {
-			e.printStackTrace();
 		}
-    }
-    
-    
-    public ConsumerTopic()
-    {
-    	receivedId = 0;
-    	accessAllowed = false;
-    	accessStateSet = false;
-        factory = new ConnectionFactory();
-        factory.setHost("localhost");
-        try 
+        catch (IOException e)
         {
-			connection = factory.newConnection();
-			channel = connection.createChannel();
-	        channel.exchangeDeclare(EXCHANGE_NAME, "topic");
-		} 
-        catch (IOException | TimeoutException e) 
-        {
-			System.out.println("We have had trouble setting up the required connection");
 			e.printStackTrace();
 		}
     }
 
-	public Integer getId() 
+
+    public ConsumerTopic()
+    {
+    	  receivedId = 0;
+    	  accessAllowed = false;
+    	  accessStateSet = false;
+        factory = new ConnectionFactory();
+        factory.setHost("localhost");
+        try
+        {
+			       connection = factory.newConnection();
+			       channel = connection.createChannel();
+	           channel.exchangeDeclare(EXCHANGE_NAME, "topic", true);
+		    }
+        catch (IOException | TimeoutException e)
+        {
+			       System.out.println("We have had trouble setting up the required connection");
+			       e.printStackTrace();
+		    }
+    }
+
+	public Integer getId()
 	{
-		return receivedId;		
+		return receivedId;
 	}
 }
