@@ -4,33 +4,33 @@ public class StubConsumerTopic extends ConsumerTopic
 {
     private boolean accessAllowed;
     private boolean accessStateSet;
-    
+
     @Override
     public boolean getAccessState()
     {
-    	return accessAllowed;
+        return accessAllowed;
     }
-    
-    public void setAccessAllowed(boolean accessAllowed) 
+
+    public void setAccessAllowed(boolean accessAllowed)
     {
-		this.accessAllowed = accessAllowed;
-	}
+        this.accessAllowed = accessAllowed;
+    }
 
-	public void setAccessStateSet(boolean accessStateSet) 
-	{
-		this.accessStateSet = accessStateSet;
-	}
+    public void setAccessStateSet(boolean accessStateSet)
+    {
+        this.accessStateSet = accessStateSet;
+    }
 
-	@Override
+    @Override
     public boolean getAccessStateSet()
     {
-    	return accessStateSet;
+        return accessStateSet;
     }
-    
+
     @Override
     public void setAccessStateSetOff()
     {
-    	accessStateSet = false;
+        accessStateSet = false;
     }
 
     @Override
@@ -40,21 +40,21 @@ public class StubConsumerTopic extends ConsumerTopic
     }
 
     @Override
-	public void consumeRequired()
+    public void consumeRequired()
     {
-		System.out.println("consumeRequired Call");	
+        System.out.println("consumeRequired Call");
     }
-    
+
     public StubConsumerTopic()
     {
-    	accessAllowed = false;
-    	accessStateSet = false;
-    	System.out.println("Constructor Call");	
+        accessAllowed = false;
+        accessStateSet = false;
+        System.out.println("Constructor Call");
     }
 
     @Override
-	public Integer getId() 
-	{
-		return 0;		
-	}
+    public Integer getId()
+    {
+        return 0;
+    }
 }

@@ -4,35 +4,35 @@ import java.awt.event.ActionListener;
 
 public class StubMonitorView extends MonitorView
 {
-	boolean stubCall;
-	
-	public StubMonitorView()
-	{
-		
-	}
+    boolean stubCall;
 
-	@Override
-	public void setMonitor()
-	{
-		stubCall = true;
-	}
+    public StubMonitorView()
+    {
 
-	@Override
-	public void close()
-	{
-		
-	}
+    }
 
-	@Override
-	public < E > void setMonitorState(E v)
-	{
-		
-	}
+    @Override
+    public void setMonitor()
+    {
+        stubCall = true;
+    }
 
-	@Override
-	public void addController(ActionListener listenerButtons)
-	{
-		stubCall = false;
-	}
+    @Override
+    public void close()
+    {
+
+    }
+
+    @Override
+    public < E > void setMonitorState(E v)
+    {
+
+    }
+
+    @Override
+    public void addController(ActionListener listenerButtons)
+    {
+        stubCall = false;
+    }
 
 }
