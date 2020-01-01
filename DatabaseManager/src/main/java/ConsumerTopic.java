@@ -21,7 +21,7 @@ public class ConsumerTopic
     private static Channel channel;
     private String subscribeQueueName;
     private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-    
+
     
     private void eventsTopicSubscribe(String delivery, String routingKey)
     {
@@ -32,6 +32,7 @@ public class ConsumerTopic
     {
         try 
         {
+            LOGGER.info("Hi");
         	Gson gson = new Gson();
             subscribeQueueName = channel.queueDeclare().getQueue();
             //
@@ -65,7 +66,7 @@ public class ConsumerTopic
         {
 			connection = factory.newConnection();
 			channel = connection.createChannel();
-	        channel.exchangeDeclare(EXCHANGE_NAME, "topic");
+	        channel.exchangeDeclare(EXCHANGE_NAME, "topic", true);
 		} 
         catch (IOException | TimeoutException e) 
         {

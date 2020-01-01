@@ -10,7 +10,7 @@ import com.*;
 
 public class TestHarness
 {
-
+    /*
     @Test
     public void testSubConsumer()
     {
@@ -142,7 +142,7 @@ public class TestHarness
         assertEquals(myModel.checkPass(), expected);
         assertNotEquals(myModel.setModelStateOFF(), Types.State.ON.name());
         assertEquals(myModel.setModelStateOFF(), Types.State.OFF.name());
-    }
+    }*/
 
     @Test
     public void TableCheckKey()
