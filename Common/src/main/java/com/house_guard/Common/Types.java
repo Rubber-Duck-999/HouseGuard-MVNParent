@@ -36,15 +36,27 @@ public interface Types
   final int CORRECT = 2;
   final int TIMEOUT = 3;
   
-  final String REQUEST_ACCESS_TOPIC = "request.access";
-  final String MONITOR_STATE_TOPIC = "monitor.state";
+  final String REQUEST_ACCESS_TOPIC = "Request.Access";
+  final String MONITOR_STATE_TOPIC = "Monitor.State";
   
-  final String PUB_EVENT_TOPIC = "event.UP";
+  final String EVENT_TOPIC_ALL = "Event.*";
+  final String EVENT_TOPIC_UP  = "Event.UP"; 
+  final String EVENT_TOPIC_SYP = "Event.SYP";
+  final String EVENT_TOPIC_DBM = "Event.DBM";
+  final String EVENT_TOPIC_NAC = "Event.NAC";
+  final String EVENT_TOPIC_EVM = "Event.EVM"; 
+  final String EVENT_TOPIC_FH  = "Event.FH";
+  final String DATA_INFO_TOPIC = "Data.Info";
+
+  final String REQUEST_DATABASE_TOPIC = "Request.Database";
+  final String FAILURE_DATABASE_TOPIC = "Failure.Database";
+
+
   final String COMPONENT_NAME = "UP";
   final Integer ACCESS_NOT_RECEIVED = 4;
   final Object PASS = "PASS";
   final String RequestFailure = "We have access failured";
-  final String ACCESS_RESPONSE = "access.response";
+  final String ACCESS_RESPONSE = "Access.Response";
   final Integer MAXPIN = 9999;
   
 }

@@ -14,25 +14,25 @@
   		<artifactId>junit</artifactId>
   		<version>4.13-rc-1</version>
 	  </dependency>
-  
+
     <dependency>
         <groupId>com.rabbitmq</groupId>
         <artifactId>amqp-client</artifactId>
         <version>5.7.3</version>
     </dependency>
-      
+
     <dependency>
         <groupId>com.house_guard</groupId>
         <artifactId>Common</artifactId>
         <version>0.0.1</version>
-    </dependency>      
-      
+    </dependency>
+
     <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>2.1</version>
     </dependency>
-    
+
     <dependency>
   		<groupId>com.google.code.gson</groupId>
   		<artifactId>gson</artifactId>
