@@ -1,8 +1,8 @@
-package com;
+package com.house_guard.Common;
 
 import java.util.Map;
 
-public class AccessResponse
+public class AccessResponse extends Topic
 {
     private Integer id;
     private String result;

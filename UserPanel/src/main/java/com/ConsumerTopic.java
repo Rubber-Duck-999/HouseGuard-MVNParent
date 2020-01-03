@@ -92,7 +92,7 @@ public class ConsumerTopic
             String pubMessage = createEventUpMessage();
             try
             {
-                channel.basicPublish(EXCHANGE_NAME, Types.PUB_EVENT_TOPIC, null, pubMessage.getBytes());
+                channel.basicPublish(EXCHANGE_NAME, Types.EVENT_TOPIC_UP, null, pubMessage.getBytes());
             }
             catch (IOException e)
             {
@@ -148,6 +148,7 @@ public class ConsumerTopic
         accessStateSet = false;
         factory = new ConnectionFactory();
         factory.setHost("localhost");
+        factory.setPassword("password");
         try
         {
             connection = factory.newConnection();

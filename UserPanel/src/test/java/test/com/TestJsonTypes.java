@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.*;
-import com.house_guard.Common.EventTopic;
+import com.house_guard.Common.*;
 
 public class TestJsonTypes
 {
@@ -49,5 +49,15 @@ public class TestJsonTypes
         assertEquals(severity, up.getSeverity());
     }
 
+    @Test
+    public void testMonitorState()
+    {
+        MonitorState monitor_state = new MonitorState();
+        monitor_state.setState(false);
+        assertFalse(monitor_state.isState());
+        //
+        monitor_state.setState(true);
+        assertTrue(monitor_state.isState());
+    }
 
 }

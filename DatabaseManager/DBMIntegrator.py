@@ -14,7 +14,8 @@ import sys, time
 # its necessary pub & sub topics with rabbitmq
 
 ## Setup connection and exchange
-connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+credentials = pika.PlainCredentials('guest', 'password')
+connection = pika.BlockingConnection(pika.ConnectionParameters('localhost', 5672, '/', credentials))
 channel = connection.channel()
 channel.exchange_declare(exchange='topics', exchange_type='topic', durable=True)
 #

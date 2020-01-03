@@ -1,6 +1,6 @@
-package com;
+package com.house_guard.Common;
 
-public class MonitorState
+public class MonitorState extends Topic
 {
     private boolean state;
 

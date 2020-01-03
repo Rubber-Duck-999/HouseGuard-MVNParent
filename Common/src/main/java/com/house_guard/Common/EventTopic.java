@@ -1,6 +1,6 @@
 package com.house_guard.Common;
 
-public class EventTopic 
+public class EventTopic extends Topic
 {
 	public String getComponent() 
 	{
