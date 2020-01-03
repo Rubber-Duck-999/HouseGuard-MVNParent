@@ -8,6 +8,7 @@ public class TopicsBuffer
     private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     private int _index_list;
     private boolean _listNotEmpty;
+    private boolean exit = false;
 
     public void AddToList(TopicRabbitmq topic)
     {
@@ -22,18 +23,21 @@ public class TopicsBuffer
         if(_listNotEmpty)
         {
             LOGGER.fine("List isn't empty, will sort");
-            int i = _index_list;
-            while(i > 0)
+            int i = _index_list - 1;
+            while(i >= 0 && !exit)
             {
                 try
                 {
                     TopicRabbitmq local = _topics.get(i);
-                    LOGGER.fine(local.GetRoutingKey());
+                    LOGGER.info("Removing : " + i + ", Key: " + local.GetRoutingKey());
+                    _topics.remove(i);
                     i--;
+                    _index_list--;
                 }
                 catch(IndexOutOfBoundsException e)
                 {
                     LOGGER.severe("We are out of bounds on topics list: " + e);
+                    exit = true;
                 }
                 
             }   
