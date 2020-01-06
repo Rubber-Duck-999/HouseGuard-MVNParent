@@ -1,11 +1,12 @@
 import java.util.*;
 import java.util.logging.Logger;
 import java.lang.*;
+import com.house_guard.Common.Types;
 
 public class TopicsBuffer
 {    
     private List<TopicRabbitmq> _topics;
-    private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private Logger LOGGER;
     private int _index_list;
     private boolean _listNotEmpty;
     private boolean exit = false;
@@ -16,6 +17,39 @@ public class TopicsBuffer
         LOGGER.info("Added topic to list");
         _index_list++;
         _listNotEmpty = true;
+    }
+
+    public void ConvertTopics(TopicRabbitmq topic)
+    {
+        LOGGER.info("Converting topics = " + topic.GetRoutingKey());
+        if(topic.GetRoutingKey().equals(Types.EVENT_TOPIC_UP))
+        {
+            LOGGER.info("Received a = " + topic.GetRoutingKey());
+        }
+        else if(topic.GetRoutingKey().equals(Types.EVENT_TOPIC_SYP))
+        {
+            LOGGER.info("Received a = " + topic.GetRoutingKey());
+        }
+        else if(topic.GetRoutingKey().equals(Types.EVENT_TOPIC_DBM))
+        {
+            LOGGER.info("Received a = " + topic.GetRoutingKey());
+        }
+        else if(topic.GetRoutingKey().equals(Types.EVENT_TOPIC_NAC))
+        {
+            LOGGER.info("Received a = " + topic.GetRoutingKey());
+        }
+        else if(topic.GetRoutingKey().equals(Types.EVENT_TOPIC_EVM))
+        {
+            LOGGER.info("Received a = " + topic.GetRoutingKey());
+        }
+        else if(topic.GetRoutingKey().equals(Types.EVENT_TOPIC_FH))
+        {
+            LOGGER.info("Received a = " + topic.GetRoutingKey());
+        }
+        else if(topic.GetRoutingKey().equals(Types.REQUEST_DATABASE_TOPIC))
+        {
+            LOGGER.info("Received a = " + topic.GetRoutingKey());
+        }
     }
 
     public void SortList()
@@ -30,6 +64,8 @@ public class TopicsBuffer
                 {
                     TopicRabbitmq local = _topics.get(i);
                     LOGGER.info("Removing : " + i + ", Key: " + local.GetRoutingKey());
+                    ConvertTopics(local);
+                    System.exit(0);
                     _topics.remove(i);
                     i--;
                     _index_list--;
@@ -44,8 +80,9 @@ public class TopicsBuffer
         }
     }
 
-    public TopicsBuffer()
+    public TopicsBuffer(Logger log)
     {
+        LOGGER = log;
         _topics = new ArrayList<TopicRabbitmq>();
         _listNotEmpty = false;
         _index_list = 0;

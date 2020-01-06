@@ -17,12 +17,12 @@ public class ConsumerTopic
     private static Connection _connection;
     private static Channel _channel;
     private String _subscribeQueueName;
-    private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private Logger _LOGGER;
     private TopicsBuffer _buffer;
     
     private void EventsTopicSubscribe(String routingKey, String message)
     {
-        LOGGER.info("Attempting to split message up by key");
+        _LOGGER.info("Attempting to split message up by key");
         TopicRabbitmq local = new TopicRabbitmq(routingKey, message);
         _buffer.AddToList(local);
         _buffer.SortList();
@@ -32,19 +32,19 @@ public class ConsumerTopic
     {
         try 
         {
-            LOGGER.info("Setup of Queues and Exchange");
+            _LOGGER.info("Setup of Queues and Exchange");
             _subscribeQueueName = _channel.queueDeclare().getQueue();
             //
             _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.EVENT_TOPIC_ALL);
             _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.REQUEST_DATABASE_TOPIC);
             //
-            LOGGER.info("Beginning consumption of topics, please ctrl+c to escape");
+            _LOGGER.info("Beginning consumption of topics, please ctrl+c to escape");
             //
             DeliverCallback deliverCallback = (consumerTag, delivery) -> 
             {
 	        	String received = new String(delivery.getBody());
                 String key = delivery.getEnvelope().getRoutingKey();
-                LOGGER.info("Message received, key: " + key);
+                _LOGGER.info("Message received, key: " + key);
 	        	this.EventsTopicSubscribe(key, received);
 	        };
 	        _channel.basicConsume(_subscribeQueueName, true, deliverCallback, consumerTag -> { });
@@ -52,14 +52,15 @@ public class ConsumerTopic
         catch (IOException e) 
         {
             e.printStackTrace();
-            LOGGER.severe("Exception setting up consumption : " + e);
+            _LOGGER.severe("Exception setting up consumption : " + e);
 		}
     }
     
     
-    public ConsumerTopic(TopicsBuffer buffer)
+    public ConsumerTopic(TopicsBuffer buffer, Logger LOGGER)
     {
         _factory = new ConnectionFactory();
+        _LOGGER= LOGGER;
         _factory.setHost("localhost");
         _factory.setPassword("password");
         _buffer = buffer;
@@ -71,7 +72,7 @@ public class ConsumerTopic
 		} 
         catch (IOException | TimeoutException e) 
         {
-			LOGGER.severe("We have had trouble setting up the required connection");
+			_LOGGER.severe("We have had trouble setting up the required connection");
 			e.printStackTrace();
 		}
     }

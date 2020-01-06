@@ -58,20 +58,4 @@ public interface Types
     final String RequestFailure = "We have access failured";
     final String ACCESS_RESPONSE = "Access.Response";
     final Integer MAXPIN = 9999;
-    
-
-    public static <T> Topic convertTopic(String routing_key, String message) 
-    {
-      //Template of what it will do currently
-        if(routing_key == null) 
-        {
-            AccessResponse access = new AccessResponse();
-            return access;
-        }
-        else
-        {
-            EventTopic event = new EventTopic();
-            return event;
-        }
-    }
 }
