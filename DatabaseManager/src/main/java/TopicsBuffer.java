@@ -19,9 +19,10 @@ public class TopicsBuffer
         _listNotEmpty = true;
     }
 
-    public void ConvertTopics(TopicRabbitmq topic)
+    public boolean ConvertTopics(TopicRabbitmq topic)
     {
         LOGGER.info("Converting topics = " + topic.GetRoutingKey());
+        boolean type_found = true;
         if(topic.GetRoutingKey().equals(Types.EVENT_TOPIC_UP))
         {
             LOGGER.info("Received a = " + topic.GetRoutingKey());
@@ -50,6 +51,11 @@ public class TopicsBuffer
         {
             LOGGER.info("Received a = " + topic.GetRoutingKey());
         }
+        else
+        {
+            type_found = false;
+        }
+        return type_found;
     }
 
     public void SortList()
@@ -63,10 +69,18 @@ public class TopicsBuffer
                 try
                 {
                     TopicRabbitmq local = _topics.get(i);
-                    LOGGER.info("Removing : " + i + ", Key: " + local.GetRoutingKey());
-                    ConvertTopics(local);
-                    System.exit(0);
-                    _topics.remove(i);
+                    if(local.GetValidity())
+                    {
+                        LOGGER.info("Removing : " + i + ", Key: " + local.GetRoutingKey());
+                        if (ConvertTopics(local))
+                        {
+                            _topics.remove(i);
+                        }
+                        else
+                        {
+                            local.SetInValidTopic();
+                        }
+                    }
                     i--;
                     _index_list--;
                 }

@@ -33,7 +33,7 @@ public class mainClass
 
     public static void start()
     {
-        //LOGGER.setLevel(Level.INFO);
+        //LOGGER.setLevel(Level.FINE);
         TopicsBuffer buffer = new TopicsBuffer(LOGGER);
         cons = new ConsumerTopic(buffer, LOGGER);
         cons.ConsumeRequired();
