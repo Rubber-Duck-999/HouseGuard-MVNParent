@@ -16,4 +16,9 @@ pipeline {
             }
         }
     }
+    post {
+        failure {
+            emailext body: 'Failed to build SYP', subject: 'Build Failure', to: '$DEFAULT_RECIPIENTS'
+        }
+    }
 }
