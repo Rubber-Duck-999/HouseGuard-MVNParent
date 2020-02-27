@@ -1,3 +1,5 @@
+package com.house_guard.database_manager;
+
 import java.util.*;
 import java.util.logging.Logger;
 import java.lang.*;
@@ -49,9 +51,7 @@ public class TopicsBuffer {
                     TopicRabbitmq local = _topics.get(i);
                     if(local.GetValidity()) {
                         LOGGER.info("Removing : " + i + ", Key: " + local.GetRoutingKey());
-                        if (ConvertTopics(local)) {
-                            _topics.remove(i);
-                        } else {
+                        if (ConvertTopics(local) == false) {
                             local.SetInValidTopic();
                         }
                     }

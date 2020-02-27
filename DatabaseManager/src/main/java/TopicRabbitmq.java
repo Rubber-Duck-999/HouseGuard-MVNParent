@@ -1,3 +1,4 @@
+package com.house_guard.database_manager;
 
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
@@ -24,7 +25,7 @@ public class TopicRabbitmq {
         _routingKey = routingKey;
         _message = message;
         this.SetTime();
-        _validTopic = false;
+        _validTopic = true;
     }
 
     public boolean GetValidity() {

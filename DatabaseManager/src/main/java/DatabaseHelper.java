@@ -1,4 +1,4 @@
-
+package com.house_guard.database_manager;
 
 import java.sql.*;
 import java.util.logging.Logger;

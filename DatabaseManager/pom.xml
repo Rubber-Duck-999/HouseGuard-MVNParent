@@ -76,7 +76,7 @@
           <manifest>
             <addClasspath>true</addClasspath>
             <classpathPrefix>lib/</classpathPrefix>
-            <mainClass>mainClass</mainClass>
+            <mainClass>com.house_guard.database_manager.mainClass</mainClass>
           </manifest>
         </archive>
       </configuration>

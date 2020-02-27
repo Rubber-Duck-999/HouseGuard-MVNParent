@@ -1,4 +1,4 @@
-
+package com.house_guard.database_manager;
 
 import com.house_guard.Common.*;
 import com.rabbitmq.client.Channel;

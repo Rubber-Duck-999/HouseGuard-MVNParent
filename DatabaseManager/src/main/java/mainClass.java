@@ -1,3 +1,5 @@
+package com.house_guard.database_manager;
+
 import java.util.Date;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.LogRecord;
