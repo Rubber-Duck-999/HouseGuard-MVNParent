@@ -25,4 +25,13 @@ public class TestRabbitmq
         assertFalse(topic.GetValidity());
     }
 
+    @Test
+    public void testEmptyTopic()
+    {
+        TopicRabbitmq topic = new TopicRabbitmq();
+        String message = topic.GetMessage();
+        String routingKey = topic.GetRoutingKey();
+        assertEquals(message, "");
+        assertEquals(routingKey, "");
+    }
 }

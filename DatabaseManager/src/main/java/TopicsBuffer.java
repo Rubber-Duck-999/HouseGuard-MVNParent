@@ -56,7 +56,6 @@ public class TopicsBuffer {
                         }
                     }
                     i--;
-                    _index_list--;
                 } catch(IndexOutOfBoundsException e) {
                     LOGGER.severe("We are out of bounds on topics list: " + e);
                     exit = true;
