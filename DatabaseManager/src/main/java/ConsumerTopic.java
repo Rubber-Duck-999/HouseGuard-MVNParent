@@ -52,7 +52,7 @@ public class ConsumerTopic {
 
     public ConsumerTopic(TopicsBuffer buffer, Logger LOGGER) {
         _factory = new ConnectionFactory();
-        _LOGGER= LOGGER;
+        _LOGGER = LOGGER;
         _factory.setHost("localhost");
         _factory.setPassword("password");
         _buffer = buffer;
