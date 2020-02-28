@@ -2,6 +2,7 @@ package com.house_guard.database_manager;
 
 import java.sql.*;
 import java.util.logging.Logger;
+import com.house_guard.Common.*;
 
 public class DatabaseHelper {
     private Connection _connection;
@@ -30,5 +31,16 @@ public class DatabaseHelper {
         Statement statement = _connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM " + _username);
         _LOGGER.info("Printing schema for table: " + resultSet.getMetaData().getTableName(1));
+    }
+
+    private void message(String event_type, Types.Component com, String message, 
+                            String time, int severity) throws SQLException {
+        Statement statement = _connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("INSERT INTO event (event_type, component, 
+                                                    message, time, severity) VALUES (" +
+                                                    "'" + event_type + "', " + "'" + com + "', " + 
+                                                    "'" + message + "', " + "'" + time + "', " +
+                                                    "'" + severity + "')");
+        //_LOGGER.info("Result of event table pull: " + resultSet.getMetaData().)
     }
 }
