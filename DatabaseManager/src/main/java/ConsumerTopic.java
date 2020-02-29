@@ -19,11 +19,38 @@ public class ConsumerTopic {
     private Logger _LOGGER;
     private TopicsBuffer _buffer;
 
+    public boolean ConvertTopics(TopicRabbitmq topic) {
+       _LOGGER.info("Converting topics = " + topic.getRoutingKey());
+        boolean type_found = true;
+        if(topic.getRoutingKey().equals(Types.EVENT_TOPIC_UP)) {
+           _LOGGER.info("Received a = " + topic.getRoutingKey());
+        } else if(topic.getRoutingKey().equals(Types.EVENT_TOPIC_SYP)) {
+           _LOGGER.info("Received a = " + topic.getRoutingKey());
+        } else if(topic.getRoutingKey().equals(Types.EVENT_TOPIC_DBM)) {
+           _LOGGER.info("Received a = " + topic.getRoutingKey());
+        } else if(topic.getRoutingKey().equals(Types.EVENT_TOPIC_NAC)) {
+           _LOGGER.info("Received a = " + topic.getRoutingKey());
+        } else if(topic.getRoutingKey().equals(Types.EVENT_TOPIC_EVM)) {
+           _LOGGER.info("Received a = " + topic.getRoutingKey());
+        } else if(topic.getRoutingKey().equals(Types.EVENT_TOPIC_FH)) {
+           _LOGGER.info("Received a = " + topic.getRoutingKey());
+        } else if(topic.getRoutingKey().equals(Types.REQUEST_DATABASE_TOPIC)) {
+           _LOGGER.info("Received a = " + topic.getRoutingKey());
+        } else {
+            type_found = false;
+        }
+        return type_found;
+    }
+
+
     private void EventsTopicSubscribe(String routingKey, String message) {
         _LOGGER.info("Attempting to split message up by key");
         TopicRabbitmq local = new TopicRabbitmq(routingKey, message);
-        _buffer.AddToList(local);
-        _buffer.SortList();
+        if((this.ConvertTopics(local)) != false) {
+            local.setValidTopic();
+            _buffer.AddToList(local);
+            _buffer.SortList();
+        }
     }
 
     public void ConsumeRequired() {

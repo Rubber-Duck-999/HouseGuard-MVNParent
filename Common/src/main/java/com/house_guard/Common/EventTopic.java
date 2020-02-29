@@ -10,13 +10,13 @@ public class EventTopic extends Topic
 	{
 		this.component = component;
 	}
-	public String getError() 
+	public String getMessage() 
 	{
-		return error;
+		return message;
 	}
-	public void setError(String error) 
+	public void setMessage(String message) 
 	{
-		this.error = error;
+		this.message = message;
 	}
 	public String getTime() 
 	{
@@ -35,7 +35,7 @@ public class EventTopic extends Topic
 		this.severity = severity;
 	}
 	private String component;
-	private String error;
+	private String message;
 	private String time;
 	private Integer severity;
 

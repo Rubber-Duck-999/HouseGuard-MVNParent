@@ -14,16 +14,6 @@ public interface Types
       SUB_D4,
       ENTER
     }
-
-    public enum Component 
-    {
-      FH,
-      EVM,
-      SYP,
-      UP,
-      CM,
-      NAC
-    }
     
     public enum State
     {
