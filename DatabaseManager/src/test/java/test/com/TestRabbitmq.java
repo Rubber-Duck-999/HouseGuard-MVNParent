@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import com.house_guard.database_manager.*;
 import com.house_guard.Common.*;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 public class TestRabbitmq
 {
@@ -13,25 +15,35 @@ public class TestRabbitmq
     @Test
     public void testGetValidity()
     {
-        TopicRabbitmq topic = new TopicRabbitmq();
-        assertTrue(topic.GetValidity());
+        String message = "{ 'component': 'EVM', 'message': 'weather server down', " +
+                         "'time': '2020/01/20 12:00:00', 'severity': 2 }";
+        TopicRabbitmq topic = new TopicRabbitmq(Types.EVENT_TOPIC_EVM, message);
+        assertFalse(topic.getValidity());
     }
     
     @Test
-    public void testSetInValidTopic()
+    public void testSetValidTopic()
     {
-        TopicRabbitmq topic = new TopicRabbitmq();
-        topic.SetInValidTopic();
-        assertFalse(topic.GetValidity());
+        String message = "{ 'component': 'EVM', 'message': 'weather server down', " +
+                         "'time': '2020/01/20 12:00:00', 'severity': 2 }";
+        TopicRabbitmq topic = new TopicRabbitmq(Types.EVENT_TOPIC_EVM, message);
+        topic.setValidTopic();
+        assertTrue(topic.getValidity());
     }
 
     @Test
-    public void testEmptyTopic()
+    public void testTopicConversion()
     {
-        TopicRabbitmq topic = new TopicRabbitmq();
-        String message = topic.GetMessage();
-        String routingKey = topic.GetRoutingKey();
-        assertEquals(message, "");
-        assertEquals(routingKey, "");
+        String message = "{ 'component': 'EVM', 'message': 'weather server down', " +
+                         "'time': '2020/01/20 12:00:00', 'severity': 2 }";
+        TopicRabbitmq topic = new TopicRabbitmq(Types.EVENT_TOPIC_EVM, message);
+        topic.setValidTopic();
+        assertTrue(topic.getValidity());
+        assertEquals(topic.getSeverity(), 2);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        assertEquals(topic.getTimeSent(), LocalDateTime.parse("2020/01/20 12:00:00", dtf));
+        assertEquals(topic.getComponent(), "EVM");
+        assertEquals(topic.getTopicMessage(), "weather server down");
     }
+
 }
