@@ -36,9 +36,9 @@ public class TestJsonTypes
         up.setComponent(component);
         assertEquals(component, up.getComponent());
         //
-        String error = "Fail to run";
-        up.setError(error);
-        assertEquals(error, up.getError());
+        String message = "Fail to run";
+        up.setMessage(message);
+        assertEquals(message, up.getMessage());
         //
         String time = "14:00";
         up.setTime(time);

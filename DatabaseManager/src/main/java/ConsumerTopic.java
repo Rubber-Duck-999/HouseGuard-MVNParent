@@ -36,6 +36,9 @@ public class ConsumerTopic {
            _LOGGER.info("Received a = " + topic.getRoutingKey());
         } else if(topic.getRoutingKey().equals(Types.REQUEST_DATABASE_TOPIC)) {
            _LOGGER.info("Received a = " + topic.getRoutingKey());
+           DataInfoTopic data = new DataInfoTopic(topic.getRoutingKey(), topic.getMessage());
+           Vector<DataInfo> vector = _buffer.GetData(data);
+           type_found = false;
         } else {
             type_found = false;
         }
@@ -67,7 +70,7 @@ public class ConsumerTopic {
                 String received = new String(delivery.getBody());
                 String key = delivery.getEnvelope().getRoutingKey();
                 _LOGGER.info("Message received, key: " + key);
-                this.EventsTopicSubscribe(key, received);
+                this.EventsTopicSubscribe(key, received); 
             };
             _channel.basicConsume(_subscribeQueueName, true, deliverCallback, consumerTag -> { });
         } catch (IOException e) {

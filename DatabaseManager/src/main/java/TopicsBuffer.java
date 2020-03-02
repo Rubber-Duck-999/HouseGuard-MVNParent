@@ -39,6 +39,11 @@ public class TopicsBuffer {
         }
     }
 
+    public Vector<DataInfo> GetData(DataInfoTopic data)
+    {
+        return _db.getMessages(data.getTopicMessage(), data.getTimeSent(), )
+    }
+
     public TopicsBuffer(Logger log) {
         LOGGER = log;
         _topics = new ArrayList<TopicRabbitmq>();
