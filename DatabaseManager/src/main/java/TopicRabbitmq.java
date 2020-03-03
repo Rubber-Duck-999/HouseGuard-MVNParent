@@ -4,6 +4,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 import com.house_guard.Common.*;
 import com.google.gson.Gson;
+import org.json.*;
 
 public class TopicRabbitmq {
     private boolean _validTopic;
@@ -23,17 +24,24 @@ public class TopicRabbitmq {
         _validTopic = false;
     }
 
-    private void convertMessage() {
+    public boolean convertMessage() {
         Gson gson = new Gson();
-        EventTopic eventData = gson.fromJson(_message, EventTopic.class);
-        _topicMessage = eventData.getMessage();
-        //
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        LocalDateTime dateTime = LocalDateTime.parse(eventData.getTime(), dtf);
-        _timeSent = dateTime;
-        //
-        _component = eventData.getComponent();
-        _severity = eventData.getSeverity();
+        try {
+            EventTopic eventData = gson.fromJson(_message, EventTopic.class);
+            _topicMessage = eventData.getMessage();
+            //
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime dateTime = LocalDateTime.parse(eventData.getTime(), dtf);
+            _timeSent = dateTime;
+            //
+            _component = eventData.getComponent();
+            _severity = eventData.getSeverity();
+            return true;
+        } catch(Exception e) {
+            System.out.println("We have had converting: " + e);
+            e.printStackTrace();
+            return false;
+        }
     }
 
     private void setReceivalTime() {
@@ -63,7 +71,6 @@ public class TopicRabbitmq {
 
     public void setValidTopic() {
         _validTopic = true;
-        this.convertMessage();
     }
 
     public String getTopicMessage() {

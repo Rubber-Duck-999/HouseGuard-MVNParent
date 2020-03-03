@@ -1,10 +1,7 @@
 package com.house_guard.database_manager;
 
 import java.util.Date;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
+import java.util.logging.*;
 
 public class mainClass {
     private static ConsumerTopic cons;
@@ -31,7 +28,7 @@ public class mainClass {
     }
 
     public static void start() {
-        //LOGGER.setLevel(Level.FINE);
+        LOGGER.setLevel(Level.FINEST);
         TopicsBuffer buffer = new TopicsBuffer(LOGGER);
         cons = new ConsumerTopic(buffer, LOGGER);
         cons.ConsumeRequired();

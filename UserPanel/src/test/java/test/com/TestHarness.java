@@ -10,7 +10,7 @@ import com.*;
 
 public class TestHarness
 {
-    
+
     @Test
     public void testSubConsumer()
     {

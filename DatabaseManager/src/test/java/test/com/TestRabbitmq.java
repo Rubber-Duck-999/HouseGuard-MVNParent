@@ -20,7 +20,7 @@ public class TestRabbitmq
         TopicRabbitmq topic = new TopicRabbitmq(Types.EVENT_TOPIC_EVM, message);
         assertFalse(topic.getValidity());
     }
-    
+
     @Test
     public void testSetValidTopic()
     {
@@ -38,6 +38,7 @@ public class TestRabbitmq
                          "'time': '2020/01/20 12:00:00', 'severity': 2 }";
         TopicRabbitmq topic = new TopicRabbitmq(Types.EVENT_TOPIC_EVM, message);
         topic.setValidTopic();
+        topic.convertMessage();
         assertTrue(topic.getValidity());
         assertEquals(topic.getSeverity(), 2);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");

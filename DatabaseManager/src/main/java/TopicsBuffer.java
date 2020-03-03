@@ -4,7 +4,8 @@ import java.util.*;
 import java.sql.*;
 import java.util.logging.Logger;
 import java.lang.*;
-import com.house_guard.Common.Types;
+import com.house_guard.Common.*;
+import java.util.Vector;
 
 public class TopicsBuffer {
     private List<TopicRabbitmq> _topics;
@@ -16,7 +17,7 @@ public class TopicsBuffer {
 
     public void AddToList(TopicRabbitmq topic) {
         _topics.add(_index_list, topic);
-        LOGGER.info("Added topic to list");
+        LOGGER.info("Added topic to list: " + topic.getRoutingKey());
         _index_list++;
         _listNotEmpty = true;
     }
@@ -39,9 +40,9 @@ public class TopicsBuffer {
         }
     }
 
-    public Vector<DataInfo> GetData(DataInfoTopic data)
+    public Vector<DataInfoTopic> GetData(RequestDatabase request)
     {
-        return _db.getMessages(data.getTopicMessage(), data.getTimeSent(), )
+        return _db.getMessages(request.getMessage(), request.getTime_From(), request.getTime_To());
     }
 
     public TopicsBuffer(Logger log) {

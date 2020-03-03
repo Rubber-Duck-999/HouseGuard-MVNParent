@@ -8,6 +8,8 @@ import com.rabbitmq.client.DeliverCallback;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
+import java.util.Vector;
+import com.google.gson.Gson;
 
 
 public class ConsumerTopic {
@@ -18,27 +20,29 @@ public class ConsumerTopic {
     private String _subscribeQueueName;
     private Logger _LOGGER;
     private TopicsBuffer _buffer;
+    private Gson gson;
 
-    public boolean ConvertTopics(TopicRabbitmq topic) {
-       _LOGGER.info("Converting topics = " + topic.getRoutingKey());
+    public boolean ConvertTopics(TopicRabbitmq topic, String message) {
+        _LOGGER.info("Converting topics = " + topic.getRoutingKey());
         boolean type_found = true;
         if(topic.getRoutingKey().equals(Types.EVENT_TOPIC_UP)) {
-           _LOGGER.info("Received a = " + topic.getRoutingKey());
+            _LOGGER.info("Received a = " + topic.getRoutingKey());
         } else if(topic.getRoutingKey().equals(Types.EVENT_TOPIC_SYP)) {
-           _LOGGER.info("Received a = " + topic.getRoutingKey());
+            _LOGGER.info("Received a = " + topic.getRoutingKey());
         } else if(topic.getRoutingKey().equals(Types.EVENT_TOPIC_DBM)) {
-           _LOGGER.info("Received a = " + topic.getRoutingKey());
+            _LOGGER.info("Received a = " + topic.getRoutingKey());
         } else if(topic.getRoutingKey().equals(Types.EVENT_TOPIC_NAC)) {
-           _LOGGER.info("Received a = " + topic.getRoutingKey());
+            _LOGGER.info("Received a = " + topic.getRoutingKey());
         } else if(topic.getRoutingKey().equals(Types.EVENT_TOPIC_EVM)) {
-           _LOGGER.info("Received a = " + topic.getRoutingKey());
+            _LOGGER.info("Received a = " + topic.getRoutingKey());
         } else if(topic.getRoutingKey().equals(Types.EVENT_TOPIC_FH)) {
-           _LOGGER.info("Received a = " + topic.getRoutingKey());
+            _LOGGER.info("Received a = " + topic.getRoutingKey());
         } else if(topic.getRoutingKey().equals(Types.REQUEST_DATABASE_TOPIC)) {
-           _LOGGER.info("Received a = " + topic.getRoutingKey());
-           DataInfoTopic data = new DataInfoTopic(topic.getRoutingKey(), topic.getMessage());
-           Vector<DataInfo> vector = _buffer.GetData(data);
-           type_found = false;
+            _LOGGER.info("Received a = " + topic.getRoutingKey());
+            gson = new Gson();
+            RequestDatabase data = gson.fromJson(message, RequestDatabase.class);
+            Vector<DataInfoTopic> vector = _buffer.GetData(data);
+            type_found = false;
         } else {
             type_found = false;
         }
@@ -49,10 +53,15 @@ public class ConsumerTopic {
     private void EventsTopicSubscribe(String routingKey, String message) {
         _LOGGER.info("Attempting to split message up by key");
         TopicRabbitmq local = new TopicRabbitmq(routingKey, message);
-        if((this.ConvertTopics(local)) != false) {
+        if((this.ConvertTopics(local, message)) != false) {
+            _LOGGER.info("Topic is a Event.* Topic");
             local.setValidTopic();
-            _buffer.AddToList(local);
-            _buffer.SortList();
+            if(local.convertMessage() == false) {
+                _LOGGER.severe("We cannot convert this topic message");
+            } else {
+                _buffer.AddToList(local);
+                _buffer.SortList();
+            }
         }
     }
 
@@ -70,7 +79,7 @@ public class ConsumerTopic {
                 String received = new String(delivery.getBody());
                 String key = delivery.getEnvelope().getRoutingKey();
                 _LOGGER.info("Message received, key: " + key);
-                this.EventsTopicSubscribe(key, received); 
+                this.EventsTopicSubscribe(key, received);
             };
             _channel.basicConsume(_subscribeQueueName, true, deliverCallback, consumerTag -> { });
         } catch (IOException e) {

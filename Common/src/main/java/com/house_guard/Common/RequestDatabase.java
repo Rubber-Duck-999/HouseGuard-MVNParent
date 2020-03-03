@@ -2,18 +2,18 @@ package com.house_guard.Common;
 
 public class RequestDatabase extends Topic
 {
-    private Integer id;
+    private Integer request_id;
     private String message;
     private String time_from;
     private String time_to;
 
-    public Integer getId()
+    public Integer getRequest_Id()
     {
-        return id;
+        return request_id;
     }
-    public void setId(Integer id)
+    public void setRequest_Id(Integer id)
     {
-        this.id = id;
+        this.request_id = id;
     }
 
     public String getMessage()
@@ -25,20 +25,20 @@ public class RequestDatabase extends Topic
         this.message = message;
     }
 
-    public String getTimeFrom()
+    public String getTime_From()
     {
         return time_from;
     }
-    public void setTimeFrom(String time_from)
+    public void setTime_From(String time_from)
     {
         this.time_from = time_from;
     }
 
-    public String getTimeTo()
+    public String getTime_To()
     {
         return time_to;
     }
-    public void setTimeTo(String time_to)
+    public void setTime_To(String time_to)
     {
         this.time_to = time_to;
     }
