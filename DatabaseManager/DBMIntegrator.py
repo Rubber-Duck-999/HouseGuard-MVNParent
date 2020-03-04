@@ -32,28 +32,27 @@ channel.queue_bind(exchange='topics', queue=queue_name, routing_key=topic_failur
 channel.queue_bind(exchange='topics', queue=queue_name, routing_key=topic_data_info)
 print(' DBM Integrator [*] Waiting for topics. To exit press CTRL+C')
 
-while True:
-    time.sleep(2)
-    routing_key = 'Event.SYP'
-    event = {
-        "component": "SYP", 
-        "message": "Failure to kill UP", 
-        "time": "2020/01/20 15:20:00", 
-        "severity": 4
-    }
-    eventJson = json.dumps(event)
-    channel.basic_publish(exchange='topics', routing_key=routing_key, body=eventJson)
-    print("Sent %r " % routing_key)
-    time.sleep(5)
-    data = {
-        "request_id": 1, 
-        "time_from":"2020/01/20 14:56:00", 
-        "time_to":"2020/01/20 16:00:00", 
-        "message":"Failure to kill UP"
-    }
-    payload = json.dumps(data)
-    channel.basic_publish(exchange='topics', routing_key=topic_data_request, body=payload)
-    print("Sent %r " % topic_data_request)
+time.sleep(2)
+routing_key = 'Event.SYP'
+event = {
+    "component": "SYP", 
+    "message": "Failure to kill UP", 
+    "time": "2020/01/20 15:20:00", 
+    "severity": 4
+}
+eventJson = json.dumps(event)
+#channel.basic_publish(exchange='topics', routing_key=routing_key, body=eventJson)
+print("Sent %r " % routing_key)
+time.sleep(5)
+data = {
+    "request_id": 10, 
+    "time_from":"2020/01/20 14:56:00", 
+    "time_to":"2020/01/20 16:00:00", 
+    "message":"Failure to kill UP"
+}
+payload = json.dumps(data)
+channel.basic_publish(exchange='topics', routing_key=topic_data_request, body=payload)
+print("Sent %r " % topic_data_request)
 
 
 def callback(ch, method, properties, body):

@@ -10,6 +10,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 import java.util.Vector;
 import com.google.gson.Gson;
+import java.util.Iterator;
 
 
 public class ConsumerTopic {
@@ -21,6 +22,23 @@ public class ConsumerTopic {
     private Logger _LOGGER;
     private TopicsBuffer _buffer;
     private Gson gson;
+
+    public void PublishDataInfo(Vector<DataInfoTopic> vector) {
+        String routingKey = Types.DATA_INFO_TOPIC;
+        gson = new Gson();
+        Iterator i = vector.iterator();
+        while (i.hasNext()) {
+            _LOGGER.fine("Looping through publish list");
+            String json = gson.toJson(i.next());
+            _LOGGER.info("Message is : " + json);
+            try {
+                _channel.basicPublish(kEXCHANGE_NAME, routingKey, null, json.getBytes());
+            } catch (IOException e) {
+                _LOGGER.info("We have had issues publishing");
+                e.printStackTrace();
+            }
+        }
+    }
 
     public boolean ConvertTopics(TopicRabbitmq topic, String message) {
         _LOGGER.info("Converting topics = " + topic.getRoutingKey());
@@ -42,6 +60,8 @@ public class ConsumerTopic {
             gson = new Gson();
             RequestDatabase data = gson.fromJson(message, RequestDatabase.class);
             Vector<DataInfoTopic> vector = _buffer.GetData(data);
+            _LOGGER.info("We have returned size of " + vector.size() + " data records.");
+            PublishDataInfo(vector); 
             type_found = false;
         } else {
             type_found = false;

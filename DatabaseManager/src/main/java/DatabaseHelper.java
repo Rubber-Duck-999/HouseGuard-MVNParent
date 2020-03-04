@@ -7,6 +7,7 @@ import java.util.Vector;
 import java.util.Date;
 import com.house_guard.Common.*;
 import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 
 public class DatabaseHelper {
     private Connection _connection;
@@ -133,7 +134,7 @@ public class DatabaseHelper {
     }
 
 
-    public Vector<DataInfoTopic> getMessages(String message, String dateFrom, String dateTo) {
+    public Vector<DataInfoTopic> getMessages(Integer id, String message, String dateFrom, String dateTo) {
         Vector<DataInfoTopic> localVector = new Vector<>();
         try {
             _LOGGER.info("Creating statement for returning messages of: " + message + " from: " +
@@ -141,23 +142,25 @@ public class DatabaseHelper {
             PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM event WHERE message=?" +
                                           " AND time_sent >=? AND time_sent <= ?");
             _prepared.setString(1, message);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            String DateToStoreInDataBase= sdf.format(dateFrom);
-            System.out.println(DateToStoreInDataBase);
-
-            Timestamp ts = Timestamp.valueOf(DateToStoreInDataBase);
-            _prepared.setTimestamp(2, ts);
-            _prepared.setTimestamp(3, Timestamp.valueOf(dateTo));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+            Date parsedDate = sdf.parse(dateFrom);
+            Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+            _prepared.setTimestamp(2, timestamp);
+            //
+            parsedDate = sdf.parse(dateTo);
+            timestamp = new java.sql.Timestamp(parsedDate.getTime());
+            //
+            _prepared.setTimestamp(3, timestamp);
             ResultSet rs = _prepared.executeQuery();
             int count = 0;
-            if(rs.next())
+            while(rs.next())
             {
                 DataInfoTopic data = new DataInfoTopic();
-                data.setId(rs.getInt("id"));
+                data.setId(id);
                 data.setTopicMessage(rs.getString("message"));
                 data.setTimeSent(rs.getTimestamp("time_sent").toLocalDateTime());
                 localVector.add(data);
-                _LOGGER.info("Found record: " + data.getId());
+                _LOGGER.info("Found record ID: " + data.getId());
                 count++;
             }
         } catch(SQLException e) {
