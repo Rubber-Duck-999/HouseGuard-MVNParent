@@ -109,7 +109,7 @@ public class ConsumerTopic
     {
         EventTopic user_event = new EventTopic();
         user_event.setComponent(Types.COMPONENT_NAME);
-        user_event.setError(Types.RequestFailure);
+        user_event.setMessage(Types.RequestFailure);
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
         Date date = new Date();
         user_event.setTime(formatter.format(date));
