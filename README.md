@@ -1,6 +1,6 @@
 # HouseGuard-MVN-Parent
 
-HouseGuard-MVN-Parent is two java components that are part of the HouseGuard solution.
+HouseGuard-MVN-Parent is three java components that are part of the HouseGuard solution.
 
 ## Installation
 
