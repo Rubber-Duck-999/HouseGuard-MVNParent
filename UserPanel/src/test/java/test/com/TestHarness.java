@@ -10,7 +10,7 @@ import com.*;
 
 public class TestHarness
 {
-/*
+
     @Test
     public void testSubConsumer()
     {
@@ -20,17 +20,17 @@ public class TestHarness
         StubMonitorView myMonitorView = new StubMonitorView();
         RequestTable table = new RequestTable();
         Controller myController = new Controller(myModel, myView, myMonitorView, stub, table);
-        myController.initmodel(0, Types.OFF);
+        myController.initmodel(Types.EMPTY, Types.OFF);
         myView.addController(myController);
         myMonitorView.addController(myController);
         stub.consumeRequired();
 
         // Simulates User clicking button 4 times
-        myModel.incrementValue(0);
-        myModel.incrementValue(1);
-        myModel.incrementValue(2);
-        myModel.incrementValue(3);
-        Integer expected = 1111;
+        myModel.setValue("0");
+        myModel.setValue("1");
+        myModel.setValue("2");
+        myModel.setValue("3");
+        Integer expected = 3210;
         Integer correctKey = 1;
         Integer incorrectKey = 5;
         //Expected 1111
@@ -50,17 +50,17 @@ public class TestHarness
         StubMonitorView myMonitorView = new StubMonitorView();
         RequestTable table = new RequestTable();
         Controller myController = new Controller(myModel, myView, myMonitorView, stub, table);
-        myController.initmodel(0, Types.OFF);
+        myController.initmodel(Types.EMPTY, Types.OFF);
         myView.addController(myController);
         myMonitorView.addController(myController);
         stub.consumeRequired();
 
         // Simulates User clicking button 4 times
-        myModel.incrementValue(0);
-        myModel.incrementValue(1);
-        myModel.incrementValue(2);
-        myModel.incrementValue(3);
-        Integer expected = 1111;
+        myModel.setValue("0");
+        myModel.setValue("1");
+        myModel.setValue("2");
+        myModel.setValue("3");
+        Integer expected = 3210;
         Integer correctKey = 1;
         Integer incorrectKey = 5;
         //Expected 1111
@@ -81,8 +81,11 @@ public class TestHarness
         StubMonitorView myMonitorView = new StubMonitorView();
         RequestTable table = new RequestTable();
         Controller myController = new Controller(myModel, myView, myMonitorView, stub, table);
-        myController.checkAction(Types.Actions.ADD_D2.name());
-        Integer expected = 100;
+        myController.checkAction(Types.Actions.ONE.name());
+        myController.checkAction(Types.Actions.ZERO.name());
+        myController.checkAction(Types.Actions.ZERO.name());
+        myController.checkAction(Types.Actions.ZERO.name());
+        Integer expected = 1;
         assertEquals(myModel.checkPass(), expected);
     }
 
@@ -96,7 +99,10 @@ public class TestHarness
         RequestTable table = new RequestTable();
         Controller myController = new Controller(myModel, myView, myMonitorView, stub, table);
         myController.checkAction(Types.Actions.ONE.name());
-        Integer expected = 1501;
+        myController.checkAction(Types.Actions.ZERO.name());
+        myController.checkAction(Types.Actions.ZERO.name());
+        myController.checkAction(Types.Actions.NINE.name());
+        Integer expected = 9001;
         assertEquals(myModel.checkPass(), expected);
     }
 
@@ -105,31 +111,22 @@ public class TestHarness
     {
         StubConsumerTopic stub = new StubConsumerTopic();
         Model myModel = new Model();
-        myModel.initModel(0);
+        myModel.initModel("0");
         StubView myView = new StubView();
         StubMonitorView myMonitorView = new StubMonitorView();
         RequestTable table = new RequestTable();
         Controller myController = new Controller(myModel, myView, myMonitorView, stub, table);
         myController.checkAction(Types.Actions.ONE.name());
-        String expected_first = ;
+        myController.checkAction(Types.Actions.ONE.name());
+        Integer expected_first = 11;
         assertEquals(myModel.checkPass(), expected_first);
         //
-        myController.checkAction(Types.Actions.SUB_D1.name());
-        myController.checkAction(Types.Actions.SUB_D2.name());
-        myController.checkAction(Types.Actions.SUB_D3.name());
-        myController.checkAction(Types.Actions.SUB_D4.name());
-        expected_first = 0;
+        myController.checkAction(Types.Actions.ONE.name());
+        expected_first = 111;
         assertEquals(myModel.checkPass(), expected_first);
         //
-        myController.checkAction(Types.Actions.SUB_D1.name());
-        myController.checkAction(Types.Actions.SUB_D2.name());
-        myController.checkAction(Types.Actions.SUB_D3.name());
-        myController.checkAction(Types.Actions.SUB_D4.name());
-        //
-        myController.checkAction(Types.State.ON.name());
-        myController.checkAction(Types.State.ON.name());
-        myController.checkAction(Types.State.OFF.name());
-        Integer expected = 9999;
+        myController.checkAction(Types.Actions.TWO.name());
+        Integer expected = 2111;
         assertEquals(myModel.checkPass(), expected);
         assertNotEquals(myModel.setModelStateOFF(), Types.State.ON.name());
         assertEquals(myModel.setModelStateOFF(), Types.State.OFF.name());
@@ -170,5 +167,4 @@ public class TestHarness
         assertEquals(key, expected);
  
    }
-*/
 }

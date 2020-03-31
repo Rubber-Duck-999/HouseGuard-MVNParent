@@ -68,7 +68,7 @@ public class ConsumerTopic
         req.setId(key);
         req.setPin(val);
         String json = gson.toJson(req);
-        System.out.println("Message is : " + json);
+        System.out.println("Message is : " + key);
         try
         {
             channel.basicPublish(EXCHANGE_NAME, routingKey, null, json.getBytes());
