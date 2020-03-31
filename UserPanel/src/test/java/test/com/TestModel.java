@@ -8,7 +8,7 @@ import com.*;
 
 public class TestModel
 {
-
+/*
     @Test
     public void testConstructed()
     {
@@ -98,5 +98,5 @@ public class TestModel
         Integer expected = 6;
         assertNotEquals(actual, expected);
     }
-
+*/
 }

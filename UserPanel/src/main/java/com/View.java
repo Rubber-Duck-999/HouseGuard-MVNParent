@@ -23,16 +23,16 @@ public class View
     private JFrame frame;
     private JPanel buttonPanel, fieldPanel;
     private JLabel passFieldDigit1, passFieldDigit2, passFieldDigit3, passFieldDigit4;
-    private JButton addButtonD1, subButtonD1;
-    private JButton addButtonD2, subButtonD2;
-    private JButton addButtonD3, subButtonD3;
-    private JButton addButtonD4, subButtonD4;
+    private JButton oneButton, twoButton, threeButton;
+    private JButton fourButton, fiveButton, sixButton;
+    private JButton sevenButton, eightButton, nineButton;
+    private JButton clearButton, zeroButton, backButton;
     private JButton enter;
     private Font buttonFont;
 
     public View()
     {
-        frame = new JFrame("Simple MVC");
+        frame = new JFrame("User Panel");
         buttonPanel = new JPanel();
         fieldPanel = new JPanel();
 
@@ -41,30 +41,41 @@ public class View
         passFieldDigit3 = new JLabel("", SwingConstants.CENTER);
         passFieldDigit4 = new JLabel("", SwingConstants.CENTER);
 
-        addButtonD1 = new JButton("+");
-        subButtonD1 = new JButton("-");
+        oneButton   = new JButton("1");
+        twoButton   = new JButton("2");
+        threeButton = new JButton("3");
 
-        addButtonD2 = new JButton("+");
-        subButtonD2 = new JButton("-");
+        fourButton  = new JButton("4");
+        fiveButton   = new JButton("5");
+        sixButton   = new JButton("6");
 
-        addButtonD3 = new JButton("+");
-        subButtonD3 = new JButton("-");
+        sevenButton = new JButton("7");
+        eightButton = new JButton("8");
+        nineButton  = new JButton("9");
 
-        addButtonD4 = new JButton("+");
-        subButtonD4 = new JButton("-");
+        clearButton = new JButton("X");
+        zeroButton = new JButton("0");
+        backButton = new JButton("<");
 
-        buttonPanel.add(addButtonD1);
-        buttonPanel.add(addButtonD2);
-        buttonPanel.add(addButtonD3);
-        buttonPanel.add(addButtonD4);
-        buttonPanel.add(subButtonD1);
-        buttonPanel.add(subButtonD2);
-        buttonPanel.add(subButtonD3);
-        buttonPanel.add(subButtonD4);
+        buttonPanel.add(oneButton);
+        buttonPanel.add(twoButton);
+        buttonPanel.add(threeButton);
+        
+        buttonPanel.add(fourButton);
+        buttonPanel.add(fiveButton);
+        buttonPanel.add(sixButton);
+
+        buttonPanel.add(sevenButton);
+        buttonPanel.add(eightButton);
+        buttonPanel.add(nineButton);
+
+        buttonPanel.add(clearButton);
+        buttonPanel.add(zeroButton);
+        buttonPanel.add(backButton);
 
         enter = new JButton("Enter");
-        enter.setFont(new Font("Calibri", Font.BOLD, 28));
-        buttonPanel.setLayout(new GridLayout(2,4));
+        enter.setFont(new Font("Calibri", Font.BOLD, 40));
+        buttonPanel.setLayout(new GridLayout(4,3));
 
         setButtonFont();
         setLabelFont();
@@ -82,12 +93,12 @@ public class View
         GraphicsDevice device = frame.getGraphicsConfiguration().getDevice();
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         //frame.setUndecorated(true);
         frame.setSize(1280,980);
         //frame.pack();
         frame.setVisible(true);
-        device.setFullScreenWindow(frame);
+        //device.setFullScreenWindow(frame);
     }
 
     private void setLabelFont()
@@ -102,69 +113,61 @@ public class View
     private void setButtonFont()
     {
         buttonFont = new Font("Calibri", Font.BOLD, 40);
-        addButtonD1.setFont(buttonFont);
-        subButtonD1.setFont(buttonFont);
+        oneButton.setFont(buttonFont);
+        twoButton.setFont(buttonFont);
+        threeButton.setFont(buttonFont);
 
-        addButtonD2.setFont(buttonFont);
-        subButtonD2.setFont(buttonFont);
+        fourButton.setFont(buttonFont);
+        fiveButton.setFont(buttonFont);
+        sixButton.setFont(buttonFont);
 
-        addButtonD3.setFont(buttonFont);
-        subButtonD3.setFont(buttonFont);
+        sevenButton.setFont(buttonFont);
+        eightButton.setFont(buttonFont);
+        nineButton.setFont(buttonFont);
 
-        addButtonD4.setFont(buttonFont);
-        subButtonD4.setFont(buttonFont);
+        clearButton.setFont(buttonFont);
+        zeroButton.setFont(buttonFont);
+        backButton.setFont(buttonFont);
     }
 
-    public < E > void setDigit1(E v)
+    public < E > void setDigits(String[] v)
     {
-        System.out.println(v);
-        passFieldDigit1.setText("" + v);
-    }
-
-    public < E > void setDigit2(E v)
-    {
-        passFieldDigit2.setText("" + v);
-    }
-
-    public < E > void setDigit3(E v)
-    {
-        passFieldDigit3.setText("" + v);
-    }
-
-    public < E > void setDigit4(E v)
-    {
-        passFieldDigit4.setText("" + v);
-    }
-
-    public < E > void setDigits(E v)
-    {
-        passFieldDigit1.setText("" + v);
-        passFieldDigit2.setText("" + v);
-        passFieldDigit3.setText("" + v);
-        passFieldDigit4.setText("" + v);
+        passFieldDigit1.setText("" + v[0]);
+        passFieldDigit2.setText("" + v[1]);
+        passFieldDigit3.setText("" + v[2]);
+        passFieldDigit4.setText("" + v[3]);
+        
     }
 
     public void addController(ActionListener listenerButtons)
     {
-        addButtonD1.setActionCommand(Types.Actions.ADD_D1.name());
-        subButtonD1.setActionCommand(Types.Actions.SUB_D1.name());
-        addButtonD1.addActionListener(listenerButtons);
-        subButtonD1.addActionListener(listenerButtons);
+        oneButton.setActionCommand(Types.Actions.ONE.name());
+        oneButton.addActionListener(listenerButtons);
+        twoButton.setActionCommand(Types.Actions.TWO.name());
+        twoButton.addActionListener(listenerButtons);
+        threeButton.setActionCommand(Types.Actions.THREE.name());
+        threeButton.addActionListener(listenerButtons);
 
-        addButtonD2.setActionCommand(Types.Actions.ADD_D2.name());
-        subButtonD2.setActionCommand(Types.Actions.SUB_D2.name());
-        addButtonD2.addActionListener(listenerButtons);
-        subButtonD2.addActionListener(listenerButtons);
+        fourButton.setActionCommand(Types.Actions.FOUR.name());
+        fourButton.addActionListener(listenerButtons);
+        fiveButton.setActionCommand(Types.Actions.FIVE.name());
+        fiveButton.addActionListener(listenerButtons);
+        sixButton.setActionCommand(Types.Actions.SIX.name());
+        sixButton.addActionListener(listenerButtons);
 
-        addButtonD3.setActionCommand(Types.Actions.ADD_D3.name());
-        subButtonD3.setActionCommand(Types.Actions.SUB_D3.name());
-        addButtonD3.addActionListener(listenerButtons);
-        subButtonD3.addActionListener(listenerButtons);
+        sevenButton.setActionCommand(Types.Actions.SEVEN.name());
+        sevenButton.addActionListener(listenerButtons);
+        eightButton.setActionCommand(Types.Actions.EIGHT.name());
+        eightButton.addActionListener(listenerButtons);
+        nineButton.setActionCommand(Types.Actions.NINE.name());
+        nineButton.addActionListener(listenerButtons);
 
-        addButtonD4.setActionCommand(Types.Actions.ADD_D4.name());
-        subButtonD4.setActionCommand(Types.Actions.SUB_D4.name());
-        addButtonD4.addActionListener(listenerButtons);
-        subButtonD4.addActionListener(listenerButtons);
+        clearButton.setActionCommand(Types.Actions.CLEAR.name());
+        clearButton.addActionListener(listenerButtons);
+        zeroButton.setActionCommand(Types.Actions.ZERO.name());
+        zeroButton.addActionListener(listenerButtons);
+        backButton.setActionCommand(Types.Actions.BACK.name());
+        backButton.addActionListener(listenerButtons);
 
         enter.setActionCommand(Types.Actions.ENTER.name());
         enter.addActionListener(listenerButtons);

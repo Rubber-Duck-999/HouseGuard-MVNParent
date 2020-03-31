@@ -9,7 +9,7 @@ import com.house_guard.Common.*;
 
 public class TestTypes
 {
-
+/*
     @Test
     public void testActions()
     {
@@ -25,5 +25,5 @@ public class TestTypes
         assertEquals(Types.State.OFF.name(), "OFF");
 
     }
-
+*/
 }

@@ -12,14 +12,13 @@ public class mainClass
 
     public static void startUI()
     {
-        int start_value = 0;
         myModel = new Model();
         myView = new View();
 
         MonitorView monitorView = new MonitorView();
         cons = new ConsumerTopic();
         myController = new Controller(myModel, myView, monitorView, cons, new RequestTable());
-        myController.initmodel(start_value, Types.OFF);
+        myController.initmodel(Types.EMPTY, Types.OFF);
         myView.addController(myController);
         monitorView.addController(myController);
         cons.consumeRequired();

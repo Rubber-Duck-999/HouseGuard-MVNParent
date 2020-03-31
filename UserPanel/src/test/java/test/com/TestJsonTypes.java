@@ -9,7 +9,7 @@ import com.house_guard.Common.*;
 
 public class TestJsonTypes
 {
-
+/*
     @Test
     public void testGetId()
     {
@@ -59,5 +59,5 @@ public class TestJsonTypes
         monitor_state.setState(true);
         assertTrue(monitor_state.isState());
     }
-
+*/
 }

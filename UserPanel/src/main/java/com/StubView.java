@@ -11,31 +11,7 @@ public class StubView extends View
     }
 
     @Override
-    public < E > void setDigit1(E v)
-    {
-        System.out.println(v);
-    }
-
-    @Override
-    public < E > void setDigit2(E v)
-    {
-
-    }
-
-    @Override
-    public < E > void setDigit3(E v)
-    {
-
-    }
-
-    @Override
-    public < E > void setDigit4(E v)
-    {
-
-    }
-
-    @Override
-    public < E > void setDigits(E v)
+    public < E > void setDigits(String[] v)
     {
 
     }

@@ -4,14 +4,18 @@ public interface Types
 {
     public enum Actions
     {
-        ADD_D1,
-        SUB_D1,
-        ADD_D2,
-        SUB_D2,
-        ADD_D3,
-        SUB_D3,
-        ADD_D4,
-        SUB_D4,
+        ONE,
+        TWO,
+        THREE,
+        FOUR,
+        FIVE,
+        SIX,
+        SEVEN,
+        EIGHT,
+        NINE,
+        CLEAR,
+        ZERO,
+        BACK,
         ENTER
     }
 
@@ -21,10 +25,21 @@ public interface Types
         OFF
     }
 
-    final int D1 = 0;
-    final int D2 = 1;
-    final int D3 = 2;
-    final int D4 = 3;
+    final String ONE = "1";
+    final String TWO = "2";
+    final String THREE = "3";
+    final String FOUR = "4";
+    final String FIVE = "5";
+    final String SIX = "6";
+    final String SEVEN = "7";
+    final String EIGHT = "8";
+    final String NINE = "9";
+    final String ZERO = "0";
+
+    final String BACK = "<";
+    final String CLEAR = "X";
+
+    final String EMPTY = "X";
 
     final int RESET = 0;
     final String OFF = "OFF";
@@ -57,5 +72,5 @@ public interface Types
     final Object PASS = "PASS";
     final String RequestFailure = "We have access failured";
     final String ACCESS_RESPONSE = "Access.Response";
-    final Integer MAXPIN = 9999;
+    final int MAXPIN = 9999;
 }

@@ -5,56 +5,99 @@ import com.house_guard.Common.*;
 public class Model
 {
     private final int MAX = 4;
-    private int MAXSIZE = 10;
-    private int MINSIZE = 0;
-    private int[] _digitArray;
+    private String[] _digitArray;
+    private int _currentDigit = 3;
 
     public Model()
     {
-        _digitArray = new int[4];
-        for(int i = 0; i < 4; i++)
+        _digitArray = new String[4];
+        for(int i = 0; i < MAX; i++)
         {
-            _digitArray[i] = 0;
+            _digitArray[i] = Types.EMPTY;
         }
     }
 
-    public int initModel(int x)
+    public String[] initModel(String x)
     {
-        for(int i = 0; i < 4; i++)
+        for(int i = 0; i < MAX; i++)
         {
             _digitArray[i] = x;
+            _currentDigit = 3;
         }
-        return x;
+        return _digitArray;
     }
 
-    public int incrementValue(int digit)
+    public String[] setValue(String value)
     {
-        _digitArray[digit] = _digitArray[digit] + 1;
-        if(_digitArray[digit] >= MAXSIZE)
+        if(value == Types.BACK)
         {
-            _digitArray[digit] = 0;
-        }
-        return _digitArray[digit];
-    }
+            if(_currentDigit == 0)
+            {
+                if(_digitArray[_currentDigit] == Types.EMPTY)
+                {
+                    _currentDigit++;
+                    _digitArray[_currentDigit] = Types.EMPTY;
+                }
+                else
+                {
+                    _digitArray[_currentDigit] = Types.EMPTY;
+                    _currentDigit++;
+                }
+            }
+            else if(_currentDigit == 3)
+            {
+                _digitArray[_currentDigit] = Types.EMPTY;
+            }
+            else
+            {
+                if(_digitArray[_currentDigit] == Types.EMPTY)
+                {
+                    _currentDigit++;
+                }
+                _digitArray[_currentDigit] = Types.EMPTY;
+            }
 
-    public int decrementValue(int digit)
-    {
-        --_digitArray[digit];
-        if(_digitArray[digit] < MINSIZE)
-        {
-            _digitArray[digit] = (MAXSIZE - 1);
         }
-        return _digitArray[digit];
+        else if(value == Types.CLEAR)
+        {
+            initModel(Types.EMPTY);
+            _currentDigit = 3;
+        }
+        else
+        {
+            if(_currentDigit > 0)
+            {
+                _digitArray[_currentDigit] = value;
+                _currentDigit--;
+            } 
+            else if(_currentDigit == 0) 
+            {
+                _digitArray[_currentDigit] = value;
+            }
+        }
+        return _digitArray;
     }
 
     public Integer checkPass()
     {
         Integer digits = 0;
-        digits += _digitArray[0] * 1000;
-        digits += _digitArray[1] * 100;
-        digits += _digitArray[2] * 10;
-        digits += _digitArray[3];
+        digits += Integer.parseInt(_digitArray[0]) * 1000;
+        digits += Integer.parseInt(_digitArray[1]) * 100;
+        digits += Integer.parseInt(_digitArray[2]) * 10;
+        digits += Integer.parseInt(_digitArray[3]);
         return digits;
+    }
+
+    public boolean isValidPin()
+    {
+        for(int i = 0; i < MAX; i++)
+        {
+            if(_digitArray[i] == Types.EMPTY)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     public String setModelStateOn()

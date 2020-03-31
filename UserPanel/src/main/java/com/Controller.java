@@ -56,41 +56,64 @@ public class Controller implements ActionListener
     {
         if(Types.Actions.ENTER.name().equals(input))
         {
-            this.enterCommand();
-            this.checkAccess();
-            _view.setDigits(_model.initModel(Types.RESET));
+            if(_model.isValidPin())
+            {
+                this.enterCommand();
+                this.checkAccess();
+                _view.setDigits(_model.initModel(Types.EMPTY));
+            } 
+            else
+            {
+                _view.displayErrorMessage("Please enter a correct pin");
+            }
         }
-        else if(Types.Actions.ADD_D1.name().equals(input))
+        else if(Types.Actions.ONE.name().equals(input))
         {
-            _view.setDigit1(_model.incrementValue(Types.D1));
+            _view.setDigits(_model.setValue(Types.ONE));
         }
-        else if(Types.Actions.SUB_D1.name().equals(input))
+        else if(Types.Actions.TWO.name().equals(input))
         {
-            _view.setDigit1(_model.decrementValue(Types.D1));
+            _view.setDigits(_model.setValue(Types.TWO));
         }
-        else if(Types.Actions.ADD_D2.name().equals(input))
+        else if(Types.Actions.THREE.name().equals(input))
         {
-            _view.setDigit2(_model.incrementValue(Types.D2));
+            _view.setDigits(_model.setValue(Types.THREE));
         }
-        else if(Types.Actions.SUB_D2.name().equals(input))
+        else if(Types.Actions.FOUR.name().equals(input))
         {
-            _view.setDigit2(_model.decrementValue(Types.D2));
+            _view.setDigits(_model.setValue(Types.FOUR));
         }
-        else if(Types.Actions.ADD_D3.name().equals(input))
+        else if(Types.Actions.FIVE.name().equals(input))
         {
-            _view.setDigit3(_model.incrementValue(Types.D3));
+            _view.setDigits(_model.setValue(Types.FIVE));
         }
-        else if(Types.Actions.SUB_D3.name().equals(input))
+        else if(Types.Actions.SIX.name().equals(input))
         {
-            _view.setDigit3(_model.decrementValue(Types.D3));
+            _view.setDigits(_model.setValue(Types.SIX));
         }
-        else if(Types.Actions.ADD_D4.name().equals(input))
+        else if(Types.Actions.SEVEN.name().equals(input))
         {
-            _view.setDigit4(_model.incrementValue(Types.D4));
+            _view.setDigits(_model.setValue(Types.SEVEN));
         }
-        else if(Types.Actions.SUB_D4.name().equals(input))
+        else if(Types.Actions.EIGHT.name().equals(input))
         {
-            _view.setDigit4(_model.decrementValue(Types.D4));
+            _view.setDigits(_model.setValue(Types.EIGHT));
+        }
+        else if(Types.Actions.NINE.name().equals(input))
+        {
+            _view.setDigits(_model.setValue(Types.NINE));
+        }
+        else if(Types.Actions.CLEAR.name().equals(input))
+        {
+            _view.setDigits(_model.setValue(Types.CLEAR));
+        }
+        else if(Types.Actions.ZERO.name().equals(input))
+        {
+            _view.setDigits(_model.setValue(Types.ZERO));
+        }
+        else if(Types.Actions.BACK.name().equals(input))
+        {
+            _view.setDigits(_model.setValue(Types.BACK));
         }
         else if(Types.State.OFF.name().equals(input))
         {
@@ -111,7 +134,7 @@ public class Controller implements ActionListener
         _consumer.sendMonitorState(state);
     }
 
-    public void initmodel(int x, String state)
+    public void initmodel(String x, String state)
     {
         _view.setDigits(_model.initModel(x));
         _monitorView.setMonitorState(state);
