@@ -14,7 +14,6 @@ public class TopicRabbitmq {
     private LocalDateTime _timeOfReceival;
     private LocalDateTime _timeSent;
     private String _component;
-    private int _severity;
 
 
     public TopicRabbitmq(String routingKey, String message) {
@@ -35,7 +34,6 @@ public class TopicRabbitmq {
             _timeSent = dateTime;
             //
             _component = eventData.getComponent();
-            _severity = eventData.getSeverity();
             return true;
         } catch(Exception e) {
             System.out.println("We have had converting: " + e);
@@ -59,10 +57,6 @@ public class TopicRabbitmq {
 
     public String getComponent() {
         return _component;
-    }
-
-    public int getSeverity() {
-        return _severity;
     }
 
     public boolean getValidity() {

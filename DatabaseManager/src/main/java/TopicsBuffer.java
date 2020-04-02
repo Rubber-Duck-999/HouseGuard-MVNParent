@@ -45,11 +45,11 @@ public class TopicsBuffer {
         return _db.getMessages(request.getRequest_Id(), request.getMessage(), request.getTime_From(), request.getTime_To());
     }
 
-    public TopicsBuffer(Logger log) {
+    public TopicsBuffer(Logger log, String password) {
         LOGGER = log;
         _topics = new ArrayList<TopicRabbitmq>();
         _listNotEmpty = false;
         _index_list = 0;
-        _db = new DatabaseHelper(log);
+        _db = new DatabaseHelper(log, password);
     }
 }

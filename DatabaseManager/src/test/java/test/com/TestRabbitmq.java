@@ -40,7 +40,6 @@ public class TestRabbitmq
         topic.setValidTopic();
         topic.convertMessage();
         assertTrue(topic.getValidity());
-        assertEquals(topic.getSeverity(), 2);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         assertEquals(topic.getTimeSent(), LocalDateTime.parse("2020/01/20 12:00:00", dtf));
         assertEquals(topic.getComponent(), "EVM");

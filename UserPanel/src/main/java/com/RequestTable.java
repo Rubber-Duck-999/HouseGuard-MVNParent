@@ -31,7 +31,7 @@ public class RequestTable
 
     public Integer addRecordNextKeyReturn(Integer pin)
     {
-        if(pin < Types.MAXPIN && pin > -1)
+        if(pin <= Types.MAXPIN && pin > -1)
         {
             table.put(key, pin);
             key++;

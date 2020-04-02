@@ -43,10 +43,6 @@ public class TestJsonTypes
         String time = "14:00";
         up.setTime(time);
         assertEquals(time, up.getTime());
-        //
-        Integer severity = 5;
-        up.setSeverity(severity);
-        assertEquals(severity, up.getSeverity());
     }
 
     @Test

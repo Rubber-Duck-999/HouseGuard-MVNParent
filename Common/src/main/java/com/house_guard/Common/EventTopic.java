@@ -26,17 +26,8 @@ public class EventTopic extends Topic
     {
         this.time = time;
     }
-    public Integer getSeverity()
-    {
-        return severity;
-    }
-    public void setSeverity(Integer severity)
-    {
-        this.severity = severity;
-    }
     private String component;
     private String message;
     private String time;
-    private Integer severity;
 
 }

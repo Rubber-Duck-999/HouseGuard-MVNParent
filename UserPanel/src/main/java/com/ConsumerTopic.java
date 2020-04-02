@@ -113,7 +113,6 @@ public class ConsumerTopic
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
         Date date = new Date();
         user_event.setTime(formatter.format(date));
-        user_event.setSeverity(Types.ACCESS_NOT_RECEIVED);
         String pubMessage = gson.toJson(user_event);
         return pubMessage;
     }
