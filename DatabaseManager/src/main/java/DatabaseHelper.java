@@ -11,7 +11,7 @@ import java.text.DateFormat;
 
 public class DatabaseHelper {
     private Connection _connection;
-    private final String database_prefix = "jdbc:mysql://192.168.0.25:3306/logs?";
+    private final String database_prefix = "jdbc:mysql://localhost/logs?";
     private final String database_suffix = "&zeroDateTimeBehavior=convertToNull";
     private final String user_entry = "user=";
     private final String password_entry = "&password=";
@@ -23,11 +23,10 @@ public class DatabaseHelper {
     +---------------+-------------+------+-----+---------+----------------+
     | Field         | Type        | Null | Key | Default | Extra          |
     +---------------+-------------+------+-----+---------+----------------+
-    | event_type    | varchar(20) | NO   |     | NULL    |                |
+    | id            | int(11)     | NO   | PRI | NULL    | auto_increment |
+    | routing_key   | varchar(50) | NO   |     | NULL    |                |
     | component     | varchar(5)  | NO   |     | NULL    |                |
     | message       | varchar(30) | NO   |     | NULL    |                |
-    | severity      | int(11)     | NO   |     | NULL    |                |
-    | id            | int(11)     | NO   | PRI | NULL    | auto_increment |
     | time_sent     | datetime    | YES  |     | NULL    |                |
     | time_received | datetime    | YES  |     | NULL    |                |
     +---------------+-------------+------+-----+---------+----------------+
@@ -36,7 +35,7 @@ public class DatabaseHelper {
     public DatabaseHelper(Logger LOGGER, String password) {
         _LOGGER = LOGGER;
         try {
-            _username = "root";
+            _username = "access";
             _password = password;
             _connection = DriverManager.getConnection(database_prefix + user_entry +
                           _username + password_entry +
@@ -60,15 +59,14 @@ public class DatabaseHelper {
             if(_connection == null) {
                 _LOGGER.severe("Connection null");
             }
-            PreparedStatement _prepared = _connection.prepareStatement("INSERT INTO event (event_type, component, " +
-                                          "message, severity, time_sent, time_received) VALUES " +
-                                          "(?, ?, ?, ?, ?, ?)");
+            PreparedStatement _prepared = _connection.prepareStatement("INSERT INTO event (routing_key, component, " +
+                                          "message,  time_sent, time_received) VALUES " +
+                                          "(?, ?, ?, ?, ?)");
             _prepared.setString(1, input.getRoutingKey());
             _prepared.setString(2, input.getComponent());
             _prepared.setString(3, input.getTopicMessage());
-            _prepared.setTimestamp(5, Timestamp.valueOf(input.getTimeSent()));
-            _prepared.setInt(4, 0);
-            _prepared.setTimestamp(6, Timestamp.valueOf(input.getTimeReceived()));
+            _prepared.setTimestamp(4, Timestamp.valueOf(input.getTimeSent()));
+            _prepared.setTimestamp(5, Timestamp.valueOf(input.getTimeReceived()));
             _prepared.executeUpdate();
         } catch(SQLException e) {
             _LOGGER.severe("Error: " + e);

@@ -94,6 +94,7 @@ public class TestHarness
     {
         StubConsumerTopic stub = new StubConsumerTopic();
         Model myModel = new Model();
+        myModel.initModel("0");
         StubView myView = new StubView();
         StubMonitorView myMonitorView = new StubMonitorView();
         RequestTable table = new RequestTable();

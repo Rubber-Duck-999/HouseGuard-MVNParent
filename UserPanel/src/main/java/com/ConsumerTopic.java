@@ -62,13 +62,15 @@ public class ConsumerTopic
 
     public void askForAccess(Integer key, Integer val)
     {
+        System.out.println("Requesting access ");
         String routingKey = Types.REQUEST_ACCESS_TOPIC;
         gson = new Gson();
         RequestAccess req = new RequestAccess();
         req.setId(key);
         req.setPin(val);
         String json = gson.toJson(req);
-        System.out.println("Message is : " + key);
+        accessStateSet = false;
+        accessAllowed = false;
         try
         {
             channel.basicPublish(EXCHANGE_NAME, routingKey, null, json.getBytes());
@@ -82,12 +84,14 @@ public class ConsumerTopic
 
     private void accessResponse(String delivery, String routingKey)
     {
+        System.out.println("Received response");
         System.out.println(delivery);
         accessStateSet = true;
         AccessResponse data = gson.fromJson(delivery, AccessResponse.class);
         receivedId = data.getId();
         if(!data.getResult().equals(Types.PASS))
         {
+            System.out.println("Publishing event.Up topic");
             accessAllowed = false;
             String pubMessage = createEventUpMessage();
             try
@@ -110,7 +114,7 @@ public class ConsumerTopic
         EventTopic user_event = new EventTopic();
         user_event.setComponent(Types.COMPONENT_NAME);
         user_event.setMessage(Types.RequestFailure);
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
         Date date = new Date();
         user_event.setTime(formatter.format(date));
         String pubMessage = gson.toJson(user_event);

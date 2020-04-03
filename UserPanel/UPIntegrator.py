@@ -36,25 +36,22 @@ time.sleep(0.5)
 #channel.basic_publish(exchange='topics', routing_key=topic_data_request, body=payload)
 #print("Sent %r " % topic_data_request)
 
-
+id = 1
 def callback(ch, method, properties, body):
     print(" DBM received an event [x] %r:%r" % (method.routing_key, body))
     if method.routing_key == topic_request_access:
         ##
-        my_json = body.decode('utf8')
-        received = json.dumps(my_json)
-        print(received)
-        print(received["id"])
-        #id = received['id']
-        ##
+        global id
         data = {
-            "id": id, 
-            "result":True  
+            "id": str(id), 
+            "result":"PASS" 
         }
-        #payload = json.dumps(data)
-        #print(payload)
-        #channel.basic_publish(exchange='topics', routing_key=topic_response, body=payload)
-        #print("Sent %r " % topic_response)
+        id = id + 1
+        payload = json.dumps(data)
+        print(payload)
+        channel.basic_publish(exchange='topics', routing_key=topic_response, body=payload)
+        print("Sent %r " % topic_response)
+
 
 channel.basic_consume(queue=queue_name, on_message_callback=callback, auto_ack=True)
 

@@ -1,16 +1,26 @@
 package com;
 
 import com.house_guard.Common.*;
+import java.time.LocalDateTime;
 
 public class Model
 {
     private final int MAX = 4;
     private String[] _digitArray;
     private int _currentDigit = 3;
+    private int _attempts;
+    private boolean _timeset;
+    private int _timeDay;
+    private int _timeHour;
+    private int _timeMinute;
 
     public Model()
     {
         _digitArray = new String[4];
+        _attempts = 0;
+        _timeDay = 0;
+        _timeHour = 0;
+        _timeMinute = 0;
         for(int i = 0; i < MAX; i++)
         {
             _digitArray[i] = Types.EMPTY;
@@ -98,6 +108,42 @@ public class Model
             }
         }
         return true;
+    }
+
+    public void resetAttempts()
+    {
+        _attempts = 0;
+    }
+
+    public boolean checkAttempts()
+    {
+        _attempts++;
+        if(_attempts >= 3)
+        {
+            _timeDay = LocalDateTime.now().getDayOfMonth();
+            _timeHour = LocalDateTime.now().getHour();
+            _timeMinute = LocalDateTime.now().getMinute();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean checkUnlock()
+    {
+        boolean lock = true;
+        int day = LocalDateTime.now().getDayOfMonth();
+        int hour = LocalDateTime.now().getHour();
+        int minute = LocalDateTime.now().getMinute();
+        if((minute - _timeMinute) >= 5)
+        {
+            System.out.println("More than 5 minutes have occured, unlock");
+            lock = false;
+            return lock;
+        }
+        else
+        {
+            return lock;
+        }
     }
 
     public String setModelStateOn()
