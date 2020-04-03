@@ -11,7 +11,7 @@ import java.text.DateFormat;
 
 public class DatabaseHelper {
     private Connection _connection;
-    private final String database_prefix = "jdbc:mysql://192.168.0.25/logs?";
+    private final String database_prefix = "jdbc:mysql://192.168.0.25:3306/logs?";
     private final String database_suffix = "&zeroDateTimeBehavior=convertToNull";
     private final String user_entry = "user=";
     private final String password_entry = "&password=";
