@@ -37,20 +37,13 @@ public class mainClass {
     }
 
     public static void main(String[] argv) throws Exception {
-        Properties prop = new Properties();
-        String fileName = "app.config";
-        InputStream is = null;
-        try {
-            is = new FileInputStream(fileName);
-        } catch (FileNotFoundException ex) {
-            System.out.println("File failed");
+        // Get environment variable
+        String password = System.getenv("DB_PASSWORD");
+        if(password.length() <= 1)
+        {
+            System.out.println("Password has not been set");
+            System.exit(1);
         }
-        try {
-            prop.load(is);
-        } catch (IOException ex) {
-            System.out.println("File failed");
-        }
-        String password = prop.getProperty("password");
         start(password);
     }
 }
