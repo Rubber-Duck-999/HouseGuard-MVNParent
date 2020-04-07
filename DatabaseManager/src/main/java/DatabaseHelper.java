@@ -161,6 +161,15 @@ public class DatabaseHelper {
                 _LOGGER.info("Found record ID: " + data.getId());
                 count++;
             }
+            if(count == 0)
+            {
+                _LOGGER.info("Didn't find any data");
+                DataInfoTopic data = new DataInfoTopic();
+                data.setId(id);
+                data.setTopicMessage("No data found");
+                data.setTimeSent(LocalDateTime.now());
+                localVector.add(data);
+            }
         } catch(SQLException e) {
             _LOGGER.severe("Error");
         } catch(Exception e) {

@@ -68,7 +68,7 @@ public class ConsumerTopic {
             }
             else
             {
-                
+                _LOGGER.severe("We have returned zero records so we will not publish");
             }
         } else {
             type_found = false;

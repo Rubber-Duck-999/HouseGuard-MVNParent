@@ -41,7 +41,7 @@ event = {
     "severity": 4
 }
 eventJson = json.dumps(event)
-#channel.basic_publish(exchange='topics', routing_key=routing_key, body=eventJson)
+channel.basic_publish(exchange='topics', routing_key=routing_key, body=eventJson)
 print("Sent %r " % routing_key)
 time.sleep(5)
 data = {
