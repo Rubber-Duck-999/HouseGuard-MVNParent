@@ -9,12 +9,6 @@ pipeline {
                 sh 'mvn compile'
             }
         }
-        stage('Test') {
-            steps {
-                sh 'echo "Test"'
-                sh 'mvn test'
-            }
-        }
     }
     post {
         failure {
