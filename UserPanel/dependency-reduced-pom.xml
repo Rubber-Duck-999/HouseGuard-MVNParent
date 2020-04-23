@@ -6,7 +6,7 @@
     <version>0.0.1</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>DatabaseManager</artifactId>
+  <artifactId>UserPanel</artifactId>
   <version>0.0.2</version>
   <build>
     <plugins>
@@ -30,15 +30,11 @@
             <manifest>
               <addClasspath>true</addClasspath>
               <classpathPrefix>lib/</classpathPrefix>
-              <mainClass>com.house_guard.database_manager.mainClass</mainClass>
+              <mainClass>com.mainClass</mainClass>
             </manifest>
           </archive>
         </configuration>
       </plugin>
     </plugins>
   </build>
-  <properties>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <maven.compiler.source>1.8</maven.compiler.source>
-  </properties>
 </project>

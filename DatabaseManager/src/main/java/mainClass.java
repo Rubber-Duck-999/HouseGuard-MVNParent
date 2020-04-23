@@ -5,6 +5,13 @@ import java.util.logging.*;
 import java.io.*;  
 import java.util.*;  
 
+
+import java.io.File;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
 public class mainClass {
     private static ConsumerTopic cons;
     private static Logger LOGGER = null;
@@ -29,21 +36,26 @@ public class mainClass {
         LOGGER = Logger.getLogger(mainClass.class.getName());
     }
 
-    public static void start(String password) {
+    public static void start(String password, String rabbitmq) {
         LOGGER.setLevel(Level.FINEST);
         TopicsBuffer buffer = new TopicsBuffer(LOGGER, password);
-        cons = new ConsumerTopic(buffer, LOGGER);
+        cons = new ConsumerTopic(rabbitmq, buffer, LOGGER);
         cons.ConsumeRequired();
     }
 
     public static void main(String[] argv) throws Exception {
         // Get environment variable
-        String password = System.getenv("DB_PASSWORD");
-        if(password.length() <= 1)
+
+        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        try 
         {
-            System.out.println("Password has not been set");
-            System.exit(1);
+            Password strings = mapper.readValue(new File("DBM.yml"), Password.class);
+            start(strings.getSQL(), strings.getRabbitmq());
+        } 
+        catch (Exception e) 
+        {
+            System.out.println("File is not there, drop out");
+            e.printStackTrace();
         }
-        start(password);
     }
 }

@@ -143,15 +143,11 @@ public class ConsumerTopic
         }
     }
 
-
-    public ConsumerTopic()
+    public void setConnection(String password)
     {
-        receivedId = 0;
-        accessAllowed = false;
-        accessStateSet = false;
         factory = new ConnectionFactory();
         factory.setHost("localhost");
-        factory.setPassword("password");
+        factory.setPassword(password);
         try
         {
             connection = factory.newConnection();
@@ -163,6 +159,14 @@ public class ConsumerTopic
             System.out.println("We have had trouble setting up the required connection");
             e.printStackTrace();
         }
+    }
+
+
+    public ConsumerTopic()
+    {
+        receivedId = 0;
+        accessAllowed = false;
+        accessStateSet = false;
     }
 
     public Integer getId()

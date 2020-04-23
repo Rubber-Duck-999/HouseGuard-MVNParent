@@ -116,11 +116,11 @@ public class ConsumerTopic {
     }
 
 
-    public ConsumerTopic(TopicsBuffer buffer, Logger LOGGER) {
+    public ConsumerTopic(String password, TopicsBuffer buffer, Logger LOGGER) {
         _factory = new ConnectionFactory();
         _LOGGER = LOGGER;
         _factory.setHost("localhost");
-        _factory.setPassword("password");
+        _factory.setPassword(password);
         _buffer = buffer;
         try {
             _connection = _factory.newConnection();
