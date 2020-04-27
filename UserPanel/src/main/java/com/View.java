@@ -81,10 +81,10 @@ public class View
         setLabelFont();
 
         fieldPanel.setLayout(new GridLayout(1,2));
-        fieldPanel.add(passFieldDigit1);
-        fieldPanel.add(passFieldDigit2);
-        fieldPanel.add(passFieldDigit3);
         fieldPanel.add(passFieldDigit4);
+        fieldPanel.add(passFieldDigit3);
+        fieldPanel.add(passFieldDigit2);
+        fieldPanel.add(passFieldDigit1);
 
         frame.add(fieldPanel, BorderLayout.NORTH);
         frame.add(buttonPanel, BorderLayout.CENTER);
@@ -93,12 +93,13 @@ public class View
         GraphicsDevice device = frame.getGraphicsConfiguration().getDevice();
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        //frame.setUndecorated(true);
-        frame.setSize(1280,980);
-        //frame.pack();
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setUndecorated(true);
+        //frame.setSize(1280,980);
+        frame.pack();
         frame.setVisible(true);
-        //device.setFullScreenWindow(frame);
+        frame.setAlwaysOnTop(true);
+        device.setFullScreenWindow(frame);
     }
 
     private void setLabelFont()

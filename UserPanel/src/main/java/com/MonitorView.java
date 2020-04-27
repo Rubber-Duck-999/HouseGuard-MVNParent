@@ -5,6 +5,7 @@ import com.house_guard.Common.*;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GraphicsDevice;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -56,12 +57,15 @@ public class MonitorView
 
     public void setMonitor()
     {
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        GraphicsDevice device = frame.getGraphicsConfiguration().getDevice();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        //frame.setUndecorated(true);
-        frame.setSize(640,480);
-        //frame.pack();
+        frame.setUndecorated(true);
+        //frame.setSize(1280,980);
+        frame.pack();
         frame.setVisible(true);
+        frame.setAlwaysOnTop(true);
+        device.setFullScreenWindow(frame);
     }
 
     private void setLabelFont()

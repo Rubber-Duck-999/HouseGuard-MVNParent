@@ -87,7 +87,7 @@ public class Controller implements ActionListener
                 System.out.println("User entered enter");
                 if(_model.isValidPin())
                 {
-                    System.out.println("Pin is valid, proceeding");
+                    System.out.println("Pin is valid number, proceeding");
                     this.enterCommand();
                     this.killTime();
                     this.checkAccess();

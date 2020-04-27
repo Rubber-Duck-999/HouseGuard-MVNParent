@@ -91,10 +91,10 @@ public class Model
     public Integer checkPass()
     {
         Integer digits = 0;
-        digits += Integer.parseInt(_digitArray[0]) * 1000;
-        digits += Integer.parseInt(_digitArray[1]) * 100;
-        digits += Integer.parseInt(_digitArray[2]) * 10;
-        digits += Integer.parseInt(_digitArray[3]);
+        digits += Integer.parseInt(_digitArray[3]) * 1000;
+        digits += Integer.parseInt(_digitArray[2]) * 100;
+        digits += Integer.parseInt(_digitArray[1]) * 10;
+        digits += Integer.parseInt(_digitArray[0]);
         return digits;
     }
 
@@ -134,16 +134,24 @@ public class Model
         int day = LocalDateTime.now().getDayOfMonth();
         int hour = LocalDateTime.now().getHour();
         int minute = LocalDateTime.now().getMinute();
-        if((minute - _timeMinute) >= 5)
+        System.out.println("Minute started: " + _timeMinute);
+        System.out.println("Minute now: " + minute);
+        if (hour >= _timeHour)
         {
-            System.out.println("More than 5 minutes have occured, unlock");
-            lock = false;
-            return lock;
+            if((minute - _timeMinute) >= 5)
+            {
+                System.out.println("More than 5 minutes have occured, unlock");
+                lock = false;
+                resetAttempts();
+                return lock;
+            }
+            else
+            {
+                System.out.println("5 minutes have not occured, lock continues");
+                return lock;
+            }
         }
-        else
-        {
-            return lock;
-        }
+        return lock;
     }
 
     public String setModelStateOn()

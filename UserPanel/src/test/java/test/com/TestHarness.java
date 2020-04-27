@@ -30,7 +30,7 @@ public class TestHarness
         myModel.setValue("1");
         myModel.setValue("2");
         myModel.setValue("3");
-        Integer expected = 3210;
+        Integer expected = 123;
         Integer correctKey = 1;
         Integer incorrectKey = 5;
         //Expected 1111
@@ -60,7 +60,7 @@ public class TestHarness
         myModel.setValue("1");
         myModel.setValue("2");
         myModel.setValue("3");
-        Integer expected = 3210;
+        Integer expected = 123;
         Integer correctKey = 1;
         Integer incorrectKey = 5;
         //Expected 1111
@@ -85,7 +85,7 @@ public class TestHarness
         myController.checkAction(Types.Actions.ZERO.name());
         myController.checkAction(Types.Actions.ZERO.name());
         myController.checkAction(Types.Actions.ZERO.name());
-        Integer expected = 1;
+        Integer expected = 1000;
         assertEquals(myModel.checkPass(), expected);
     }
 
@@ -103,7 +103,7 @@ public class TestHarness
         myController.checkAction(Types.Actions.ZERO.name());
         myController.checkAction(Types.Actions.ZERO.name());
         myController.checkAction(Types.Actions.NINE.name());
-        Integer expected = 9001;
+        Integer expected = 1009;
         assertEquals(myModel.checkPass(), expected);
     }
 
@@ -119,15 +119,15 @@ public class TestHarness
         Controller myController = new Controller(myModel, myView, myMonitorView, stub, table);
         myController.checkAction(Types.Actions.ONE.name());
         myController.checkAction(Types.Actions.ONE.name());
-        Integer expected_first = 11;
+        Integer expected_first = 1100;
         assertEquals(myModel.checkPass(), expected_first);
         //
         myController.checkAction(Types.Actions.ONE.name());
-        expected_first = 111;
+        expected_first = 1110;
         assertEquals(myModel.checkPass(), expected_first);
         //
         myController.checkAction(Types.Actions.TWO.name());
-        Integer expected = 2111;
+        Integer expected = 1112;
         assertEquals(myModel.checkPass(), expected);
         assertNotEquals(myModel.setModelStateOFF(), Types.State.ON.name());
         assertEquals(myModel.setModelStateOFF(), Types.State.OFF.name());

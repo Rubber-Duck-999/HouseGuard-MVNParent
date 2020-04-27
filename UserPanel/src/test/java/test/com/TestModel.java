@@ -32,7 +32,7 @@ public class TestModel
         Integer testPasscode = myModel.checkPass();
         String[] unneeded2 = myModel.setValue("3");
         Integer actual = myModel.checkPass();
-        Integer expected = 3;
+        Integer expected = 3000;
         assertEquals(actual, expected);
     }
 
