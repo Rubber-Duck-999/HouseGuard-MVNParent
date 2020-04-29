@@ -29,7 +29,7 @@ public class TopicRabbitmq {
             EventTopic eventData = gson.fromJson(_message, EventTopic.class);
             _topicMessage = eventData.getMessage();
             //
-            System.out.println("Event data:" + eventData.getTime());
+            System.out.println("Event data: " + eventData.getTime());
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
             LocalDateTime dateTime = LocalDateTime.parse(eventData.getTime(), dtf);
             _timeSent = dateTime;

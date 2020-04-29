@@ -90,12 +90,16 @@ public class View
         frame.add(buttonPanel, BorderLayout.CENTER);
         frame.add(enter, BorderLayout.SOUTH);
 
+        setView();
+    }
+
+    public void setView() 
+    {
         GraphicsDevice device = frame.getGraphicsConfiguration().getDevice();
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setUndecorated(true);
-        //frame.setSize(1280,980);
         frame.pack();
         frame.setVisible(true);
         frame.setAlwaysOnTop(true);

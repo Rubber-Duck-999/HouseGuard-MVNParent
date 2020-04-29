@@ -38,7 +38,6 @@ event = {
     "component": "SYP", 
     "message": "Failure to kill UP", 
     "time": "2020/01/20 15:20:00", 
-    "severity": 4
 }
 eventJson = json.dumps(event)
 channel.basic_publish(exchange='topics', routing_key=routing_key, body=eventJson)

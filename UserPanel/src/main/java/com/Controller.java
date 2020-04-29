@@ -152,12 +152,14 @@ public class Controller implements ActionListener
                 _monitorView.setMonitorState(_model.setModelStateOFF());
                 this.sendMonitorUpdate(false);
                 _monitorView.close();
+                _view.setView();
             }
             else if(Types.State.ON.name().equals(input))
             {
                 _monitorView.setMonitorState(_model.setModelStateOn());
                 this.sendMonitorUpdate(true);
                 _monitorView.close();
+                _view.setView();
             }
         }
         else
