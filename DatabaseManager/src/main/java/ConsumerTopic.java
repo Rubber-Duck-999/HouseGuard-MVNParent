@@ -33,9 +33,11 @@ public class ConsumerTopic {
             _LOGGER.info("Message is : " + json);
             try {
                 _channel.basicPublish(kEXCHANGE_NAME, routingKey, null, json.getBytes());
-            } catch (IOException e) {
+            } catch(IOException e) {
                 _LOGGER.info("We have had issues publishing");
                 e.printStackTrace();
+            } catch(NullPointerException e) {
+                _LOGGER.warning("Issuses with rabbitmq");
             }
         }
     }
@@ -63,13 +65,13 @@ public class ConsumerTopic {
             _LOGGER.info("We have returned size of " + vector.size() + " data records.");
             if(vector.size() > 0)
             {
-                PublishDataInfo(vector); 
-                type_found = false;
+                PublishDataInfo(vector);
             }
             else
             {
                 _LOGGER.severe("We have returned zero records so we will not publish");
             }
+            type_found = false;
         } else {
             type_found = false;
         }
