@@ -87,8 +87,7 @@ public class DatabaseHelper {
         _prepared.setTimestamp(3, Timestamp.valueOf(dateTo));
         ResultSet rs = _prepared.executeQuery();
         int count = 0;
-        if(rs.next())
-        {
+        if(rs.next()) {
             _LOGGER.info(String.valueOf(rs.getInt("id")));
             count++;
         }
@@ -105,8 +104,7 @@ public class DatabaseHelper {
         _prepared.setTimestamp(3, Timestamp.valueOf(dateTo));
         ResultSet rs = _prepared.executeQuery();
         int count = 0;
-        if(rs.next())
-        {
+        if(rs.next()) {
             _LOGGER.info(String.valueOf(rs.getInt("id")));
             count++;
         }
@@ -123,8 +121,7 @@ public class DatabaseHelper {
         _prepared.setTimestamp(3, Timestamp.valueOf(dateTo));
         ResultSet rs = _prepared.executeQuery();
         int count = 0;
-        if(rs.next())
-        {
+        if(rs.next()) {
             _LOGGER.info(String.valueOf(rs.getInt("id")));
             count++;
         }
@@ -151,8 +148,7 @@ public class DatabaseHelper {
             _prepared.setTimestamp(3, timestamp);
             ResultSet rs = _prepared.executeQuery();
             int count = 0;
-            while(rs.next())
-            {
+            while(rs.next()) {
                 DataInfoTopic data = new DataInfoTopic();
                 data.setId(id);
                 data.setTopicMessage(rs.getString("message"));
@@ -161,8 +157,7 @@ public class DatabaseHelper {
                 _LOGGER.info("Found record ID: " + data.getId());
                 count++;
             }
-            if(count == 0)
-            {
+            if(count == 0) {
                 _LOGGER.info("Didn't find any data");
                 DataInfoTopic data = new DataInfoTopic();
                 data.setId(id);

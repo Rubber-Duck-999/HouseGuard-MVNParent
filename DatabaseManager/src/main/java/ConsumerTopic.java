@@ -63,12 +63,9 @@ public class ConsumerTopic {
             RequestDatabase data = gson.fromJson(message, RequestDatabase.class);
             Vector<DataInfoTopic> vector = _buffer.GetData(data);
             _LOGGER.info("We have returned size of " + vector.size() + " data records.");
-            if(vector.size() > 0)
-            {
+            if(vector.size() > 0) {
                 PublishDataInfo(vector);
-            }
-            else
-            {
+            } else {
                 _LOGGER.severe("We have returned zero records so we will not publish");
             }
             type_found = false;

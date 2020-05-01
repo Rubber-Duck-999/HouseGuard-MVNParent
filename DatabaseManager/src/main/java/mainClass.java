@@ -2,8 +2,8 @@ package com.house_guard.database_manager;
 
 import java.util.Date;
 import java.util.logging.*;
-import java.io.*;  
-import java.util.*;  
+import java.io.*;
+import java.util.*;
 
 
 import java.io.File;
@@ -47,13 +47,10 @@ public class mainClass {
         // Get environment variable
 
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        try 
-        {
+        try {
             Password strings = mapper.readValue(new File("DBM.yml"), Password.class);
             start(strings.getSQL(), strings.getRabbitmq());
-        } 
-        catch (Exception e) 
-        {
+        } catch (Exception e) {
             System.out.println("File is not there, drop out");
             e.printStackTrace();
         }

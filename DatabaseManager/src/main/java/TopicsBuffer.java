@@ -40,8 +40,7 @@ public class TopicsBuffer {
         }
     }
 
-    public Vector<DataInfoTopic> GetData(RequestDatabase request)
-    {
+    public Vector<DataInfoTopic> GetData(RequestDatabase request) {
         return _db.getMessages(request.getRequest_Id(), request.getMessage(), request.getTime_From(), request.getTime_To());
     }
 
