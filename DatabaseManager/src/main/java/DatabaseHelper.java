@@ -32,6 +32,16 @@ public class DatabaseHelper {
     +---------------+-------------+------+-----+---------+----------------+
     */
 
+    /*
+    +---------------+-------------+------+-----+---------+----------------+
+    | Field         | Type        | Null | Key | Default | Extra          |
+    +---------------+-------------+------+-----+---------+----------------+
+    | id            | int(11)     | NO   | PRI | NULL    | auto_increment |
+    | username      | varchar(50) | NO   |     | NULL    |                |
+    | pin_code      | int(4)      | NO   |     | NULL    |                |
+    +---------------+-------------+------+-----+---------+----------------+
+    */
+
     public DatabaseHelper(Logger LOGGER, String password) {
         _LOGGER = LOGGER;
         try {
@@ -40,6 +50,24 @@ public class DatabaseHelper {
             _connection = DriverManager.getConnection(database_prefix + user_entry +
                           _username + password_entry +
                           _password + database_suffix);
+            printTableData();
+            String str = String.valueOf(getTotalComponentCount("FH"));
+            _LOGGER.warning("FH has " + str + " records");
+            //
+            str = String.valueOf(getTotalComponentCount("CM"));
+            _LOGGER.warning("CM has " + str + " records");
+            //
+            str = String.valueOf(getTotalComponentCount("SYP"));
+            _LOGGER.warning("SYP has " + str + " records");
+            //
+            str = String.valueOf(getTotalComponentCount("EVM"));
+            _LOGGER.warning("EVM has " + str + " records");
+            //
+            str = String.valueOf(getTotalComponentCount("NAC"));
+            _LOGGER.warning("NAC has " + str + " records");
+            //
+            str = String.valueOf(getTotalComponentCount("UP"));
+            _LOGGER.warning("UP has " + str + " records");
         } catch(SQLException e) {
             _LOGGER.severe("A connection could not be established because of : " + e );
             e.printStackTrace();
@@ -47,10 +75,48 @@ public class DatabaseHelper {
 
     }
 
+    public boolean checkUserPin(int pin) throws SQLException {
+        _LOGGER.info("Creating statement for checking pin");
+        PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM users WHERE pin_code=?");
+        _prepared.setInt(1, pin);
+        ResultSet rs = _prepared.executeQuery();
+        boolean count = false;
+        while(rs.next()) {
+            count = true;
+        }
+        return count;
+    }
+
+    public void deleteComponent(String component)
+    throws SQLException {
+        _LOGGER.info("Creating statement for deleting message of component: " + component);
+        PreparedStatement _prepared = _connection.prepareStatement("DELETE FROM event WHERE component=?");
+        _prepared.setString(1, component);
+        ResultSet rs = _prepared.executeQuery();     
+    }
+
     private void printTableData() throws SQLException {
-        Statement statement = _connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT * FROM event");
-        _LOGGER.info("Printing schema for table: " + resultSet.getMetaData().getTableName(1));
+        PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM event");
+        ResultSet rs = _prepared.executeQuery();
+        int count = 0;
+        while(rs.next()) {
+            count++;       
+        }
+        String str = String.valueOf(count);
+        _LOGGER.warning("Total " + str + " event records in DB");
+    }
+
+    public int getTotalComponentCount(String component) 
+    throws SQLException {
+        _LOGGER.info("Creating statement for finding message count of: " + component);
+        PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM event WHERE component=?");
+        _prepared.setString(1, component);
+        ResultSet rs = _prepared.executeQuery();
+        int count = 0;
+        while(rs.next()) {
+            count++;
+        }
+        return count;
     }
 
     public void addMessage(TopicRabbitmq input) {
@@ -87,7 +153,7 @@ public class DatabaseHelper {
         _prepared.setTimestamp(3, Timestamp.valueOf(dateTo));
         ResultSet rs = _prepared.executeQuery();
         int count = 0;
-        if(rs.next()) {
+        while(rs.next()) {
             _LOGGER.info(String.valueOf(rs.getInt("id")));
             count++;
         }
@@ -104,24 +170,7 @@ public class DatabaseHelper {
         _prepared.setTimestamp(3, Timestamp.valueOf(dateTo));
         ResultSet rs = _prepared.executeQuery();
         int count = 0;
-        if(rs.next()) {
-            _LOGGER.info(String.valueOf(rs.getInt("id")));
-            count++;
-        }
-        return count;
-    }
-
-    public int getSeverityCount(int severity, LocalDateTime dateFrom, LocalDateTime dateTo)
-    throws SQLException {
-        _LOGGER.info("Creating statement for finding severity count of: " + severity);
-        PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM event WHERE severity=?" +
-                                      " AND time_sent >=? AND time_sent <= ?");
-        _prepared.setInt(1, severity);
-        _prepared.setTimestamp(2, Timestamp.valueOf(dateFrom));
-        _prepared.setTimestamp(3, Timestamp.valueOf(dateTo));
-        ResultSet rs = _prepared.executeQuery();
-        int count = 0;
-        if(rs.next()) {
+        while(rs.next()) {
             _LOGGER.info(String.valueOf(rs.getInt("id")));
             count++;
         }
