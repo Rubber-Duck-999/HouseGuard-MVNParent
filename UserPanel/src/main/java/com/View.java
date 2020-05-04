@@ -188,6 +188,11 @@ public class View
         JOptionPane.showMessageDialog(frame, "Pass: " + message, "Pass", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    public void close()
+    {
+        frame.dispose();
+    }
+    
     public static class CloseListener extends WindowAdapter
     {
         public void windowClosing(WindowEvent e)

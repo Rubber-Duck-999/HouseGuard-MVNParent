@@ -32,6 +32,7 @@ public class TestDatabaseHelper
         }
     }
 
+    /*
     @Test
     public void testAddThenCount()
     {
@@ -53,5 +54,5 @@ public class TestDatabaseHelper
             System.out.println("File is not there, drop out");
             e.printStackTrace();
         }
-    }
+    }*/
 }

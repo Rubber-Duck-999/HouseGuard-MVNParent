@@ -41,6 +41,7 @@ public class Controller implements ActionListener
             {
                 _model.resetAttempts();
                 _view.displayPassMessage("Pass");
+                this._view.close();
                 this._monitorView.setMonitor();
             }
             else
