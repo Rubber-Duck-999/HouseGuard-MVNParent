@@ -26,10 +26,13 @@ result = channel.queue_declare('', exclusive=False, durable=True)
 queue_name = result.method.queue
 topic_failure = 'Failure.Database'
 topic_data_request = "Request.Database"
+topic_device_request = "Device.Request"
+topic_device_response = "Device.Response"
 topic_data_info = "Data.Info"
 topic_event = "Event.*"
 channel.queue_bind(exchange='topics', queue=queue_name, routing_key=topic_failure)
 channel.queue_bind(exchange='topics', queue=queue_name, routing_key=topic_data_info)
+channel.queue_bind(exchange='topics', queue=queue_name, routing_key=topic_device_response)
 print(' DBM Integrator [*] Waiting for topics. To exit press CTRL+C')
 
 time.sleep(2)
@@ -52,6 +55,16 @@ data = {
 payload = json.dumps(data)
 channel.basic_publish(exchange='topics', routing_key=topic_data_request, body=payload)
 print("Sent %r " % topic_data_request)
+
+time.sleep(5)
+device = {
+    "id": 10, 
+    "name":"Iphone", 
+    "mac":"00:00:00:00:00:00"
+}
+payload = json.dumps(device)
+channel.basic_publish(exchange='topics', routing_key=topic_device_request, body=payload)
+print("Sent %r " % topic_device_request)
 
 
 def callback(ch, method, properties, body):

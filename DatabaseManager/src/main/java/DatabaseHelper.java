@@ -42,6 +42,17 @@ public class DatabaseHelper {
     +---------------+-------------+------+-----+---------+----------------+
     */
 
+    /*
+    +---------------+--------------+------+-----+---------+----------------+
+    | Field         | Type         | Null | Key | Default | Extra          |
+    +---------------+--------------+------+-----+---------+----------------+
+    | Name          | varchar(100) | YES  |     | NULL    |                |
+    | Mac           | varchar(20)  | YES  |     | NULL    |                |
+    | device_id     | int(11)      | NO   | PRI | NULL    | auto_increment |
+    | status        | varchar(10)  | YES  |     | NULL    |                |
+    +---------------+--------------+------+-----+---------+----------------+
+    */
+
     public DatabaseHelper(Logger LOGGER, String password) {
         _LOGGER = LOGGER;
         try {
@@ -177,8 +188,42 @@ public class DatabaseHelper {
         return count;
     }
 
+    public DeviceResponse getDevice(Integer id, String name, String mac) {
+        DeviceResponse local = new DeviceResponse();
+        try {
+            _LOGGER.info("Creating statement for finding matching device for: " + name);
+            PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM devices WHERE Name=?" +
+                                          " OR Mac=?");
+            _prepared.setString(1, name);
+            _prepared.setString(2, mac);
+            //
+            ResultSet rs = _prepared.executeQuery();
+            int count = 0;
+            while(rs.next()) {
+                local.setId(id);
+                local.setName(rs.getString("Name"));
+                local.setMac(rs.getString("Mac"));
+                local.setStatus(rs.getString("status"));
+                count = 1;
+            }
+            if(count == 0) {
+                _LOGGER.info("Didn't find any data");
+                local.setId(id);
+                local.setName(name);
+                local.setMac(mac);
+                local.setStatus("UNKNOWN");
+            }
+        } catch(SQLException e) {
+            _LOGGER.severe("Error");
+        } catch(Exception e) {
+            _LOGGER.severe("Error: " + e);
+            e.printStackTrace();
+        }
+        return local;
+    } 
 
-    public Vector<DataInfoTopic> getMessages(Integer id, String message, String dateFrom, String dateTo) {
+
+    public Vector<DataInfoTopic> getEventMessages(Integer id, String message, String dateFrom, String dateTo) {
         Vector<DataInfoTopic> localVector = new Vector<>();
         try {
             _LOGGER.info("Creating statement for returning messages of: " + message + " from: " +

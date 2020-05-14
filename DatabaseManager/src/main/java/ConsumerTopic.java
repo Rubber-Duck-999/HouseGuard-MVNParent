@@ -24,7 +24,6 @@ public class ConsumerTopic {
     private Gson gson;
 
     public void PublishDataInfo(Vector<DataInfoTopic> vector) {
-        String routingKey = Types.DATA_INFO_TOPIC;
         gson = new Gson();
         Iterator i = vector.iterator();
         while (i.hasNext()) {
@@ -32,13 +31,29 @@ public class ConsumerTopic {
             String json = gson.toJson(i.next());
             _LOGGER.info("Message is : " + json);
             try {
-                _channel.basicPublish(kEXCHANGE_NAME, routingKey, null, json.getBytes());
+                _channel.basicPublish(kEXCHANGE_NAME, Types.DATA_INFO_TOPIC, 
+                    null, json.getBytes());
             } catch(IOException e) {
                 _LOGGER.info("We have had issues publishing");
                 e.printStackTrace();
             } catch(NullPointerException e) {
-                _LOGGER.warning("Issuses with rabbitmq");
+                _LOGGER.warning("Issues with rabbitmq");
             }
+        }
+    }
+
+    public void PublishDeviceResponse(DeviceResponse response) {
+        gson = new Gson();
+        String json = gson.toJson(response);
+        _LOGGER.info("Message is : " + json);
+        try {
+            _channel.basicPublish(kEXCHANGE_NAME, Types.DEVICE_RESPONSE_TOPIC, 
+                null, json.getBytes());
+        } catch(IOException e) {
+            _LOGGER.info("We have had issues publishing");
+            e.printStackTrace();
+        } catch(NullPointerException e) {
+            _LOGGER.warning("Issues with rabbitmq");
         }
     }
 
@@ -61,13 +76,20 @@ public class ConsumerTopic {
             _LOGGER.info("Received a = " + topic.getRoutingKey());
             gson = new Gson();
             RequestDatabase data = gson.fromJson(message, RequestDatabase.class);
-            Vector<DataInfoTopic> vector = _buffer.GetData(data);
+            Vector<DataInfoTopic> vector = _buffer.GetEventData(data);
             _LOGGER.info("We have returned size of " + vector.size() + " data records.");
             if(vector.size() > 0) {
                 PublishDataInfo(vector);
             } else {
                 _LOGGER.severe("We have returned zero records so we will not publish");
             }
+            type_found = false;
+        } else if(topic.getRoutingKey().equals(Types.DEVICE_REQUEST_TOPIC)) {
+            _LOGGER.info("Received a = " + topic.getRoutingKey());
+            gson = new Gson();
+            DeviceRequest data = gson.fromJson(message, DeviceRequest.class);
+            DeviceResponse response = _buffer.GetDeviceData(data);
+            PublishDeviceResponse(response);
             type_found = false;
         } else {
             type_found = false;
@@ -98,6 +120,8 @@ public class ConsumerTopic {
             //
             _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.EVENT_TOPIC_ALL);
             _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.REQUEST_DATABASE_TOPIC);
+            _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.DEVICE_UPDATE_TOPIC);
+            _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.DEVICE_REQUEST_TOPIC);
             //
             _LOGGER.info("Beginning consumption of topics, please ctrl+c to escape");
             //

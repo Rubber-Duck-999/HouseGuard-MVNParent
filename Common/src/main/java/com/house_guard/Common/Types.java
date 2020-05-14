@@ -53,6 +53,9 @@ public interface Types
 
     final String REQUEST_ACCESS_TOPIC = "Request.Access";
     final String MONITOR_STATE_TOPIC = "Monitor.State";
+    final String DEVICE_UPDATE_TOPIC = "Device.Update";
+    final String DEVICE_REQUEST_TOPIC = "Device.Request";
+    final String DEVICE_RESPONSE_TOPIC = "Device.Response";
 
     final String EVENT_TOPIC_ALL = "Event.*";
     final String EVENT_TOPIC_UP  = "Event.UP";

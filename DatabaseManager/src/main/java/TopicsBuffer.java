@@ -40,8 +40,14 @@ public class TopicsBuffer {
         }
     }
 
-    public Vector<DataInfoTopic> GetData(RequestDatabase request) {
-        return _db.getMessages(request.getRequest_Id(), request.getMessage(), request.getTime_From(), request.getTime_To());
+    public DeviceResponse GetDeviceData(DeviceRequest request) {
+        return _db.getDevice(request.getId(), request.getName(), request.getMac());
+    }
+
+
+    public Vector<DataInfoTopic> GetEventData(RequestDatabase request) {
+        return _db.getEventMessages(request.getRequest_Id(), request.getMessage(),
+            request.getTime_From(), request.getTime_To());
     }
 
     public TopicsBuffer(Logger log, String password) {
