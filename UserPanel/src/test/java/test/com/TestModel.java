@@ -46,7 +46,7 @@ public class TestModel
         @SuppressWarnings("unused")
         Integer testPasscode = myModel.checkPass();
         String[] unneeded2 = myModel.setValue("8");
-        Integer actual = myModel.checkPass(); 
+        Integer actual = myModel.checkPass();
         Integer expected = 9999;
         assertNotEquals(actual, expected);
     }

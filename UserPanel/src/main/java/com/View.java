@@ -60,7 +60,7 @@ public class View
         buttonPanel.add(oneButton);
         buttonPanel.add(twoButton);
         buttonPanel.add(threeButton);
-        
+
         buttonPanel.add(fourButton);
         buttonPanel.add(fiveButton);
         buttonPanel.add(sixButton);
@@ -93,7 +93,7 @@ public class View
         setView();
     }
 
-    public void setView() 
+    public void setView()
     {
         GraphicsDevice device = frame.getGraphicsConfiguration().getDevice();
 
@@ -141,7 +141,7 @@ public class View
         passFieldDigit2.setText("" + v[1]);
         passFieldDigit3.setText("" + v[2]);
         passFieldDigit4.setText("" + v[3]);
-        
+
     }
 
     public void addController(ActionListener listenerButtons)
@@ -192,7 +192,7 @@ public class View
     {
         frame.dispose();
     }
-    
+
     public static class CloseListener extends WindowAdapter
     {
         public void windowClosing(WindowEvent e)

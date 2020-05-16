@@ -27,7 +27,7 @@ public class DeviceRequest extends Topic
     {
         return mac;
     }
-    
+
     public void setMac(String _mac)
     {
         this.mac = _mac;

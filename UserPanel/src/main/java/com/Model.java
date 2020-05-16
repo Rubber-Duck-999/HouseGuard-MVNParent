@@ -79,8 +79,8 @@ public class Model
             {
                 _digitArray[_currentDigit] = value;
                 _currentDigit--;
-            } 
-            else if(_currentDigit == 0) 
+            }
+            else if(_currentDigit == 0)
             {
                 _digitArray[_currentDigit] = value;
             }

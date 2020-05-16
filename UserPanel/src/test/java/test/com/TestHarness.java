@@ -167,6 +167,6 @@ public class TestHarness
         Integer expected = 3;
         assertTrue(table.doesValueExist(pin));
         assertEquals(key, expected);
- 
-   }*/
+
+    }*/
 }

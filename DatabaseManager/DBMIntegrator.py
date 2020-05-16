@@ -26,6 +26,7 @@ result = channel.queue_declare('', exclusive=False, durable=True)
 queue_name = result.method.queue
 topic_failure = 'Failure.Database'
 topic_data_request = "Request.Database"
+topic_device_update = "Device.Update"
 topic_device_request = "Device.Request"
 topic_device_response = "Device.Response"
 topic_data_info = "Data.Info"
@@ -55,6 +56,38 @@ data = {
 payload = json.dumps(data)
 channel.basic_publish(exchange='topics', routing_key=topic_data_request, body=payload)
 print("Sent %r " % topic_data_request)
+
+time.sleep(5)
+update = { 
+    "name":"Iphone", 
+    "mac":"00:00:00:00:00:00",
+    "status": "ALLOWED",
+    "state": "EDIT"
+}
+payload = json.dumps(update)
+channel.basic_publish(exchange='topics', routing_key=topic_device_update, body=payload)
+print("Sent %r " % topic_device_update)
+
+time.sleep(5)
+device = {
+    "id": 10, 
+    "name":"Iphone", 
+    "mac":"00:00:00:00:00:00"
+}
+payload = json.dumps(device)
+channel.basic_publish(exchange='topics', routing_key=topic_device_request, body=payload)
+print("Sent %r " % topic_device_request)
+
+time.sleep(5)
+update = { 
+    "name":"Iphone", 
+    "mac":"00:00:00:00:00:00",
+    "status": "BLOCKED",
+    "state": "EDIT"
+}
+payload = json.dumps(update)
+channel.basic_publish(exchange='topics', routing_key=topic_device_update, body=payload)
+print("Sent %r " % topic_device_update)
 
 time.sleep(5)
 device = {

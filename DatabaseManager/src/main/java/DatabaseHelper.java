@@ -103,7 +103,7 @@ public class DatabaseHelper {
         _LOGGER.info("Creating statement for deleting message of component: " + component);
         PreparedStatement _prepared = _connection.prepareStatement("DELETE FROM event WHERE component=?");
         _prepared.setString(1, component);
-        ResultSet rs = _prepared.executeQuery();     
+        ResultSet rs = _prepared.executeQuery();
     }
 
     private void printTableData() throws SQLException {
@@ -111,13 +111,36 @@ public class DatabaseHelper {
         ResultSet rs = _prepared.executeQuery();
         int count = 0;
         while(rs.next()) {
-            count++;       
+            count++;
         }
         String str = String.valueOf(count);
         _LOGGER.warning("Total " + str + " event records in DB");
     }
 
-    public int getTotalComponentCount(String component) 
+    public void printDevicesTableData() {
+        try {
+            PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM devices");
+            ResultSet rs = _prepared.executeQuery();
+            int count = 0;
+            _LOGGER.info("### Devices ###");
+            while(rs.next()) {
+                _LOGGER.info("ID: " + count + " : " + rs.getString("Name") +
+                    " : " + rs.getString("Mac") + 
+                    " : " + rs.getString("status"));
+                count++;
+            }
+            String str = String.valueOf(count);
+            _LOGGER.warning("Total " + str + " device records in DB");
+        } catch(SQLException e) {
+            _LOGGER.severe("Error: " + e);
+        } catch(Exception e) {
+            _LOGGER.severe("Error: " + e);
+            e.printStackTrace();
+            System.exit(0);
+        }
+    }
+
+    public int getTotalComponentCount(String component)
     throws SQLException {
         _LOGGER.info("Creating statement for finding message count of: " + component);
         PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM event WHERE component=?");
@@ -144,6 +167,73 @@ public class DatabaseHelper {
             _prepared.setString(3, input.getTopicMessage());
             _prepared.setTimestamp(4, Timestamp.valueOf(input.getTimeSent()));
             _prepared.setTimestamp(5, Timestamp.valueOf(input.getTimeReceived()));
+            _prepared.executeUpdate();
+        } catch(SQLException e) {
+            _LOGGER.severe("Error: " + e);
+        } catch(Exception e) {
+            _LOGGER.severe("Error: " + e);
+            e.printStackTrace();
+            System.exit(0);
+        }
+    }
+
+    public void addDevice(DeviceUpdate device) {
+        try {
+            _LOGGER.info("Creating statement for adding device into devices table");
+            if(_connection == null) {
+                _LOGGER.severe("Connection null");
+            }
+            PreparedStatement _prepared = _connection.prepareStatement("INSERT INTO devices (Name, Mac, " +
+                                          "status) VALUES " +
+                                          "(?, ?, ?)");
+            _prepared.setString(1, device.getName());
+            _prepared.setString(2, device.getMac());
+            _prepared.setString(3, device.getStatus());
+            _prepared.executeUpdate();
+        } catch(SQLException e) {
+            _LOGGER.severe("Error: " + e);
+        } catch(Exception e) {
+            _LOGGER.severe("Error: " + e);
+            e.printStackTrace();
+            System.exit(0);
+        }
+    }
+
+    public void editDevice(DeviceUpdate device) {
+        try {
+            _LOGGER.info("Creating statement for editing device in devices table changing status to " +
+                device.getStatus() + " and " + device.getName());
+            if(_connection == null) {
+                _LOGGER.severe("Connection null");
+            }
+            PreparedStatement _prepared = _connection.prepareStatement("UPDATE devices SET Status=? WHERE " +
+                                          "Mac=?");
+            _prepared.setString(1, device.getStatus());
+            _prepared.setString(2, device.getMac());
+            _prepared.executeUpdate();
+            //
+            _prepared = _connection.prepareStatement("UPDATE devices SET Name=? WHERE " +
+                                          "Mac=?");
+            _prepared.setString(1, device.getName());
+            _prepared.setString(2, device.getMac());
+            _prepared.executeUpdate();
+        } catch(SQLException e) {
+            _LOGGER.severe("Error: " + e);
+        } catch(Exception e) {
+            _LOGGER.severe("Error: " + e);
+            e.printStackTrace();
+            System.exit(0);
+        }
+    }
+
+    public void removeDevice(DeviceUpdate device) {
+        try {
+            _LOGGER.info("Creating statement for removing device in devices table");
+            if(_connection == null) {
+                _LOGGER.severe("Connection null");
+            }
+            PreparedStatement _prepared = _connection.prepareStatement("DELETE * FROM devices WHERE Mac=?");
+            _prepared.setString(1, device.getMac());
             _prepared.executeUpdate();
         } catch(SQLException e) {
             _LOGGER.severe("Error: " + e);
@@ -220,7 +310,7 @@ public class DatabaseHelper {
             e.printStackTrace();
         }
         return local;
-    } 
+    }
 
 
     public Vector<DataInfoTopic> getEventMessages(Integer id, String message, String dateFrom, String dateTo) {

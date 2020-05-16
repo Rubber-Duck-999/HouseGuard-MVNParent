@@ -1,6 +1,6 @@
 package com;
 
-public class Password 
+public class Password
 {
     private String rabbitmq;
 
@@ -9,7 +9,7 @@ public class Password
         return rabbitmq;
     }
 
-    public void setRabbitmq(String password) 
+    public void setRabbitmq(String password)
     {
         this.rabbitmq = password;
     }

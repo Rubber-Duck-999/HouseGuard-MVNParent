@@ -34,12 +34,12 @@ public class mainClass
     public static void main(String[] argv) throws Exception
     {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        try 
+        try
         {
             Password strings = mapper.readValue(new File("UP.yml"), Password.class);
             startUI(strings.getRabbitmq());
-        } 
-        catch (Exception e) 
+        }
+        catch (Exception e)
         {
             System.out.println("File is not there, drop out");
             e.printStackTrace();

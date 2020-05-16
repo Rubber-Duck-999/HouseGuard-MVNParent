@@ -69,7 +69,7 @@ public class Controller implements ActionListener
         checkAction(input);
     }
 
-    private void killTime() 
+    private void killTime()
     {
         int j = 0;
         for(int i = 0; i < 99999; i++)
@@ -93,7 +93,7 @@ public class Controller implements ActionListener
                     this.killTime();
                     this.checkAccess();
                     _view.setDigits(_model.initModel(Types.EMPTY));
-                } 
+                }
                 else
                 {
                     System.out.println("User entered incorrect or empty pin");

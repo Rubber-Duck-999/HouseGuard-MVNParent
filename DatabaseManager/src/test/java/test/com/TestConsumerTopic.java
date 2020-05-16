@@ -9,8 +9,8 @@ import java.util.Date;
 import java.util.logging.*;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
-import java.io.*;  
-import java.util.*;  
+import java.io.*;
+import java.util.*;
 import java.lang.*;
 import com.house_guard.database_manager.*;
 import com.house_guard.Common.*;
@@ -20,7 +20,7 @@ public class TestConsumerTopic
     //@Rule
     //public final ExpectedException exception = ExpectedException.none();
 
-    public static Logger getLogger() 
+    public static Logger getLogger()
     {
         Logger LOGGER = null;
         Logger mainLogger = Logger.getLogger("com.logicbig");
@@ -86,7 +86,7 @@ public class TestConsumerTopic
     }
 
     @Test
-    public void DataInfoException() 
+    public void DataInfoException()
     {
         Vector<DataInfoTopic> localVector = new Vector<>();
         DataInfoTopic data = new DataInfoTopic();

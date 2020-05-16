@@ -31,8 +31,8 @@ public class ConsumerTopic {
             String json = gson.toJson(i.next());
             _LOGGER.info("Message is : " + json);
             try {
-                _channel.basicPublish(kEXCHANGE_NAME, Types.DATA_INFO_TOPIC, 
-                    null, json.getBytes());
+                _channel.basicPublish(kEXCHANGE_NAME, Types.DATA_INFO_TOPIC,
+                                      null, json.getBytes());
             } catch(IOException e) {
                 _LOGGER.info("We have had issues publishing");
                 e.printStackTrace();
@@ -47,8 +47,8 @@ public class ConsumerTopic {
         String json = gson.toJson(response);
         _LOGGER.info("Message is : " + json);
         try {
-            _channel.basicPublish(kEXCHANGE_NAME, Types.DEVICE_RESPONSE_TOPIC, 
-                null, json.getBytes());
+            _channel.basicPublish(kEXCHANGE_NAME, Types.DEVICE_RESPONSE_TOPIC,
+                                  null, json.getBytes());
         } catch(IOException e) {
             _LOGGER.info("We have had issues publishing");
             e.printStackTrace();
@@ -90,6 +90,12 @@ public class ConsumerTopic {
             DeviceRequest data = gson.fromJson(message, DeviceRequest.class);
             DeviceResponse response = _buffer.GetDeviceData(data);
             PublishDeviceResponse(response);
+            type_found = false;
+        } else if(topic.getRoutingKey().equals(Types.DEVICE_UPDATE_TOPIC)) {
+            _LOGGER.info("Received a = " + topic.getRoutingKey());
+            gson = new Gson();
+            DeviceUpdate data = gson.fromJson(message, DeviceUpdate.class);
+            _buffer.CreateDevice(data);
             type_found = false;
         } else {
             type_found = false;

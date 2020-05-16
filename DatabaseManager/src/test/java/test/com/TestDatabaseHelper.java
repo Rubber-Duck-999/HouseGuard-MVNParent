@@ -45,7 +45,7 @@ public class TestDatabaseHelper
             device.setName("Iphone");
             device.setMac("00-00-00-00-00-00");
             DeviceResponse response = db.getDevice(device.getId(), device.getName(),
-                device.getMac());
+                                                   device.getMac());
             assertEquals(device.getName(), response.getName());
             assertEquals(response.getStatus(), "BLOCKED");
         } catch (Exception e) {
