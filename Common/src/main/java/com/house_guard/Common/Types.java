@@ -60,6 +60,7 @@ public interface Types
     final String MONITOR_STATE_TOPIC = "Monitor.State";
     final String DEVICE_UPDATE_TOPIC = "Device.Update";
     final String DEVICE_REQUEST_TOPIC = "Device.Request";
+    final String ACCESS_RESPONSE_TOPIC = "Access.Response";
     final String DEVICE_RESPONSE_TOPIC = "Device.Response";
 
     final String EVENT_TOPIC_ALL = "Event.*";
@@ -78,7 +79,6 @@ public interface Types
     final String COMPONENT_NAME = "UP";
     final Integer ACCESS_NOT_RECEIVED = 4;
     final Object PASS = "PASS";
-    final String RequestFailure = "We have access failured";
-    final String ACCESS_RESPONSE = "Access.Response";
+    final String RequestFailure = "We have access failure";
     final int MAXPIN = 9999;
 }

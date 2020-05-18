@@ -57,6 +57,21 @@ public class ConsumerTopic {
         }
     }
 
+    public void PublishAccessResponse(AccessResponse response) {
+        gson = new Gson();
+        String json = gson.toJson(response);
+        _LOGGER.info("Message is : " + json);
+        try {
+            _channel.basicPublish(kEXCHANGE_NAME, Types.ACCESS_RESPONSE_TOPIC,
+                                  null, json.getBytes());
+        } catch(IOException e) {
+            _LOGGER.info("We have had issues publishing");
+            e.printStackTrace();
+        } catch(NullPointerException e) {
+            _LOGGER.warning("Issues with rabbitmq");
+        }
+    }   
+
     public boolean ConvertTopics(TopicRabbitmq topic, String message) {
         _LOGGER.info("Converting topics = " + topic.getRoutingKey());
         boolean type_found = true;
@@ -97,6 +112,12 @@ public class ConsumerTopic {
             DeviceUpdate data = gson.fromJson(message, DeviceUpdate.class);
             _buffer.CreateDevice(data);
             type_found = false;
+        } else if(topic.getRoutingKey().equals(Types.REQUEST_ACCESS_TOPIC)) {
+            _LOGGER.info("Received a = " + topic.getRoutingKey());
+            gson = new Gson();
+            RequestAccess data = gson.fromJson(message, RequestAccess.class);
+            PublishAccessResponse(_buffer.GetUser(data));
+            type_found = false;
         } else {
             type_found = false;
         }
@@ -128,6 +149,7 @@ public class ConsumerTopic {
             _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.REQUEST_DATABASE_TOPIC);
             _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.DEVICE_UPDATE_TOPIC);
             _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.DEVICE_REQUEST_TOPIC);
+            _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.REQUEST_ACCESS_TOPIC);
             //
             _LOGGER.info("Beginning consumption of topics, please ctrl+c to escape");
             //

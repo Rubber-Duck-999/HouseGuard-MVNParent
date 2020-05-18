@@ -40,7 +40,7 @@ public class Controller implements ActionListener
             if(_consumer.getAccessState() && _pinTable.doesKeyExist(_consumer.getId()))
             {
                 _model.resetAttempts();
-                _view.displayPassMessage("Pass");
+                _view.displayPassMessage("Hello " + _consumer.getUser());
                 this._view.close();
                 this._monitorView.setMonitor();
             }

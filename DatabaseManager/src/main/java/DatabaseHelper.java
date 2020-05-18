@@ -33,13 +33,13 @@ public class DatabaseHelper {
     */
 
     /*
-    +---------------+-------------+------+-----+---------+----------------+
-    | Field         | Type        | Null | Key | Default | Extra          |
-    +---------------+-------------+------+-----+---------+----------------+
-    | id            | int(11)     | NO   | PRI | NULL    | auto_increment |
-    | username      | varchar(50) | NO   |     | NULL    |                |
-    | pin_code      | int(4)      | NO   |     | NULL    |                |
-    +---------------+-------------+------+-----+---------+----------------+
+    +---------------+-------------+-------+-----+---------+----------------+
+    | Field         | Type        | Null  | Key | Default | Extra          |
+    +---------------+-------------+-------+-----+---------+----------------+
+    | id            | int(11)     | NO    | PRI | NULL    | auto_increment |
+    | username      | varchar(50) | YES   |     | NULL    |                |
+    | pin_code      | int(4)      | YES   |     | NULL    |                |
+    +---------------+-------------+-------+-----+---------+----------------+
     */
 
     /*
@@ -302,6 +302,35 @@ public class DatabaseHelper {
                 local.setName(name);
                 local.setMac(mac);
                 local.setStatus("UNKNOWN");
+            }
+        } catch(SQLException e) {
+            _LOGGER.severe("Error");
+        } catch(Exception e) {
+            _LOGGER.severe("Error: " + e);
+            e.printStackTrace();
+        }
+        return local;
+    }
+
+    public AccessResponse checkUser(RequestAccess access) {
+        AccessResponse local = new AccessResponse();
+        try {
+            _LOGGER.info("Creating statement for finding matching user");
+            PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM users WHERE pin_code=?");
+            _prepared.setInt(1, access.getPin());
+            //
+            ResultSet rs = _prepared.executeQuery();
+            int count = 0;
+            local.setId(access.getId());
+            while(rs.next()) {
+                local.setUser(rs.getString("username"));
+                local.setResult("PASS");
+                count = 1;
+            }
+            if(count == 0) {
+                _LOGGER.info("Didn't find any data");
+                local.setUser("N/A");
+                local.setResult("FAIL");
             }
         } catch(SQLException e) {
             _LOGGER.severe("Error");

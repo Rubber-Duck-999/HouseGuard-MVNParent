@@ -25,10 +25,16 @@ public class ConsumerTopic
     private boolean accessStateSet;
     private Integer receivedId;
     private Gson gson;
+    private String user;
 
     public boolean getAccessState()
     {
         return accessAllowed;
+    }
+
+    public String getUser()
+    {
+        return user;
     }
 
     public boolean getAccessStateSet()
@@ -106,6 +112,7 @@ public class ConsumerTopic
         else if(data.getResult().equals(Types.PASS))
         {
             accessAllowed = true;
+            user = data.getUser();
         }
     }
 
@@ -127,7 +134,7 @@ public class ConsumerTopic
         {
             Gson gson = new Gson();
             subscribeQueueName = channel.queueDeclare().getQueue();
-            channel.queueBind(subscribeQueueName, EXCHANGE_NAME, Types.ACCESS_RESPONSE);
+            channel.queueBind(subscribeQueueName, EXCHANGE_NAME, Types.ACCESS_RESPONSE_TOPIC);
             System.out.println(" [*] Waiting for access.response. To exit press CTRL+C");
             DeliverCallback deliverCallback = (consumerTag, delivery) -> {
                 System.out.println("Message received");

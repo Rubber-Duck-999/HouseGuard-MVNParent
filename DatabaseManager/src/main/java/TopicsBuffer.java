@@ -70,6 +70,10 @@ public class TopicsBuffer {
                                     request.getTime_From(), request.getTime_To());
     }
 
+    public AccessResponse GetUser(RequestAccess access) {
+        return _db.checkUser(access);
+    }
+
     public TopicsBuffer(Logger log, String password) {
         LOGGER = log;
         _topics = new ArrayList<TopicRabbitmq>();
