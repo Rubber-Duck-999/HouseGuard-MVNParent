@@ -165,7 +165,7 @@ public class ConsumerTopic
                 System.out.println("Message received");
                 String received = new String(delivery.getBody());
                 String key = delivery.getEnvelope().getRoutingKey();
-                if(key == Types.ACCESS_RESPONSE_TOPIC) {
+                if(key.equals(Types.ACCESS_RESPONSE_TOPIC)) {
                     this.accessResponse(received, key);
                 } else {
                     this.publishStatus();
