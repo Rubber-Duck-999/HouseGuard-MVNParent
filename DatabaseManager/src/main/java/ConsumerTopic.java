@@ -22,6 +22,7 @@ public class ConsumerTopic {
     private Logger _LOGGER;
     private TopicsBuffer _buffer;
     private Gson gson;
+    private StatsuDBM _status;
 
     public void PublishDataInfo(Vector<DataInfoTopic> vector) {
         gson = new Gson();
@@ -75,7 +76,11 @@ public class ConsumerTopic {
     public boolean ConvertTopics(TopicRabbitmq topic, String message) {
         _LOGGER.info("Converting topics = " + topic.getRoutingKey());
         boolean type_found = true;
-        if(topic.getRoutingKey().equals(Types.EVENT_TOPIC_UP)) {
+        if(topic.getRoutingKey().equals(Types.STATUS_DBM_TOPIC)) {
+            _LOGGER.info("Received a = " + topic.getRoutingKey());
+            type_found = false;
+            PublishStatus();
+        } else if(topic.getRoutingKey().equals(Types.EVENT_TOPIC_UP)) {
             _LOGGER.info("Received a = " + topic.getRoutingKey());
         } else if(topic.getRoutingKey().equals(Types.EVENT_TOPIC_SYP)) {
             _LOGGER.info("Received a = " + topic.getRoutingKey());
@@ -150,6 +155,7 @@ public class ConsumerTopic {
             _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.DEVICE_UPDATE_TOPIC);
             _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.DEVICE_REQUEST_TOPIC);
             _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.REQUEST_ACCESS_TOPIC);
+            _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.STATUS_REQUEST_DBM_TOPIC);
             //
             _LOGGER.info("Beginning consumption of topics, please ctrl+c to escape");
             //

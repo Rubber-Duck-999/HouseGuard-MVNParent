@@ -51,7 +51,7 @@ public interface Types
     final int CORRECT = 2;
     final int TIMEOUT = 3;
 
-    // Device.Udate.State choices
+    // Device.Update.State choices
     final String ADD_STATE = "ADD";
     final String EDIT_STATE = "EDIT";
     final String REMOVE_STATE = "REMOVE";
@@ -74,7 +74,11 @@ public interface Types
 
     final String REQUEST_DATABASE_TOPIC = "Request.Database";
     final String FAILURE_DATABASE_TOPIC = "Failure.Database";
-
+    //
+    final String STATUS_UP_TOPIC  = "Status.UP";
+    final String STATUS_DBM_TOPIC = "Status.DBM";
+    final String STATUS_REQUEST_UP_TOPIC  = "Status.Request.UP";
+    final String STATUS_REQUEST_DBM_TOPIC = "Status.Request.DBM";
 
     final String COMPONENT_NAME = "UP";
     final Integer ACCESS_NOT_RECEIVED = 4;

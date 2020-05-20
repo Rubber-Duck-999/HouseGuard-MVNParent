@@ -25,6 +25,7 @@ public class ConsumerTopic
     private boolean accessStateSet;
     private Integer receivedId;
     private Gson gson;
+    private StatusUP status;
     private String user;
 
     public boolean getAccessState()
@@ -45,6 +46,11 @@ public class ConsumerTopic
     public void setAccessStateSetOff()
     {
         accessStateSet = false;
+    }
+
+    public void updateValues(StatusUP up)
+    {
+        this.status = up;
     }
 
     public void sendMonitorState(boolean state)
@@ -80,6 +86,22 @@ public class ConsumerTopic
         try
         {
             channel.basicPublish(EXCHANGE_NAME, routingKey, null, json.getBytes());
+        }
+        catch (IOException e)
+        {
+            System.out.println("We have had issues publishing");
+            e.printStackTrace();
+        }
+    }
+
+    public void publishStatus()
+    {
+        System.out.println("Publishing Status ");
+        gson = new Gson();
+        String json = gson.toJson(this.status);
+        try
+        {
+            channel.basicPublish(EXCHANGE_NAME, Types.STATUS_UP_TOPIC, null, json.getBytes());
         }
         catch (IOException e)
         {
@@ -134,13 +156,20 @@ public class ConsumerTopic
         {
             Gson gson = new Gson();
             subscribeQueueName = channel.queueDeclare().getQueue();
+            //
             channel.queueBind(subscribeQueueName, EXCHANGE_NAME, Types.ACCESS_RESPONSE_TOPIC);
+            channel.queueBind(subscribeQueueName, EXCHANGE_NAME, Types.STATUS_REQUEST_UP_TOPIC);
+            //
             System.out.println(" [*] Waiting for access.response. To exit press CTRL+C");
             DeliverCallback deliverCallback = (consumerTag, delivery) -> {
                 System.out.println("Message received");
                 String received = new String(delivery.getBody());
                 String key = delivery.getEnvelope().getRoutingKey();
-                this.accessResponse(received, key);
+                if(key == Types.ACCESS_RESPONSE_TOPIC) {
+                    this.accessResponse(received, key);
+                } else {
+                    this.publishStatus();
+                }
             };
             channel.basicConsume(subscribeQueueName, true, deliverCallback, consumerTag -> { });
         }

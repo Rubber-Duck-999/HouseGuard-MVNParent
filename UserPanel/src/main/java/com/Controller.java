@@ -1,6 +1,8 @@
 package com;
 
 import java.awt.event.ActionListener;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import java.awt.event.ActionEvent;
 import com.house_guard.Common.*;
 import java.util.logging.Logger;
@@ -13,6 +15,8 @@ public class Controller implements ActionListener
     private ConsumerTopic _consumer;
     private RequestTable _pinTable;
     private boolean _locked;
+    private StatusUP _status;
+    private DateTimeFormatter _formatter;
 
     public Controller(Model m, View v, MonitorView monitorView, ConsumerTopic consumer, RequestTable requestTable)
     {
@@ -21,6 +25,11 @@ public class Controller implements ActionListener
         this._monitorView = monitorView;
         this._consumer = consumer;
         _pinTable = requestTable;
+        this._status = new StatusUP();
+        this._formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        this._status.setGranted("N/A"); 
+        this._status.setBlocked("N/A"); 
+        this._status.setUser("N/A");
     }
 
     public void enterCommand()
@@ -40,6 +49,11 @@ public class Controller implements ActionListener
             if(_consumer.getAccessState() && _pinTable.doesKeyExist(_consumer.getId()))
             {
                 _model.resetAttempts();
+                LocalDateTime time = LocalDateTime.now();  
+                // Format LocalDateTime
+                this._status.setGranted(time.format(_formatter)); 
+                this._status.setUser(_consumer.getUser()); 
+                this._consumer.updateValues(_status);
                 _view.displayPassMessage("Hello " + _consumer.getUser());
                 this._view.close();
                 this._monitorView.setMonitor();
@@ -48,6 +62,10 @@ public class Controller implements ActionListener
             {
                 if(_model.checkAttempts())
                 {
+                    LocalDateTime time = LocalDateTime.now();  
+                    // Format LocalDateTime
+                    this._status.setBlocked(time.format(_formatter));  
+                    this._consumer.updateValues(_status);
                     _view.displayErrorMessage("Unsuccessful amount of attempts");
                     _locked = true;
                 }
@@ -152,12 +170,16 @@ public class Controller implements ActionListener
             {
                 _monitorView.setMonitorState(_model.setModelStateOFF());
                 this.sendMonitorUpdate(false);
+                this._status.setState(Types.OFF);
+                this._consumer.updateValues(_status);
                 _monitorView.close();
                 _view.setView();
             }
             else if(Types.State.ON.name().equals(input))
             {
                 _monitorView.setMonitorState(_model.setModelStateOn());
+                this._status.setState(Types.ON);
+                this._consumer.updateValues(_status);
                 this.sendMonitorUpdate(true);
                 _monitorView.close();
                 _view.setView();
@@ -176,6 +198,8 @@ public class Controller implements ActionListener
 
     public void initmodel(String x, String state)
     {
+        this._status.setState(state);
+        this._consumer.updateValues(_status);
         _view.setDigits(_model.initModel(x));
         _monitorView.setMonitorState(state);
     }
