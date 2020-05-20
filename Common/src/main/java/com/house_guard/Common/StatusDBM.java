@@ -1,44 +1,45 @@
 package com.house_guard.Common;
 
-public class StatusUP extends Topic {
-    private String _dailyEvents;
-    private String _totalEvents;
-    private String _commonEvent;
-    private String _user;
+public class StatusDBM extends Topic {
+    private Integer _dailyEvents;
+    private Integer _totalEvents;
+    private String  _commonEvent;
+    private Integer _dailyDataRequests;
 
-    public StatusUP() {
+    public StatusDBM() {
 
     }
-    public String getGranted()
+    public Integer getDailyEvents()
     {
-        return _accessGranted;
+        return _dailyEvents;
     }
-    public void setGranted(String granted)
+    public void setDailyEvents(Integer dailyEvents)
     {
-        this._accessGranted = granted;
+        this._dailyEvents = dailyEvents;
+    }
+    public Integer getTotalEvents()
+    {
+        return _totalEvents;
+    }
+    public void setTotalEvents(Integer totalEvents)
+    {
+        this._totalEvents = totalEvents;
+    }
+    public String getCommonEvent()
+    {
+        return _commonEvent;
+    }
+    public void setCommonEvent(String commonEvent)
+    {
+        this._commonEvent = commonEvent;
+    }
+    public Integer getDailyDataRequests()
+    {
+        return _dailyDataRequests;
+    }
+    public void setDailyDataRequests(Integer dailyDataRequests)
+    {
+        this._dailyDataRequests = dailyDataRequests;
     }
 
-    public String getBlocked() {
-        return _accessBlocked;
-    }
-
-    public void setBlocked(String blocked) {
-        this._accessBlocked = blocked;
-    }
-
-    public String getState() {
-        return _state;
-    }
-
-    public void setState(String state) {
-        this._state = state;
-    }
-
-    public String getUser() {
-        return _user;
-    }
-
-    public void setUser(String user) {
-        this._user = user;
-    }
 }

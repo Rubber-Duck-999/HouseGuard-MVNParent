@@ -117,6 +117,42 @@ public class DatabaseHelper {
         _LOGGER.warning("Total " + str + " event records in DB");
     }
 
+    public Integer getTotalEvents() {
+        Integer count = 0;
+        try {
+            PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM event");
+            ResultSet rs = _prepared.executeQuery();
+
+            while(rs.next()) {
+                count++;
+            }
+            String str = String.valueOf(count);
+            _LOGGER.warning("Total " + str + " event records in DB");
+        } catch(SQLException e) {
+            _LOGGER.severe("Error: " + e);
+        } catch(Exception e) {
+            _LOGGER.severe("Error: " + e);
+            e.printStackTrace();
+            System.exit(0);
+        }
+        return count;
+    }
+
+    public String getCommonMessage() {
+        String message = "";
+        try {
+            PreparedStatement _prepared = _connection.prepareStatement("SELECT message FROM event GROUP " +
+                "BY message ORDER BY COUNT(*) DESC LIMIT 1");
+            ResultSet rs = _prepared.executeQuery();
+            while(rs.next()) {
+                message = rs.getString("message");
+            }
+        } catch(SQLException e) {
+            _LOGGER.severe("Error: " + e);
+        }
+        return message;
+    }
+
     public void printDevicesTableData() {
         try {
             PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM devices");

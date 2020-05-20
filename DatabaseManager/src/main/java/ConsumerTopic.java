@@ -22,7 +22,6 @@ public class ConsumerTopic {
     private Logger _LOGGER;
     private TopicsBuffer _buffer;
     private Gson gson;
-    private StatsuDBM _status;
 
     public void PublishDataInfo(Vector<DataInfoTopic> vector) {
         gson = new Gson();
@@ -73,10 +72,26 @@ public class ConsumerTopic {
         }
     }   
 
+    public void PublishStatus() {
+        StatusDBM status = _buffer.getStatus();
+        gson = new Gson();
+        String json = gson.toJson(status);
+        _LOGGER.info("Message is : " + json);
+        try {
+            _channel.basicPublish(kEXCHANGE_NAME, Types.STATUS_DBM_TOPIC,
+                                  null, json.getBytes());
+        } catch(IOException e) {
+            _LOGGER.info("We have had issues publishing");
+            e.printStackTrace();
+        } catch(NullPointerException e) {
+            _LOGGER.warning("Issues with rabbitmq");
+        }       
+    }
+
     public boolean ConvertTopics(TopicRabbitmq topic, String message) {
         _LOGGER.info("Converting topics = " + topic.getRoutingKey());
         boolean type_found = true;
-        if(topic.getRoutingKey().equals(Types.STATUS_DBM_TOPIC)) {
+        if(topic.getRoutingKey().equals(Types.STATUS_REQUEST_DBM_TOPIC)) {
             _LOGGER.info("Received a = " + topic.getRoutingKey());
             type_found = false;
             PublishStatus();
