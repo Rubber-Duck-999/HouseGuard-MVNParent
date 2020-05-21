@@ -39,7 +39,7 @@ public class Model
 
     public String[] setValue(String value)
     {
-        if(value == Types.BACK)
+        if(value.equals(Types.BACK))
         {
             if(_currentDigit == 0)
             {
@@ -68,7 +68,7 @@ public class Model
             }
 
         }
-        else if(value == Types.CLEAR)
+        else if(value.equals(Types.CLEAR))
         {
             initModel(Types.EMPTY);
             _currentDigit = 3;

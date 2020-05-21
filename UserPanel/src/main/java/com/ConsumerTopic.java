@@ -99,6 +99,7 @@ public class ConsumerTopic
         System.out.println("Publishing Status ");
         gson = new Gson();
         String json = gson.toJson(this.status);
+        System.out.println(json);
         try
         {
             channel.basicPublish(EXCHANGE_NAME, Types.STATUS_UP_TOPIC, null, json.getBytes());

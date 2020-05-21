@@ -39,7 +39,7 @@ public class TopicsBuffer {
                     _db.addMessage(_topics.get(i));
                     Date now = new Date();
                     String day = _simpleDateformat.format(now);
-                    if(day == _day) {
+                    if(day.equals(_day)) {
                         _dailyEvents++;
                     } else {
                         _dailyEvents = 0;
@@ -82,7 +82,7 @@ public class TopicsBuffer {
     public Vector<DataInfoTopic> GetEventData(RequestDatabase request) {
         Date now = new Date();
         String day = _simpleDateformat.format(now);
-        if(day == _day) {
+        if(day.equals(_day)) {
             _dailyRequests++;
         } else {
             _dailyRequests = 0;
@@ -106,7 +106,6 @@ public class TopicsBuffer {
     public TopicsBuffer(Logger log, String password) {
         Date now = new Date();
         _simpleDateformat = new SimpleDateFormat("EEEE");
-        System.out.println("Day now: " + _simpleDateformat.format(now));
         _day = _simpleDateformat.format(now);
         LOGGER = log;
         _topics = new ArrayList<TopicRabbitmq>();

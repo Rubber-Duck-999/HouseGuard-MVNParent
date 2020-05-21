@@ -28,12 +28,15 @@ topic_monitor = "Monitor.State"
 topic_request_access = "Request.Access"
 topic_response = "Access.Response"
 topic_event = "Event.UP"
-#channel.queue_bind(exchange='topics', queue=queue_name, routing_key=topic_monitor)
+topic_status_up = "Status.UP"
+topic_request = "Status.Request.UP"
+channel.queue_bind(exchange='topics', queue=queue_name, routing_key=topic_status_up)
 channel.queue_bind(exchange='topics', queue=queue_name, routing_key=topic_request_access)
 print(' UP Integrator [*] Waiting for topics. To exit press CTRL+C')
 
 time.sleep(0.5)
-#channel.basic_publish(exchange='topics', routing_key=topic_data_request, body=payload)
+#
+channel.basic_publish(exchange='topics', routing_key=topic_request, body='')
 #print("Sent %r " % topic_data_request)
 
 id = 1
