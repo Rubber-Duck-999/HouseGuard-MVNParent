@@ -52,9 +52,9 @@ public interface Types
     final int TIMEOUT = 3;
 
     // Device.Update.State choices
-    final String ADD_STATE = "ADD";
-    final String EDIT_STATE = "EDIT";
-    final String REMOVE_STATE = "REMOVE";
+    final String ADD_STATE = "POST";
+    final String EDIT_STATE = "PATCH";
+    final String REMOVE_STATE = "DELETE";
     //
     final String REQUEST_ACCESS_TOPIC = "Request.Access";
     final String MONITOR_STATE_TOPIC = "Monitor.State";
