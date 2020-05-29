@@ -1,5 +1,7 @@
 # HouseGuard-MVN-Parent
 
+[![codebeat badge](https://codebeat.co/badges/607ac271-a0ac-484a-8f95-17e0e58c70be)](https://codebeat.co/projects/github-com-rubber-duck-999-houseguard-mvnparent-master)
+
 HouseGuard-MVN-Parent is three java components that are part of the HouseGuard solution.
 
 ## Installation
