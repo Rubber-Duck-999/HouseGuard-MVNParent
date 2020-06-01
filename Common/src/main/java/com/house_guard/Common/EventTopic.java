@@ -26,8 +26,17 @@ public class EventTopic extends Topic
     {
         this.time = time;
     }
+    public String getEventTypeId()
+    {
+        return event_type_id;
+    }
+    public void setEventTypeId(String event_type_id)
+    {
+        this.event_type_id = event_type_id;
+    }
     private String component;
     private String message;
     private String time;
+    private String event_type_id;
 
 }

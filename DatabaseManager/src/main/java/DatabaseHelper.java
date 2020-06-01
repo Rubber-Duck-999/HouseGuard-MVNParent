@@ -29,6 +29,7 @@ public class DatabaseHelper {
     | message       | varchar(30) | NO   |     | NULL    |                |
     | time_sent     | datetime    | YES  |     | NULL    |                |
     | time_received | datetime    | YES  |     | NULL    |                |
+    | event_type_id | varchar(7)  | YES  |     | NULL    |                |
     +---------------+-------------+------+-----+---------+----------------+
     */
 
@@ -196,13 +197,14 @@ public class DatabaseHelper {
                 _LOGGER.severe("Connection null");
             }
             PreparedStatement _prepared = _connection.prepareStatement("INSERT INTO event (routing_key, component, " +
-                                          "message,  time_sent, time_received) VALUES " +
-                                          "(?, ?, ?, ?, ?)");
+                                          "message,  time_sent, time_received, event_type_id) VALUES " +
+                                          "(?, ?, ?, ?, ?, ?)");
             _prepared.setString(1, input.getRoutingKey());
             _prepared.setString(2, input.getComponent());
             _prepared.setString(3, input.getTopicMessage());
             _prepared.setTimestamp(4, Timestamp.valueOf(input.getTimeSent()));
             _prepared.setTimestamp(5, Timestamp.valueOf(input.getTimeReceived()));
+            _prepared.setString(6, input.getEventTypeId());
             _prepared.executeUpdate();
         } catch(SQLException e) {
             _LOGGER.severe("Error: " + e);
@@ -378,14 +380,14 @@ public class DatabaseHelper {
     }
 
 
-    public Vector<DataInfoTopic> getEventMessages(Integer id, String message, String dateFrom, String dateTo) {
+    public Vector<DataInfoTopic> getEventMessages(Integer id, String event_type_id, String dateFrom, String dateTo) {
         Vector<DataInfoTopic> localVector = new Vector<>();
         try {
-            _LOGGER.info("Creating statement for returning messages of: " + message + " from: " +
+            _LOGGER.info("Creating statement for returning messages of: " + event_type_id + " from: " +
                          dateFrom + ", to: " + dateTo);
-            PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM event WHERE message=?" +
+            PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM event WHERE event_type_id=?" +
                                           " AND time_sent >=? AND time_sent <= ?");
-            _prepared.setString(1, message);
+            _prepared.setString(1, event_type_id);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
             Date parsedDate = sdf.parse(dateFrom);
             Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
@@ -396,10 +398,18 @@ public class DatabaseHelper {
             //
             _prepared.setTimestamp(3, timestamp);
             ResultSet rs = _prepared.executeQuery();
+            int total = 0;
+            while(rs.next()) {
+                total++;
+            }
+            // Redo
+            rs = _prepared.executeQuery();
             int count = 0;
             while(rs.next()) {
                 DataInfoTopic data = new DataInfoTopic();
                 data.setId(id);
+                data.setTotalMessage(total);
+                data.setMessageNum(count + 1);
                 data.setTopicMessage(rs.getString("message"));
                 data.setTimeSent(rs.getTimestamp("time_sent").toLocalDateTime());
                 localVector.add(data);

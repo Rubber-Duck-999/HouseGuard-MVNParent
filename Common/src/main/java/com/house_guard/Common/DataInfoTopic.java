@@ -7,6 +7,8 @@ import com.house_guard.Common.*;
 public class DataInfoTopic extends Topic {
     private Integer _id;
     private String _routingKey;
+    private int _messageNum;
+    private int _totalMessage;
     private String _topicMessage;
     private LocalDateTime _timeSent;
 
@@ -28,6 +30,23 @@ public class DataInfoTopic extends Topic {
     {
         this._id = id;
     }
+    public int getMessageNum()
+    {
+        return _messageNum;
+    }
+    public void setMessageNum(int num)
+    {
+        this._messageNum = num;
+    }
+    public int getTotalMessage()
+    {
+        return _totalMessage;
+    }
+    public void setTotalMessage(int total)
+    {
+        this._totalMessage = total;
+    }
+
 
     public LocalDateTime getTimeSent() {
         return _timeSent;

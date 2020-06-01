@@ -87,8 +87,8 @@ public class TopicsBuffer {
         } else {
             _dailyRequests = 0;
         }
-        return _db.getEventMessages(request.getRequest_Id(), request.getMessage(),
-                                    request.getTime_From(), request.getTime_To());
+        return _db.getEventMessages(request.getRequest_Id(), request.getEventTypeId(),
+            request.getTime_From(), request.getTime_To());
     }
 
     public AccessResponse GetUser(RequestAccess access) {

@@ -147,6 +147,7 @@ public class ConsumerTopic
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
         Date date = new Date();
         user_event.setTime(formatter.format(date));
+        user_event.setEventTypeId("UP2");
         String pubMessage = gson.toJson(user_event);
         return pubMessage;
     }

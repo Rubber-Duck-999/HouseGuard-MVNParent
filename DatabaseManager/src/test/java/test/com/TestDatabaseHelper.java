@@ -25,7 +25,7 @@ public class TestDatabaseHelper
             Password strings = mapper.readValue(new File("DBM.yml"), Password.class);
             DatabaseHelper db = new DatabaseHelper(LOGGER, strings.getSQL());
             int count = db.getTotalComponentCount("UP");
-            assertNotEquals(count, 0);
+            assertNotEquals(count, 1);
         } catch (Exception e) {
             System.out.println("File is not there, drop out");
             e.printStackTrace();

@@ -14,6 +14,7 @@ public class TopicRabbitmq {
     private LocalDateTime _timeOfReceival;
     private LocalDateTime _timeSent;
     private String _component;
+    private String _eventTypeId;
 
 
     public TopicRabbitmq(String routingKey, String message) {
@@ -35,6 +36,7 @@ public class TopicRabbitmq {
             _timeSent = dateTime;
             //
             _component = eventData.getComponent();
+            _eventTypeId = eventData.getEventTypeId();
             return true;
         } catch(Exception e) {
             System.out.println("We have had trouble converting: " + e);
@@ -75,4 +77,9 @@ public class TopicRabbitmq {
     public String getRoutingKey() {
         return _routingKey;
     }
+
+    public String getEventTypeId() {
+        return _eventTypeId;
+    }
+
 }

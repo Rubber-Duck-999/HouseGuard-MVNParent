@@ -3,7 +3,7 @@ package com.house_guard.Common;
 public class RequestDatabase extends Topic
 {
     private Integer request_id;
-    private String message;
+    private String event_type_id;
     private String time_from;
     private String time_to;
 
@@ -16,13 +16,13 @@ public class RequestDatabase extends Topic
         this.request_id = id;
     }
 
-    public String getMessage()
+    public String getEventTypeId()
     {
-        return message;
+        return event_type_id;
     }
-    public void setMessage(String message)
+    public void setEventTypeId(String event_type_id)
     {
-        this.message = message;
+        this.event_type_id = event_type_id;
     }
 
     public String getTime_From()
