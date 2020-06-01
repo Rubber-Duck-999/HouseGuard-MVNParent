@@ -10,16 +10,10 @@ public class DataInfoTopic extends Topic {
     private int _messageNum;
     private int _totalMessage;
     private String _topicMessage;
-    private LocalDateTime _timeSent;
+    private String _timeSent;
 
     public DataInfoTopic() {
 
-    }
-
-    public DataInfoTopic(String routingKey, String message, LocalDateTime time) {
-        _routingKey = routingKey;
-        _topicMessage = message;
-        _timeSent = time;
     }
 
     public Integer getId()
@@ -47,12 +41,11 @@ public class DataInfoTopic extends Topic {
         this._totalMessage = total;
     }
 
-
-    public LocalDateTime getTimeSent() {
+    public String getTimeSent() {
         return _timeSent;
     }
 
-    public void setTimeSent(LocalDateTime time) {
+    public void setTimeSent(String time) {
         _timeSent = time;
     }
 

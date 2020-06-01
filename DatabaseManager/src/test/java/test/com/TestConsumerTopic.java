@@ -94,7 +94,7 @@ public class TestConsumerTopic
         data.setTopicMessage("message");
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime dateTime = LocalDateTime.parse("2020/02/01 12:10:10", dtf);
-        data.setTimeSent(dateTime);
+        data.setTimeSent(dateTime.toString());
         localVector.add(data);
         Logger LOGGER = getLogger();
         TopicsBuffer buffer = new TopicsBuffer(LOGGER, "blank");

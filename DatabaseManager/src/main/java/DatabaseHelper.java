@@ -386,9 +386,9 @@ public class DatabaseHelper {
             _LOGGER.info("Creating statement for returning messages of: " + event_type_id + " from: " +
                          dateFrom + ", to: " + dateTo);
             PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM event WHERE event_type_id=?" +
-                                          " AND time_sent >=? AND time_sent <= ?");
+                                          " AND time_sent >=? AND time_sent <=?");
             _prepared.setString(1, event_type_id);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
             Date parsedDate = sdf.parse(dateFrom);
             Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
             _prepared.setTimestamp(2, timestamp);
@@ -411,7 +411,7 @@ public class DatabaseHelper {
                 data.setTotalMessage(total);
                 data.setMessageNum(count + 1);
                 data.setTopicMessage(rs.getString("message"));
-                data.setTimeSent(rs.getTimestamp("time_sent").toLocalDateTime());
+                data.setTimeSent(rs.getTimestamp("time_sent").toString());
                 localVector.add(data);
                 _LOGGER.info("Found record ID: " + data.getId());
                 count++;
@@ -421,7 +421,7 @@ public class DatabaseHelper {
                 DataInfoTopic data = new DataInfoTopic();
                 data.setId(id);
                 data.setTopicMessage("No data found");
-                data.setTimeSent(LocalDateTime.now());
+                data.setTimeSent(LocalDateTime.now().toString());
                 localVector.add(data);
             }
         } catch(SQLException e) {
