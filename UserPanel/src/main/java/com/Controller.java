@@ -15,18 +15,16 @@ public class Controller implements ActionListener
     private ConsumerTopic _consumer;
     private RequestTable _pinTable;
     private StatusUP _status;
-    private DateTimeFormatter _formatter;
 
-    public Controller(Model m, View v, MonitorView monitorView, 
+    public Controller(View v, MonitorView monitorView, 
         ConsumerTopic consumer, RequestTable requestTable) {
         // Constructor
-        this._model = m;
+        this._model = new Model();
         this._view = v;
         this._monitorView = monitorView;
         this._consumer = consumer;
         _pinTable = requestTable;
         this._status = new StatusUP();
-        this._formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     }
 
     public void enterCommand() {
@@ -36,24 +34,27 @@ public class Controller implements ActionListener
         _consumer.askForAccess(key, val);
     }
 
+    private void stateUpdate(boolean state) {
+        LocalDateTime time = LocalDateTime.now();  
+        if(state) {
+            this._status.setGranted(time.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))); 
+            _view.displayPassMessage("Hello " + _consumer.getUser());
+        } else { 
+            this._status.setBlocked(time.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+            _view.displayErrorMessage("Try again in 5 minutes");  
+        }
+        this._consumer.updateValues(_status);
+    }
+
     public void checkAccess() {
         if(_consumer.getAccessState() && _pinTable.doesKeyExist(_consumer.getId())) {
             _model.resetAttempts();
-            LocalDateTime time = LocalDateTime.now();  
-            // Format LocalDateTime
-            this._status.setGranted(time.format(_formatter)); 
-            this._status.setUser(_consumer.getUser()); 
-            this._consumer.updateValues(_status);
-            _view.displayPassMessage("Hello " + _consumer.getUser());
+            stateUpdate(true);
             this._view.close();
             this._monitorView.setMonitor();
         } else {
             if(_model.checkAttempts()) {
-                LocalDateTime time = LocalDateTime.now();  
-                // Format LocalDateTime
-                this._status.setBlocked(time.format(_formatter));  
-                this._consumer.updateValues(_status);
-                _view.displayErrorMessage("Unsuccessful amount of attempts");
+                stateUpdate(false);               
             } else {
                 _view.displayErrorMessage("Wrong Passcode");
             }
@@ -105,17 +106,11 @@ public class Controller implements ActionListener
                 _monitorView.setMonitorState(_model.setModelStateOFF());
                 this.sendMonitorUpdate(false);
                 this._status.setState(Types.OFF);
-                this._consumer.updateValues(_status);
-                _view.setView();
-                _monitorView.close();
                 break;
             case Types.ON:
                 _monitorView.setMonitorState(_model.setModelStateOn());
                 this._status.setState(Types.ON);
-                this._consumer.updateValues(_status);
                 this.sendMonitorUpdate(true);
-                _view.setView();
-                _monitorView.close();
                 break;
             default:
                 _view.setDigits(_model.setValue(input));
@@ -126,7 +121,13 @@ public class Controller implements ActionListener
 
     public void sendMonitorUpdate(boolean state)
     {
+        _monitorView.setMonitorState(_model.setModelStateOn());
+        this._status.setState(Types.ON);
+        this._consumer.updateValues(_status);
+        this.sendMonitorUpdate(state);
         _consumer.sendMonitorState(state);
+        _view.setView();
+        _monitorView.close();
     }
 
     public void initmodel(String x, String state)

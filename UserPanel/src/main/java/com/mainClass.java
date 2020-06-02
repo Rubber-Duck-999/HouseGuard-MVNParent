@@ -18,13 +18,12 @@ public class mainClass
 
     public static void startUI(String password)
     {
-        myModel = new Model();
         myView = new View();
 
         MonitorView monitorView = new MonitorView();
         cons = new ConsumerTopic();
         cons.setConnection(password);
-        myController = new Controller(myModel, myView, monitorView, cons, new RequestTable());
+        myController = new Controller(myView, monitorView, cons, new RequestTable());
         myController.initmodel(Types.EMPTY, Types.ON);
         myView.addController(myController);
         monitorView.addController(myController);

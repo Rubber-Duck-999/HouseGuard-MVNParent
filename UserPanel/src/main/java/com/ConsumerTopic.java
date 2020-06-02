@@ -24,18 +24,11 @@ public class ConsumerTopic
     private boolean accessAllowed;
     private boolean accessRequested;
     private Integer receivedId;
-    private Gson gson;
     private StatusUP status;
-    private String user;
 
     public boolean getAccessState()
     {
         return accessAllowed;
-    }
-
-    public String getUser()
-    {
-        return user;
     }
 
     public boolean getAccessRequested()
@@ -49,14 +42,14 @@ public class ConsumerTopic
     }
 
     public void updateValues(StatusUP up)
-    {
-        this.status = up;
+    { 
+        this.status = up; 
     }
 
     public void sendMonitorState(boolean state)
     {
         String routingKey = Types.MONITOR_STATE_TOPIC;
-        gson = new Gson();
+        Gson gson = new Gson();
         MonitorState mon = new MonitorState();
         mon.setState(state);
         String json = gson.toJson(mon);
@@ -76,7 +69,7 @@ public class ConsumerTopic
     {
         System.out.println("Requesting access ");
         String routingKey = Types.REQUEST_ACCESS_TOPIC;
-        gson = new Gson();
+        Gson gson = new Gson();
         RequestAccess req = new RequestAccess();
         req.setId(key);
         req.setPin(val);
@@ -97,7 +90,7 @@ public class ConsumerTopic
     public void publishStatus()
     {
         System.out.println("Publishing Status ");
-        gson = new Gson();
+        Gson gson = new Gson();
         String json = gson.toJson(this.status);
         System.out.println(json);
         try
@@ -135,7 +128,7 @@ public class ConsumerTopic
         else if(data.getResult().equals(Types.PASS))
         {
             accessAllowed = true;
-            user = data.getUser();
+            this.status.setUser(data.getUser());
         }
     }
 

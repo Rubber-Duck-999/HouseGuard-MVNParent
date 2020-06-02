@@ -21,26 +21,15 @@ import javax.swing.SwingConstants;
 public class View
 {
     private JFrame frame;
-    private JPanel buttonPanel, fieldPanel;
-    private JLabel passFieldDigit1, passFieldDigit2, passFieldDigit3, passFieldDigit4;
-    private JButton oneButton, twoButton, threeButton;
-    private JButton fourButton, fiveButton, sixButton;
-    private JButton sevenButton, eightButton, nineButton;
-    private JButton clearButton, zeroButton, backButton;
+    private JLabel[] digits;
     private JButton[] buttons;
     private JButton enter;
-    private Font buttonFont;
 
     public View()
     {
         frame = new JFrame("User Panel");
-        buttonPanel = new JPanel();
-        fieldPanel = new JPanel();
-
-        passFieldDigit1 = new JLabel("", SwingConstants.CENTER);
-        passFieldDigit2 = new JLabel("", SwingConstants.CENTER);
-        passFieldDigit3 = new JLabel("", SwingConstants.CENTER);
-        passFieldDigit4 = new JLabel("", SwingConstants.CENTER);
+        JPanel buttonPanel = new JPanel();
+        JPanel fieldPanel = new JPanel();
 
         buttons = new JButton[12];
         String[] label = {Types.ONE, Types.TWO, Types.THREE,
@@ -48,7 +37,7 @@ public class View
                           Types.SEVEN, Types.EIGHT, Types.NINE,
                           Types.CLEAR, Types.ZERO, Types.BACK};
         buttonPanel.setLayout(new GridLayout(4,3));
-        buttonFont = new Font("Calibri", Font.BOLD, 40);
+        Font buttonFont = new Font("Calibri", Font.BOLD, 40);
 
         for (int i = 0; i < 12; i++) {
             buttons[i] = new JButton(label[i]);
@@ -62,10 +51,10 @@ public class View
         setLabelFont();
 
         fieldPanel.setLayout(new GridLayout(1,2));
-        fieldPanel.add(passFieldDigit4);
-        fieldPanel.add(passFieldDigit3);
-        fieldPanel.add(passFieldDigit2);
-        fieldPanel.add(passFieldDigit1);
+        for (int i = 3; i > -1; i--) {
+            digits[i] = new JLabel("", SwingConstants.CENTER);
+            fieldPanel.add(digits[i]);
+        }
 
         frame.add(fieldPanel, BorderLayout.NORTH);
         frame.add(buttonPanel, BorderLayout.CENTER);
@@ -89,19 +78,17 @@ public class View
 
     private void setLabelFont()
     {
-        buttonFont = new Font("Calibri", Font.BOLD, 128);
-        passFieldDigit1.setFont(buttonFont);
-        passFieldDigit2.setFont(buttonFont);
-        passFieldDigit3.setFont(buttonFont);
-        passFieldDigit4.setFont(buttonFont);
+        Font buttonFont = new Font("Calibri", Font.BOLD, 128);
+        for (int i = 0; i < 4; i++) {
+            digits[i].setFont(buttonFont);
+        }
     }
 
     public < E > void setDigits(String[] v)
     {
-        passFieldDigit1.setText("" + v[0]);
-        passFieldDigit2.setText("" + v[1]);
-        passFieldDigit3.setText("" + v[2]);
-        passFieldDigit4.setText("" + v[3]);
+        for (int i = 0; i < 4; i++) {
+            digits[i].setText("" + v[i]);
+        }
     }
 
     public void addController(ActionListener listenerButtons)
