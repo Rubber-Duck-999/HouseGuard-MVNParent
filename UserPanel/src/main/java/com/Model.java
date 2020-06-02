@@ -13,14 +13,13 @@ public class Model
     private int _timeDay;
     private int _timeHour;
     private int _timeMinute;
+    private boolean _lock;
 
     public Model()
     {
         _digitArray = new String[4];
-        _attempts = 0;
-        _timeDay = 0;
-        _timeHour = 0;
-        _timeMinute = 0;
+        _attempts = _timeDay = _timeHour = _timeMinute = 0;
+        _lock = false;
         for(int i = 0; i < MAX; i++)
         {
             _digitArray[i] = Types.EMPTY;
@@ -123,14 +122,15 @@ public class Model
             _timeDay = LocalDateTime.now().getDayOfMonth();
             _timeHour = LocalDateTime.now().getHour();
             _timeMinute = LocalDateTime.now().getMinute();
-            return true;
+            _lock = true;
+            return _lock;
+        } else {
+            return _lock;
         }
-        return false;
     }
 
     public boolean checkUnlock()
     {
-        boolean lock = true;
         int day = LocalDateTime.now().getDayOfMonth();
         int hour = LocalDateTime.now().getHour();
         int minute = LocalDateTime.now().getMinute();
@@ -141,17 +141,17 @@ public class Model
             if((minute - _timeMinute) >= 5)
             {
                 System.out.println("More than 5 minutes have occured, unlock");
-                lock = false;
+                _lock = false;
                 resetAttempts();
-                return lock;
+                return _lock;
             }
             else
             {
                 System.out.println("5 minutes have not occured, lock continues");
-                return lock;
+                return _lock;
             }
         }
-        return lock;
+        return _lock;
     }
 
     public String setModelStateOn()

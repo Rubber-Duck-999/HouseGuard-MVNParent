@@ -2,28 +2,6 @@ package com.house_guard.Common;
 
 public interface Types
 {
-    public enum Actions
-    {
-        ONE,
-        TWO,
-        THREE,
-        FOUR,
-        FIVE,
-        SIX,
-        SEVEN,
-        EIGHT,
-        NINE,
-        CLEAR,
-        ZERO,
-        BACK,
-        ENTER
-    }
-
-    public enum State
-    {
-        ON,
-        OFF
-    }
 
     final String ONE = "1";
     final String TWO = "2";
@@ -40,6 +18,7 @@ public interface Types
     final String CLEAR = "X";
 
     final String EMPTY = "X";
+    final String ENTER = "Enter";
 
     final int RESET = 0;
     final String OFF = "OFF";

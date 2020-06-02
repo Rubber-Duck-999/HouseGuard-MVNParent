@@ -62,24 +62,6 @@ public class DatabaseHelper {
             _connection = DriverManager.getConnection(database_prefix + user_entry +
                           _username + password_entry +
                           _password + database_suffix);
-            printTableData();
-            String str = String.valueOf(getTotalComponentCount("FH"));
-            _LOGGER.warning("FH has " + str + " records");
-            //
-            str = String.valueOf(getTotalComponentCount("CM"));
-            _LOGGER.warning("CM has " + str + " records");
-            //
-            str = String.valueOf(getTotalComponentCount("SYP"));
-            _LOGGER.warning("SYP has " + str + " records");
-            //
-            str = String.valueOf(getTotalComponentCount("EVM"));
-            _LOGGER.warning("EVM has " + str + " records");
-            //
-            str = String.valueOf(getTotalComponentCount("NAC"));
-            _LOGGER.warning("NAC has " + str + " records");
-            //
-            str = String.valueOf(getTotalComponentCount("UP"));
-            _LOGGER.warning("UP has " + str + " records");
         } catch(SQLException e) {
             _LOGGER.severe("A connection could not be established because of : " + e );
             e.printStackTrace();
@@ -97,25 +79,6 @@ public class DatabaseHelper {
             count = true;
         }
         return count;
-    }
-
-    public void deleteComponent(String component)
-    throws SQLException {
-        _LOGGER.info("Creating statement for deleting message of component: " + component);
-        PreparedStatement _prepared = _connection.prepareStatement("DELETE FROM event WHERE component=?");
-        _prepared.setString(1, component);
-        ResultSet rs = _prepared.executeQuery();
-    }
-
-    private void printTableData() throws SQLException {
-        PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM event");
-        ResultSet rs = _prepared.executeQuery();
-        int count = 0;
-        while(rs.next()) {
-            count++;
-        }
-        String str = String.valueOf(count);
-        _LOGGER.warning("Total " + str + " event records in DB");
     }
 
     public Integer getTotalEvents() {
@@ -154,29 +117,6 @@ public class DatabaseHelper {
         return message;
     }
 
-    public void printDevicesTableData() {
-        try {
-            PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM devices");
-            ResultSet rs = _prepared.executeQuery();
-            int count = 0;
-            _LOGGER.info("### Devices ###");
-            while(rs.next()) {
-                _LOGGER.info("ID: " + count + " : " + rs.getString("Name") +
-                    " : " + rs.getString("Mac") + 
-                    " : " + rs.getString("status"));
-                count++;
-            }
-            String str = String.valueOf(count);
-            _LOGGER.warning("Total " + str + " device records in DB");
-        } catch(SQLException e) {
-            _LOGGER.severe("Error: " + e);
-        } catch(Exception e) {
-            _LOGGER.severe("Error: " + e);
-            e.printStackTrace();
-            System.exit(0);
-        }
-    }
-
     public int getTotalComponentCount(String component)
     throws SQLException {
         _LOGGER.info("Creating statement for finding message count of: " + component);
@@ -190,95 +130,75 @@ public class DatabaseHelper {
         return count;
     }
 
-    public void addMessage(TopicRabbitmq input) {
+    private void Execute(PreparedStatement prepared) {
         try {
             _LOGGER.info("Creating statement for inserting data into event table");
-            if(_connection == null) {
-                _LOGGER.severe("Connection null");
-            }
+            prepared.executeUpdate();
+        } catch(SQLException e) {
+            _LOGGER.severe("Error: " + e);
+        } catch(Exception e) {
+            _LOGGER.severe("Error: " + e);
+            e.printStackTrace();
+            System.exit(0);
+        }       
+    }
+
+    public void addMessage(TopicRabbitmq input) {
+        try{
             PreparedStatement _prepared = _connection.prepareStatement("INSERT INTO event (routing_key, component, " +
-                                          "message,  time_sent, time_received, event_type_id) VALUES " +
-                                          "(?, ?, ?, ?, ?, ?)");
+                                            "message,  time_sent, time_received, event_type_id) VALUES " +
+                                            "(?, ?, ?, ?, ?, ?)");
             _prepared.setString(1, input.getRoutingKey());
             _prepared.setString(2, input.getComponent());
             _prepared.setString(3, input.getTopicMessage());
             _prepared.setTimestamp(4, Timestamp.valueOf(input.getTimeSent()));
             _prepared.setTimestamp(5, Timestamp.valueOf(input.getTimeReceived()));
             _prepared.setString(6, input.getEventTypeId());
-            _prepared.executeUpdate();
+            this.Execute(_prepared);
         } catch(SQLException e) {
             _LOGGER.severe("Error: " + e);
-        } catch(Exception e) {
-            _LOGGER.severe("Error: " + e);
-            e.printStackTrace();
-            System.exit(0);
         }
     }
 
     public void addDevice(DeviceUpdate device) {
         try {
-            _LOGGER.info("Creating statement for adding device into devices table");
-            if(_connection == null) {
-                _LOGGER.severe("Connection null");
-            }
             PreparedStatement _prepared = _connection.prepareStatement("INSERT INTO devices (Name, Mac, " +
-                                          "status) VALUES " +
-                                          "(?, ?, ?)");
+                                            "status) VALUES " +
+                                            "(?, ?, ?)");
             _prepared.setString(1, device.getName());
             _prepared.setString(2, device.getMac());
             _prepared.setString(3, device.getStatus());
-            _prepared.executeUpdate();
+            this.Execute(_prepared);
         } catch(SQLException e) {
             _LOGGER.severe("Error: " + e);
-        } catch(Exception e) {
-            _LOGGER.severe("Error: " + e);
-            e.printStackTrace();
-            System.exit(0);
         }
     }
 
     public void editDevice(DeviceUpdate device) {
         try {
-            _LOGGER.info("Creating statement for editing device in devices table changing status to " +
-                device.getStatus() + " and " + device.getName());
-            if(_connection == null) {
-                _LOGGER.severe("Connection null");
-            }
             PreparedStatement _prepared = _connection.prepareStatement("UPDATE devices SET Status=? WHERE " +
-                                          "Mac=?");
+                                            "Mac=?");
             _prepared.setString(1, device.getStatus());
             _prepared.setString(2, device.getMac());
-            _prepared.executeUpdate();
+            Execute(_prepared);
             //
             _prepared = _connection.prepareStatement("UPDATE devices SET Name=? WHERE " +
-                                          "Mac=?");
+                                            "Mac=?");
             _prepared.setString(1, device.getName());
             _prepared.setString(2, device.getMac());
-            _prepared.executeUpdate();
+            Execute(_prepared);
         } catch(SQLException e) {
             _LOGGER.severe("Error: " + e);
-        } catch(Exception e) {
-            _LOGGER.severe("Error: " + e);
-            e.printStackTrace();
-            System.exit(0);
         }
     }
 
     public void removeDevice(DeviceUpdate device) {
         try {
-            _LOGGER.info("Creating statement for removing device in devices table");
-            if(_connection == null) {
-                _LOGGER.severe("Connection null");
-            }
             PreparedStatement _prepared = _connection.prepareStatement("DELETE * FROM devices WHERE Mac=?");
             _prepared.setString(1, device.getMac());
-            _prepared.executeUpdate();
+            this.Execute(_prepared);
         } catch(SQLException e) {
             _LOGGER.severe("Error: " + e);
-        } catch(Exception e) {
-            _LOGGER.severe("Error: " + e);
-            e.printStackTrace();
-            System.exit(0);
         }
     }
 

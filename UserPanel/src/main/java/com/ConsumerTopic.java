@@ -22,7 +22,7 @@ public class ConsumerTopic
     private static Channel channel;
     private String subscribeQueueName;
     private boolean accessAllowed;
-    private boolean accessStateSet;
+    private boolean accessRequested;
     private Integer receivedId;
     private Gson gson;
     private StatusUP status;
@@ -38,14 +38,14 @@ public class ConsumerTopic
         return user;
     }
 
-    public boolean getAccessStateSet()
+    public boolean getAccessRequested()
     {
-        return accessStateSet;
+        return accessRequested;
     }
 
-    public void setAccessStateSetOff()
+    public void setAccessRequestedOff()
     {
-        accessStateSet = false;
+        accessRequested = false;
     }
 
     public void updateValues(StatusUP up)
@@ -81,7 +81,7 @@ public class ConsumerTopic
         req.setId(key);
         req.setPin(val);
         String json = gson.toJson(req);
-        accessStateSet = false;
+        accessRequested = false;
         accessAllowed = false;
         try
         {
@@ -115,7 +115,7 @@ public class ConsumerTopic
     {
         System.out.println("Received response");
         System.out.println(delivery);
-        accessStateSet = true;
+        accessRequested = true;
         AccessResponse data = gson.fromJson(delivery, AccessResponse.class);
         receivedId = data.getId();
         if(!data.getResult().equals(Types.PASS))
@@ -204,7 +204,7 @@ public class ConsumerTopic
     {
         receivedId = 0;
         accessAllowed = false;
-        accessStateSet = false;
+        accessRequested = false;
     }
 
     public Integer getId()

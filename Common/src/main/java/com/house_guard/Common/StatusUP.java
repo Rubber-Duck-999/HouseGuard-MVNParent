@@ -7,7 +7,10 @@ public class StatusUP extends Topic {
     private String _user;
 
     public StatusUP() {
-
+        _accessBlocked = "";
+        _accessGranted = "";
+        _user = "";
+        _state = "";
     }
     public String getGranted()
     {

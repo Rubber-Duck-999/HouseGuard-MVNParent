@@ -54,27 +54,4 @@ public class TestDatabaseHelper
         }
     }
 
-    /*
-    @Test
-    public void testAddThenCount()
-    {
-        Logger LOGGER = TestConsumerTopic.getLogger();
-        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        try {
-            Password strings = mapper.readValue(new File("DBM.yml"), Password.class);
-            DatabaseHelper db = new DatabaseHelper(LOGGER, strings.getSQL());
-            int count = db.getTotalComponentCount("SYS");
-            assertEquals(count, 0);
-            String message = "{ 'component': 'SYS', 'message': 'N/A', 'time': '2020/01/20 15:20:00' }";
-            TopicRabbitmq topic = new TopicRabbitmq("Event.SYS", message);
-            assertTrue(topic.convertMessage());
-            db.addMessage(topic);
-            count = db.getTotalComponentCount("SYS");
-            assertEquals(count, 1);
-            db.deleteComponent("SYS");
-        } catch (Exception e) {
-            System.out.println("File is not there, drop out");
-            e.printStackTrace();
-        }
-    }*/
 }

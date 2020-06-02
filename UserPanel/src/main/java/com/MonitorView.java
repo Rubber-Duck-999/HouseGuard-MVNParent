@@ -37,8 +37,8 @@ public class MonitorView
 
         monitorState = new JLabel("", SwingConstants.CENTER);
 
-        ONButton = new JButton("ON");
-        OFFButton = new JButton("OFF");
+        ONButton = new JButton(Types.ON);
+        OFFButton = new JButton(Types.OFF);
 
         buttonPanel.add(ONButton);
         buttonPanel.add(OFFButton);
@@ -94,8 +94,8 @@ public class MonitorView
 
     public void addController(ActionListener listenerButtons)
     {
-        ONButton.setActionCommand(Types.State.ON.name());
-        OFFButton.setActionCommand(Types.State.OFF.name());
+        ONButton.setActionCommand(Types.ON);
+        OFFButton.setActionCommand(Types.OFF);
         ONButton.addActionListener(listenerButtons);
         OFFButton.addActionListener(listenerButtons);
     }

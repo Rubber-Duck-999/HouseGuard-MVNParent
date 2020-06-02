@@ -10,45 +10,18 @@ public class TestConsumerTopic
 {
 
     @Test
-    public void testGetAccessState()
+    public void testGetAccessRequested()
     {
         ConsumerTopic topic = new ConsumerTopic();
-        assertFalse(topic.getAccessState());
+        assertFalse(topic.getAccessRequested());
     }
 
     @Test
-    public void testGetAccessStateSet()
+    public void testSetAccessRequested()
     {
         ConsumerTopic topic = new ConsumerTopic();
-        assertFalse(topic.getAccessStateSet());
+        assertFalse(topic.getAccessState());
+        topic.setAccessRequestedOff();
+        assertFalse(topic.getAccessRequested());
     }
-
-    @Test
-    public void testSetAccessStateSetOff()
-    {
-        ConsumerTopic topic = new ConsumerTopic();
-        assertFalse(topic.getAccessState());
-        topic.setAccessStateSetOff();
-        assertFalse(topic.getAccessState());
-    }
-
-    /*
-    @Test
-    public void testAskForAccess()
-    {
-        ConsumerTopic topic = new ConsumerTopic();
-        topic.setConnection("cheese");
-        topic.askForAccess(1, 1234);
-        assertFalse(topic.getAccessState());
-    }
-
-    @Test
-    public void testConsumeRequired()
-    {
-        ConsumerTopic topic = new ConsumerTopic();
-        topic.setConnection("cheese");
-        topic.askForAccess(1, 1234);
-        topic.consumeRequired();
-        assertFalse(topic.getAccessState());
-    }*/
 }

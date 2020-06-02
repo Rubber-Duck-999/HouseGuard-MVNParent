@@ -22,13 +22,13 @@ public class StubConsumerTopic extends ConsumerTopic
     }
 
     @Override
-    public boolean getAccessStateSet()
+    public boolean getAccessRequested()
     {
         return accessStateSet;
     }
 
     @Override
-    public void setAccessStateSetOff()
+    public void setAccessRequestedOff()
     {
         accessStateSet = false;
     }

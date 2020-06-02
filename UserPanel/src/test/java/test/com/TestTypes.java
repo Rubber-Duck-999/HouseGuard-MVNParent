@@ -12,7 +12,7 @@ public class TestTypes
     @Test
     public void testActions()
     {
-        assertEquals(Types.State.ON.name(), "ON");
-        assertEquals(Types.State.OFF.name(), "OFF");
+        assertEquals(Types.ON, "ON");
+        assertEquals(Types.OFF, "OFF");
     }
 }

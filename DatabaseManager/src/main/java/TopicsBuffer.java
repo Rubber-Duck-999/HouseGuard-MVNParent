@@ -38,19 +38,20 @@ public class TopicsBuffer {
     {
         String state = device.getState();
         LOGGER.info("The device will be " + state);
-        if(state.equals(Types.ADD_STATE)) {
-            LOGGER.info("Add device");
-            _db.addDevice(device);
-        } else if(state.equals(Types.EDIT_STATE)) {
-            LOGGER.info("Edit device");
-            _db.editDevice(device);
-        } else if (state.equals(Types.REMOVE_STATE)) {
-            LOGGER.info("Remove device");
-            _db.removeDevice(device);
-        } else {
-            LOGGER.info("What happened here!");
+        switch(state) {
+            case Types.ADD_STATE:
+                _db.addDevice(device);
+                break;
+            case Types.EDIT_STATE:
+                _db.editDevice(device);
+                break;
+            case Types.REMOVE_STATE:
+                _db.removeDevice(device);
+                break;
+            default:
+                LOGGER.info("What happened here!");
+                break;
         }
-        _db.printDevicesTableData();
     }
 
     public DeviceResponse GetDeviceData(DeviceRequest request) {
