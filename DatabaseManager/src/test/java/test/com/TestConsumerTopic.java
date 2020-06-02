@@ -44,20 +44,6 @@ public class TestConsumerTopic
     }
 
     @Test
-    public void testConvertTopicsInvalid()
-    {
-        String routingKey = "Motion.Detected";
-        String message = "Empty";
-        TopicRabbitmq local = new TopicRabbitmq(routingKey, message);
-        //
-        Logger LOGGER = getLogger();
-        TopicsBuffer buffer = new TopicsBuffer(LOGGER, "blank");
-        ConsumerTopic consumer = new ConsumerTopic("blank", buffer, LOGGER);
-        boolean valid = consumer.ConvertTopics(local, message);
-        assertFalse(valid);
-    }
-
-    @Test
     public void testConvertTopicsValid()
     {
         String routingKey = "Event.FH";
@@ -67,7 +53,7 @@ public class TestConsumerTopic
         Logger LOGGER = getLogger();
         TopicsBuffer buffer = new TopicsBuffer(LOGGER, "blank");
         ConsumerTopic consumer = new ConsumerTopic("blank", buffer, LOGGER);
-        boolean valid = consumer.ConvertTopics(local, message);
+        boolean valid = consumer.ConvertTopics(routingKey, message);
         assertTrue(valid);
     }
 
@@ -81,7 +67,7 @@ public class TestConsumerTopic
         Logger LOGGER = getLogger();
         TopicsBuffer buffer = new TopicsBuffer(LOGGER, "blank");
         ConsumerTopic consumer = new ConsumerTopic("blank", buffer, LOGGER);
-        boolean valid = consumer.ConvertTopics(local, message);
+        boolean valid = consumer.ConvertTopics(routingKey, message);
         assertFalse(valid);
     }
 

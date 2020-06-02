@@ -64,6 +64,7 @@ public interface Types
     final String DEVICE_RESPONSE_TOPIC = "Device.Response";
 
     final String EVENT_TOPIC_ALL = "Event.*";
+    final String EVENT_TOPIC     = "Event.";
     final String EVENT_TOPIC_UP  = "Event.UP";
     final String EVENT_TOPIC_SYP = "Event.SYP";
     final String EVENT_TOPIC_DBM = "Event.DBM";

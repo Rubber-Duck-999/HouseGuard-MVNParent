@@ -419,6 +419,8 @@ public class DatabaseHelper {
             if(count == 0) {
                 _LOGGER.info("Didn't find any data");
                 DataInfoTopic data = new DataInfoTopic();
+                data.setTotalMessage(1);
+                data.setMessageNum(1);
                 data.setId(id);
                 data.setTopicMessage("No data found");
                 data.setTimeSent(LocalDateTime.now().toString());

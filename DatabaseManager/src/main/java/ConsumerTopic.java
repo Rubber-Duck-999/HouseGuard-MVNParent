@@ -29,117 +29,64 @@ public class ConsumerTopic {
         while (i.hasNext()) {
             _LOGGER.fine("Looping through publish list");
             String json = gson.toJson(i.next());
-            _LOGGER.info("Message is : " + json);
-            try {
-                _channel.basicPublish(kEXCHANGE_NAME, Types.DATA_INFO_TOPIC,
-                                      null, json.getBytes());
-            } catch(IOException e) {
-                _LOGGER.info("We have had issues publishing");
-                e.printStackTrace();
-            } catch(NullPointerException e) {
-                _LOGGER.warning("Issues with rabbitmq");
-            }
+            PublishMessage(json, Types.DATA_INFO_TOPIC);
         }
+    }
+
+    private void PublishMessage(String json, String Topic) {
+        _LOGGER.info("Message is : " + json);
+        try {
+            _channel.basicPublish(kEXCHANGE_NAME, Topic,
+                                  null, json.getBytes());
+        } catch(IOException e) {
+            _LOGGER.info("We have had issues publishing");
+            e.printStackTrace();
+        } catch(NullPointerException e) {
+            _LOGGER.warning("Issues with rabbitmq");
+        }  
     }
 
     public void PublishDeviceResponse(DeviceResponse response) {
         gson = new Gson();
         String json = gson.toJson(response);
-        _LOGGER.info("Message is : " + json);
-        try {
-            _channel.basicPublish(kEXCHANGE_NAME, Types.DEVICE_RESPONSE_TOPIC,
-                                  null, json.getBytes());
-        } catch(IOException e) {
-            _LOGGER.info("We have had issues publishing");
-            e.printStackTrace();
-        } catch(NullPointerException e) {
-            _LOGGER.warning("Issues with rabbitmq");
-        }
+        PublishMessage(json, Types.DEVICE_RESPONSE_TOPIC);
     }
 
     public void PublishAccessResponse(AccessResponse response) {
         gson = new Gson();
         String json = gson.toJson(response);
-        _LOGGER.info("Message is : " + json);
-        try {
-            _channel.basicPublish(kEXCHANGE_NAME, Types.ACCESS_RESPONSE_TOPIC,
-                                  null, json.getBytes());
-        } catch(IOException e) {
-            _LOGGER.info("We have had issues publishing");
-            e.printStackTrace();
-        } catch(NullPointerException e) {
-            _LOGGER.warning("Issues with rabbitmq");
-        }
+        PublishMessage(json, Types.ACCESS_RESPONSE_TOPIC);
     }   
 
     public void PublishStatus() {
-        StatusDBM status = _buffer.getStatus();
         gson = new Gson();
-        String json = gson.toJson(status);
-        _LOGGER.info("Message is : " + json);
-        try {
-            _channel.basicPublish(kEXCHANGE_NAME, Types.STATUS_DBM_TOPIC,
-                                  null, json.getBytes());
-        } catch(IOException e) {
-            _LOGGER.info("We have had issues publishing");
-            e.printStackTrace();
-        } catch(NullPointerException e) {
-            _LOGGER.warning("Issues with rabbitmq");
-        }       
+        String json = gson.toJson(_buffer.getStatus());
+        PublishMessage(json, Types.STATUS_DBM_TOPIC);   
     }
 
-    public boolean ConvertTopics(TopicRabbitmq topic, String message) {
-        _LOGGER.info("Converting topics = " + topic.getRoutingKey());
-        boolean type_found = true;
-        if(topic.getRoutingKey().equals(Types.STATUS_REQUEST_DBM_TOPIC)) {
-            _LOGGER.info("Received a = " + topic.getRoutingKey());
-            type_found = false;
-            PublishStatus();
-        } else if(topic.getRoutingKey().equals(Types.EVENT_TOPIC_UP)) {
-            _LOGGER.info("Received a = " + topic.getRoutingKey());
-        } else if(topic.getRoutingKey().equals(Types.EVENT_TOPIC_SYP)) {
-            _LOGGER.info("Received a = " + topic.getRoutingKey());
-        } else if(topic.getRoutingKey().equals(Types.EVENT_TOPIC_DBM)) {
-            _LOGGER.info("Received a = " + topic.getRoutingKey());
-        } else if(topic.getRoutingKey().equals(Types.EVENT_TOPIC_NAC)) {
-            _LOGGER.info("Received a = " + topic.getRoutingKey());
-        } else if(topic.getRoutingKey().equals(Types.EVENT_TOPIC_EVM)) {
-            _LOGGER.info("Received a = " + topic.getRoutingKey());
-        } else if(topic.getRoutingKey().equals(Types.EVENT_TOPIC_FH)) {
-            _LOGGER.info("Received a = " + topic.getRoutingKey());
-        } else if(topic.getRoutingKey().equals(Types.REQUEST_DATABASE_TOPIC)) {
-            _LOGGER.info("Received a = " + topic.getRoutingKey());
-            gson = new Gson();
-            RequestDatabase data = gson.fromJson(message, RequestDatabase.class);
-            Vector<DataInfoTopic> vector = _buffer.GetEventData(data);
-            _LOGGER.info("We have returned size of " + vector.size() + " data records.");
-            if(vector.size() > 0) {
+    public boolean ConvertTopics(String routingKey, String message) {
+        _LOGGER.info("Converting topics = " + routingKey);
+        boolean type_found = false;
+        gson = new Gson();
+        switch(routingKey) {
+            case Types.STATUS_REQUEST_DBM_TOPIC:
+                PublishStatus();
+                break;
+            case Types.REQUEST_DATABASE_TOPIC:
+                Vector<DataInfoTopic> vector = _buffer.GetEventData(gson.fromJson(message, RequestDatabase.class));
+                _LOGGER.info("We have returned size of " + vector.size() + " data records.");
                 PublishDataInfo(vector);
-            } else {
-                _LOGGER.severe("We have returned zero records so we will not publish");
-            }
-            type_found = false;
-        } else if(topic.getRoutingKey().equals(Types.DEVICE_REQUEST_TOPIC)) {
-            _LOGGER.info("Received a = " + topic.getRoutingKey());
-            gson = new Gson();
-            DeviceRequest data = gson.fromJson(message, DeviceRequest.class);
-            DeviceResponse response = _buffer.GetDeviceData(data);
-            PublishDeviceResponse(response);
-            type_found = false;
-        } else if(topic.getRoutingKey().equals(Types.DEVICE_UPDATE_TOPIC)) {
-            _LOGGER.info("Received a = " + topic.getRoutingKey());
-            gson = new Gson();
-            DeviceUpdate data = gson.fromJson(message, DeviceUpdate.class);
-            _buffer.CreateDevice(data);
-            type_found = false;
-        } else if(topic.getRoutingKey().equals(Types.REQUEST_ACCESS_TOPIC)) {
-            _LOGGER.info("Received a = " + topic.getRoutingKey());
-            gson = new Gson();
-            RequestAccess data = gson.fromJson(message, RequestAccess.class);
-            PublishAccessResponse(_buffer.GetUser(data));
-            type_found = false;
-        } else {
-            type_found = false;
+                break;
+            case Types.DEVICE_REQUEST_TOPIC:
+                PublishDeviceResponse(_buffer.GetDeviceData(gson.fromJson(message, DeviceRequest.class))); 
+                break;              
+            case Types.DEVICE_UPDATE_TOPIC:
+                _buffer.CreateDevice(gson.fromJson(message, DeviceUpdate.class));
+            case Types.REQUEST_ACCESS_TOPIC:
+                PublishAccessResponse(_buffer.GetUser(gson.fromJson(message, RequestAccess.class)));
+                break;
+            default:
+                type_found = true;
         }
         return type_found;
     }
@@ -147,15 +94,14 @@ public class ConsumerTopic {
 
     private void EventsTopicSubscribe(String routingKey, String message) {
         _LOGGER.info("Attempting to split message up by key");
-        TopicRabbitmq local = new TopicRabbitmq(routingKey, message);
-        if((this.ConvertTopics(local, message)) != false) {
+        if((this.ConvertTopics(routingKey, message)) != false) {
+            TopicRabbitmq local = new TopicRabbitmq(routingKey, message);
             _LOGGER.info("Topic is a Event.* Topic");
             local.setValidTopic();
             if(local.convertMessage() == false) {
                 _LOGGER.severe("We cannot convert this topic message");
             } else {
-                _buffer.AddToList(local);
-                _buffer.SortList();
+                _buffer.AddTopic(local);
             }
         }
     }

@@ -37,7 +37,7 @@ public class mainClass {
     }
 
     public static void start(String password, String rabbitmq) {
-        LOGGER.setLevel(Level.FINEST);
+        LOGGER.setLevel(Level.WARNING);
         TopicsBuffer buffer = new TopicsBuffer(LOGGER, password);
         cons = new ConsumerTopic(rabbitmq, buffer, LOGGER);
         cons.ConsumeRequired();
