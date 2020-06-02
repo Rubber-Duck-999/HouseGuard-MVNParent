@@ -22,4 +22,10 @@ public class RequestAccess extends Topic
         this.pin = pin;
     }
 
+    public RequestAccess(Integer id, Integer pin)
+    {
+        this.id = id;
+        this.pin = pin;
+    }
+
 }

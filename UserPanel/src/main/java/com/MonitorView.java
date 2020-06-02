@@ -24,35 +24,34 @@ import java.util.logging.Logger;
 public class MonitorView
 {
     private JFrame frame;
-    private JPanel buttonPanel, fieldPanel;
     private JLabel monitorState;
     private JButton ONButton, OFFButton;
-    private Font buttonFont;
 
     public MonitorView()
     {
-        frame = new JFrame("Simple MVC");
-        buttonPanel = new JPanel();
-        fieldPanel = new JPanel();
-
-        monitorState = new JLabel("", SwingConstants.CENTER);
-
-        ONButton = new JButton(Types.ON);
-        OFFButton = new JButton(Types.OFF);
-
-        buttonPanel.add(ONButton);
-        buttonPanel.add(OFFButton);
-
-        buttonPanel.setLayout(new GridLayout(2,4));
-
+        frame = new JFrame("Alarm State");
+        setButtonPanel();
+        setFieldPanel();
         setButtonFont();
         setLabelFont();
+    }
 
-        fieldPanel.setLayout(new GridLayout(1,2));
-        fieldPanel.add(monitorState);
-
-        frame.add(fieldPanel, BorderLayout.NORTH);
+    private void setButtonPanel() {
+        JPanel buttonPanel = new JPanel();
+        ONButton = new JButton(Types.ON);
+        OFFButton = new JButton(Types.OFF);
+        buttonPanel.add(ONButton);
+        buttonPanel.add(OFFButton);
+        buttonPanel.setLayout(new GridLayout(2,4));
         frame.add(buttonPanel, BorderLayout.CENTER);
+    }
+
+    private void setFieldPanel() {
+        JPanel fieldPanel = new JPanel();
+        monitorState = new JLabel("", SwingConstants.CENTER);
+        fieldPanel.add(monitorState);
+        fieldPanel.setLayout(new GridLayout(1,2));
+        frame.add(fieldPanel, BorderLayout.NORTH);
     }
 
     public void setMonitor()
@@ -69,13 +68,13 @@ public class MonitorView
 
     private void setLabelFont()
     {
-        buttonFont = new Font("Calibri", Font.BOLD, 128);
+        Font buttonFont = new Font("Calibri", Font.BOLD, 128);
         monitorState.setFont(buttonFont);
     }
 
     private void setButtonFont()
     {
-        buttonFont = new Font("Calibri", Font.BOLD, 40);
+        Font buttonFont = new Font("Calibri", Font.BOLD, 40);
         ONButton.setFont(buttonFont);
         ONButton.setForeground(Color.GREEN);
         OFFButton.setFont(buttonFont);

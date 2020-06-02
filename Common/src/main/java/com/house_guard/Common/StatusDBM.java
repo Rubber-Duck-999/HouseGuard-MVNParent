@@ -7,7 +7,8 @@ public class StatusDBM extends Topic {
     private Integer _dailyDataRequests;
 
     public StatusDBM() {
-
+        _dailyEvents = 0;
+        _dailyDataRequests = 0;
     }
     public Integer getDailyEvents()
     {

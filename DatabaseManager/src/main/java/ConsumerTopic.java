@@ -59,7 +59,7 @@ public class ConsumerTopic {
 
     public void PublishStatus() {
         gson = new Gson();
-        String json = gson.toJson(_buffer.getStatus());
+        String json = gson.toJson(_buffer.GetStatus());
         PublishMessage(json, Types.STATUS_DBM_TOPIC);   
     }
 

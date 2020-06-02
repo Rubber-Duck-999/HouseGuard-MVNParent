@@ -26,8 +26,9 @@ public class TopicRabbitmq {
         try {
             EventTopic eventData = gson.fromJson(_topicMessage, EventTopic.class);
             _topicMessage = eventData.getMessage();
-            LocalDateTime _timeSent = LocalDateTime.parse(eventData.getTime(), 
-                DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"););
+            _timeSent = LocalDateTime.parse(eventData.getTime(), 
+                DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
+            System.out.println(_timeSent);
             //
             _component = eventData.getComponent();
             _eventTypeId = eventData.getEventTypeId();

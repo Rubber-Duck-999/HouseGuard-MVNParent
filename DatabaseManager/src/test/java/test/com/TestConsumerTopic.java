@@ -10,6 +10,7 @@ import java.util.logging.*;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 import java.io.*;
+import com.google.gson.Gson;
 import java.util.*;
 import java.lang.*;
 import com.house_guard.database_manager.*;
@@ -61,14 +62,14 @@ public class TestConsumerTopic
     public void testRequestDatabase()
     {
         String routingKey = "Request.Database";
-        String message = "{ 'request_id': 1, 'time_from': '14:56:00', 'time_to': '16:00:00', 'type': 'faults' }";
-        TopicRabbitmq local = new TopicRabbitmq(routingKey, message);
+        String message = "{ 'request_id': 1, 'time_from': '14:56:00', 'time_to': '16:00:00', 'event_type_id': 'faults' }";
         //
         Logger LOGGER = getLogger();
         TopicsBuffer buffer = new TopicsBuffer(LOGGER, "blank");
         ConsumerTopic consumer = new ConsumerTopic("blank", buffer, LOGGER);
-        boolean valid = consumer.ConvertTopics(routingKey, message);
-        assertFalse(valid);
+        Gson gson = new Gson();
+        Vector<DataInfoTopic> vector = buffer.GetEventData(gson.fromJson(message, RequestDatabase.class));
+        assertEquals(vector.size(), 0);
     }
 
     @Test

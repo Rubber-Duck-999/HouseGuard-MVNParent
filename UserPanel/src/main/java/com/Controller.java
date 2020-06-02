@@ -14,7 +14,6 @@ public class Controller implements ActionListener
     private MonitorView _monitorView;
     private ConsumerTopic _consumer;
     private RequestTable _pinTable;
-    private StatusUP _status;
 
     public Controller(View v, MonitorView monitorView, 
         ConsumerTopic consumer, RequestTable requestTable) {
@@ -24,7 +23,6 @@ public class Controller implements ActionListener
         this._monitorView = monitorView;
         this._consumer = consumer;
         _pinTable = requestTable;
-        this._status = new StatusUP();
     }
 
     public void enterCommand() {
@@ -37,13 +35,12 @@ public class Controller implements ActionListener
     private void stateUpdate(boolean state) {
         LocalDateTime time = LocalDateTime.now();  
         if(state) {
-            this._status.setGranted(time.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))); 
+            this._consumer.setGranted(time.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))); 
             _view.displayPassMessage("Hello " + _consumer.getUser());
         } else { 
-            this._status.setBlocked(time.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
+            this._consumer.setBlocked(time.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
             _view.displayErrorMessage("Try again in 5 minutes");  
         }
-        this._consumer.updateValues(_status);
     }
 
     public void checkAccess() {
@@ -105,11 +102,11 @@ public class Controller implements ActionListener
             case Types.OFF:
                 _monitorView.setMonitorState(_model.setModelStateOFF());
                 this.sendMonitorUpdate(false);
-                this._status.setState(Types.OFF);
+                this._consumer.setState(Types.OFF);
                 break;
             case Types.ON:
                 _monitorView.setMonitorState(_model.setModelStateOn());
-                this._status.setState(Types.ON);
+                this._consumer.setState(Types.ON);
                 this.sendMonitorUpdate(true);
                 break;
             default:
@@ -122,9 +119,7 @@ public class Controller implements ActionListener
     public void sendMonitorUpdate(boolean state)
     {
         _monitorView.setMonitorState(_model.setModelStateOn());
-        this._status.setState(Types.ON);
-        this._consumer.updateValues(_status);
-        this.sendMonitorUpdate(state);
+        this._consumer.setState(Types.ON);
         _consumer.sendMonitorState(state);
         _view.setView();
         _monitorView.close();
@@ -132,8 +127,7 @@ public class Controller implements ActionListener
 
     public void initmodel(String x, String state)
     {
-        this._status.setState(state);
-        this._consumer.updateValues(_status);
+        this._consumer.setState(state);
         _view.setDigits(_model.initModel(x));
         _monitorView.setMonitorState(state);
     }

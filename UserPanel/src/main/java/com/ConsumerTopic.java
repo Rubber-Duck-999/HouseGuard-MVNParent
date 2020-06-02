@@ -25,6 +25,21 @@ public class ConsumerTopic
     private Integer receivedId;
     private StatusUP status;
 
+    public void setGranted(String granted)
+    {
+        this.status.setGranted(granted);
+    }
+
+    public void setBlocked(String granted)
+    {
+        this.status.setBlocked(granted);
+    }
+
+    public void setState(String state)
+    {
+        this.status.setState(state);
+    }
+
     public boolean getAccessState()
     {
         return accessAllowed;
@@ -40,24 +55,13 @@ public class ConsumerTopic
         accessRequested = false;
     }
 
-    public void updateValues(StatusUP up)
-    { 
-        this.status = up; 
-    }
-
     public String getUser()
     {
         return this.status.getUser();
     }
 
-    public void sendMonitorState(boolean state)
+    private void publish(String json, String routingKey)
     {
-        String routingKey = Types.MONITOR_STATE_TOPIC;
-        Gson gson = new Gson();
-        MonitorState mon = new MonitorState();
-        mon.setState(state);
-        String json = gson.toJson(mon);
-        System.out.println("Message is : " + json);
         try
         {
             channel.basicPublish(EXCHANGE_NAME, routingKey, null, json.getBytes());
@@ -69,26 +73,24 @@ public class ConsumerTopic
         }
     }
 
+    public void sendMonitorState(boolean state)
+    {
+        Gson gson = new Gson();
+        MonitorState mon = new MonitorState();
+        mon.setState(state);
+        String json = gson.toJson(mon);
+        publish(json, Types.MONITOR_STATE_TOPIC);
+    }
+
     public void askForAccess(Integer key, Integer val)
     {
         System.out.println("Requesting access ");
-        String routingKey = Types.REQUEST_ACCESS_TOPIC;
         Gson gson = new Gson();
-        RequestAccess req = new RequestAccess();
-        req.setId(key);
-        req.setPin(val);
+        RequestAccess req = new RequestAccess(key, val);
         String json = gson.toJson(req);
         accessRequested = false;
         accessAllowed = false;
-        try
-        {
-            channel.basicPublish(EXCHANGE_NAME, routingKey, null, json.getBytes());
-        }
-        catch (IOException e)
-        {
-            System.out.println("We have had issues publishing");
-            e.printStackTrace();
-        }
+        publish(json, Types.REQUEST_ACCESS_TOPIC);
     }
 
     public void publishStatus()
@@ -96,16 +98,7 @@ public class ConsumerTopic
         System.out.println("Publishing Status ");
         Gson gson = new Gson();
         String json = gson.toJson(this.status);
-        System.out.println(json);
-        try
-        {
-            channel.basicPublish(EXCHANGE_NAME, Types.STATUS_UP_TOPIC, null, json.getBytes());
-        }
-        catch (IOException e)
-        {
-            System.out.println("We have had issues publishing");
-            e.printStackTrace();
-        }
+        publish(json, Types.STATUS_UP_TOPIC);
     }
 
     private void accessResponse(String delivery, String routingKey)
@@ -160,7 +153,7 @@ public class ConsumerTopic
             channel.queueBind(subscribeQueueName, EXCHANGE_NAME, Types.ACCESS_RESPONSE_TOPIC);
             channel.queueBind(subscribeQueueName, EXCHANGE_NAME, Types.STATUS_REQUEST_UP_TOPIC);
             //
-            System.out.println(" [*] Waiting for access.response. To exit press CTRL+C");
+            System.out.println(" [*] Waiting for TOPICS. To exit press CTRL+C");
             DeliverCallback deliverCallback = (consumerTag, delivery) -> {
                 System.out.println("Message received");
                 if(delivery.getEnvelope().getRoutingKey().equals(Types.ACCESS_RESPONSE_TOPIC)) {
