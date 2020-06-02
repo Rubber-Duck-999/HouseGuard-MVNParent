@@ -45,17 +45,13 @@ public class Model
                 if(_digitArray[_currentDigit] == Types.EMPTY)
                 {
                     _currentDigit++;
-                    _digitArray[_currentDigit] = Types.EMPTY;
                 }
                 else
                 {
                     _digitArray[_currentDigit] = Types.EMPTY;
                     _currentDigit++;
+                    return _digitArray;
                 }
-            }
-            else if(_currentDigit == 3)
-            {
-                _digitArray[_currentDigit] = Types.EMPTY;
             }
             else
             {
@@ -63,9 +59,8 @@ public class Model
                 {
                     _currentDigit++;
                 }
-                _digitArray[_currentDigit] = Types.EMPTY;
             }
-
+            _digitArray[_currentDigit] = Types.EMPTY;
         }
         else if(value.equals(Types.CLEAR))
         {
@@ -74,14 +69,10 @@ public class Model
         }
         else
         {
+            _digitArray[_currentDigit] = value;
             if(_currentDigit > 0)
             {
-                _digitArray[_currentDigit] = value;
                 _currentDigit--;
-            }
-            else if(_currentDigit == 0)
-            {
-                _digitArray[_currentDigit] = value;
             }
         }
         return _digitArray;

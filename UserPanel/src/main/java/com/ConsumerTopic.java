@@ -20,7 +20,6 @@ public class ConsumerTopic
     private static ConnectionFactory factory;
     private static Connection connection;
     private static Channel channel;
-    private String subscribeQueueName;
     private boolean accessAllowed;
     private boolean accessRequested;
     private Integer receivedId;
@@ -44,6 +43,11 @@ public class ConsumerTopic
     public void updateValues(StatusUP up)
     { 
         this.status = up; 
+    }
+
+    public String getUser()
+    {
+        return this.status.getUser();
     }
 
     public void sendMonitorState(boolean state)
@@ -109,6 +113,7 @@ public class ConsumerTopic
         System.out.println("Received response");
         System.out.println(delivery);
         accessRequested = true;
+        Gson gson = new Gson();
         AccessResponse data = gson.fromJson(delivery, AccessResponse.class);
         receivedId = data.getId();
         if(!data.getResult().equals(Types.PASS))
@@ -141,6 +146,7 @@ public class ConsumerTopic
         Date date = new Date();
         user_event.setTime(formatter.format(date));
         user_event.setEventTypeId("UP2");
+        Gson gson = new Gson();
         String pubMessage = gson.toJson(user_event);
         return pubMessage;
     }
@@ -149,8 +155,7 @@ public class ConsumerTopic
     {
         try
         {
-            Gson gson = new Gson();
-            subscribeQueueName = channel.queueDeclare().getQueue();
+            String subscribeQueueName = channel.queueDeclare().getQueue();
             //
             channel.queueBind(subscribeQueueName, EXCHANGE_NAME, Types.ACCESS_RESPONSE_TOPIC);
             channel.queueBind(subscribeQueueName, EXCHANGE_NAME, Types.STATUS_REQUEST_UP_TOPIC);
@@ -158,10 +163,8 @@ public class ConsumerTopic
             System.out.println(" [*] Waiting for access.response. To exit press CTRL+C");
             DeliverCallback deliverCallback = (consumerTag, delivery) -> {
                 System.out.println("Message received");
-                String received = new String(delivery.getBody());
-                String key = delivery.getEnvelope().getRoutingKey();
-                if(key.equals(Types.ACCESS_RESPONSE_TOPIC)) {
-                    this.accessResponse(received, key);
+                if(delivery.getEnvelope().getRoutingKey().equals(Types.ACCESS_RESPONSE_TOPIC)) {
+                    this.accessResponse(new String(delivery.getBody()), delivery.getEnvelope().getRoutingKey());
                 } else {
                     this.publishStatus();
                 }
