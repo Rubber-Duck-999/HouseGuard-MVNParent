@@ -9,16 +9,13 @@ public class Model
     private String[] _digitArray;
     private int _currentDigit = 3;
     private int _attempts;
-    private boolean _timeset;
-    private int _timeDay;
-    private int _timeHour;
     private int _timeMinute;
     private boolean _lock;
 
     public Model()
     {
         _digitArray = new String[4];
-        _attempts = _timeDay = _timeHour = _timeMinute = 0;
+        _attempts = _timeMinute = 0;
         _lock = false;
         for(int i = 0; i < MAX; i++)
         {
@@ -36,31 +33,35 @@ public class Model
         return _digitArray;
     }
 
+    private void back() {
+        if(_currentDigit == 0)
+        {
+            if(_digitArray[_currentDigit] == Types.EMPTY)
+            {
+                _currentDigit++;
+            }
+            else
+            {
+                _digitArray[_currentDigit] = Types.EMPTY;
+                _currentDigit++;
+                return;
+            }
+        }
+        else
+        {
+            if(_digitArray[_currentDigit] == Types.EMPTY)
+            {
+                _currentDigit++;
+            }
+        }
+        _digitArray[_currentDigit] = Types.EMPTY;
+    }
+
     public String[] setValue(String value)
     {
         if(value.equals(Types.BACK))
         {
-            if(_currentDigit == 0)
-            {
-                if(_digitArray[_currentDigit] == Types.EMPTY)
-                {
-                    _currentDigit++;
-                }
-                else
-                {
-                    _digitArray[_currentDigit] = Types.EMPTY;
-                    _currentDigit++;
-                    return _digitArray;
-                }
-            }
-            else
-            {
-                if(_digitArray[_currentDigit] == Types.EMPTY)
-                {
-                    _currentDigit++;
-                }
-            }
-            _digitArray[_currentDigit] = Types.EMPTY;
+            back();
         }
         else if(value.equals(Types.CLEAR))
         {
@@ -110,8 +111,6 @@ public class Model
         _attempts++;
         if(_attempts >= 3)
         {
-            _timeDay = LocalDateTime.now().getDayOfMonth();
-            _timeHour = LocalDateTime.now().getHour();
             _timeMinute = LocalDateTime.now().getMinute();
             _lock = true;
             return _lock;
@@ -122,27 +121,21 @@ public class Model
 
     public boolean checkUnlock()
     {
-        int day = LocalDateTime.now().getDayOfMonth();
-        int hour = LocalDateTime.now().getHour();
         int minute = LocalDateTime.now().getMinute();
-        System.out.println("Minute started: " + _timeMinute);
-        System.out.println("Minute now: " + minute);
-        if (hour >= _timeHour)
+        System.out.println("Minute started: " + _timeMinute + 
+                " Minute now: " + minute);
+        if((minute - _timeMinute) != 0)
         {
-            if((minute - _timeMinute) >= 5)
-            {
-                System.out.println("More than 5 minutes have occured, unlock");
-                _lock = false;
-                resetAttempts();
-                return _lock;
-            }
-            else
-            {
-                System.out.println("5 minutes have not occured, lock continues");
-                return _lock;
-            }
+            System.out.println("More than 1 minutes have occured, unlock");
+            _lock = false;
+            resetAttempts();
+            return _lock;
         }
-        return _lock;
+        else
+        {
+            System.out.println("1 minutes have not occured, lock continues");
+            return _lock;
+        }
     }
 
     public String setModelStateOn()

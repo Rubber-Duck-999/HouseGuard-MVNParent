@@ -7,9 +7,7 @@ import com.google.gson.Gson;
 import org.json.*;
 
 public class TopicRabbitmq {
-    private boolean _validTopic;
     private String _routingKey;
-    private String _message;
     private String _topicMessage;
     private LocalDateTime _timeOfReceival;
     private LocalDateTime _timeSent;
@@ -19,34 +17,28 @@ public class TopicRabbitmq {
 
     public TopicRabbitmq(String routingKey, String message) {
         _routingKey = routingKey;
-        _message = message;
+        _topicMessage = message;
         this.setReceivalTime();
-        _validTopic = false;
     }
 
     public boolean convertMessage() {
         Gson gson = new Gson();
         try {
-            EventTopic eventData = gson.fromJson(_message, EventTopic.class);
+            EventTopic eventData = gson.fromJson(_topicMessage, EventTopic.class);
             _topicMessage = eventData.getMessage();
-            //
-            System.out.println("Event data: " + eventData.getTime());
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-            LocalDateTime dateTime = LocalDateTime.parse(eventData.getTime(), dtf);
-            _timeSent = dateTime;
+            LocalDateTime _timeSent = LocalDateTime.parse(eventData.getTime(), 
+                DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"););
             //
             _component = eventData.getComponent();
             _eventTypeId = eventData.getEventTypeId();
             return true;
         } catch(Exception e) {
-            System.out.println("We have had trouble converting: " + e);
             e.printStackTrace();
             return false;
         }
     }
 
     private void setReceivalTime() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         _timeOfReceival = LocalDateTime.now();
     }
 
@@ -60,14 +52,6 @@ public class TopicRabbitmq {
 
     public String getComponent() {
         return _component;
-    }
-
-    public boolean getValidity() {
-        return _validTopic;
-    }
-
-    public void setValidTopic() {
-        _validTopic = true;
     }
 
     public String getTopicMessage() {

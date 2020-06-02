@@ -11,12 +11,6 @@ import java.text.DateFormat;
 
 public class DatabaseHelper {
     private Connection _connection;
-    private final String database_prefix = "jdbc:mysql://localhost/logs?";
-    private final String database_suffix = "&zeroDateTimeBehavior=convertToNull";
-    private final String user_entry = "user=";
-    private final String password_entry = "&password=";
-    private String _username;
-    private String _password;
     private Logger _LOGGER;
 
     /*
@@ -56,6 +50,12 @@ public class DatabaseHelper {
 
     public DatabaseHelper(Logger LOGGER, String password) {
         _LOGGER = LOGGER;
+        String database_prefix = "jdbc:mysql://localhost/logs?";
+        String database_suffix = "&zeroDateTimeBehavior=convertToNull";
+        String user_entry = "user=";
+        String password_entry = "&password=";
+        String _username;
+        String _password;
         try {
             _username = "access";
             _password = password;

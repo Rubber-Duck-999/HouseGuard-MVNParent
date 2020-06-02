@@ -18,7 +18,6 @@ public class ConsumerTopic {
     private static ConnectionFactory _factory;
     private static Connection _connection;
     private static Channel _channel;
-    private String _subscribeQueueName;
     private Logger _LOGGER;
     private TopicsBuffer _buffer;
     private Gson gson;
@@ -97,7 +96,6 @@ public class ConsumerTopic {
         if((this.ConvertTopics(routingKey, message)) != false) {
             TopicRabbitmq local = new TopicRabbitmq(routingKey, message);
             _LOGGER.info("Topic is a Event.* Topic");
-            local.setValidTopic();
             if(local.convertMessage() == false) {
                 _LOGGER.severe("We cannot convert this topic message");
             } else {
@@ -109,7 +107,7 @@ public class ConsumerTopic {
     public void ConsumeRequired() {
         try {
             _LOGGER.info("Setup of Queues and Exchange");
-            _subscribeQueueName = _channel.queueDeclare().getQueue();
+            String _subscribeQueueName = _channel.queueDeclare().getQueue();
             //
             _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.EVENT_TOPIC_ALL);
             _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.REQUEST_DATABASE_TOPIC);
