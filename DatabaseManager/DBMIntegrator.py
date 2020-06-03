@@ -50,11 +50,12 @@ print("Sent %r " % routing_key)
 time.sleep(5)
 data = {
     "request_id": 1,
-    "time_from": "2020/05/20 05:20:00", 
-    "time_to": "2020/06/01 05:20:00", 
-    "event_type_id": "SYP1",
+    "time_from": "2020/05/30 12:00:00", 
+    "time_to": "2020/06/03 24:00:00", 
+    "event_type_id": "EVM3",
 }
 payload = json.dumps(data)
+print("Sending request: " + payload)
 channel.basic_publish(exchange='topics', routing_key=topic_data_request, body=payload)
 print("Sent %r " % topic_data_request)
 

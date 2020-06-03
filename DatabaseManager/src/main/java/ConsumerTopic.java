@@ -81,6 +81,7 @@ public class ConsumerTopic {
                 break;              
             case Types.DEVICE_UPDATE_TOPIC:
                 _buffer.CreateDevice(gson.fromJson(message, DeviceUpdate.class));
+                break;
             case Types.REQUEST_ACCESS_TOPIC:
                 PublishAccessResponse(_buffer.GetUser(gson.fromJson(message, RequestAccess.class)));
                 break;

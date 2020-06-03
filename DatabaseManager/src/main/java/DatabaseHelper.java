@@ -162,8 +162,7 @@ public class DatabaseHelper {
 
     public void addDevice(DeviceUpdate device) {
         try {
-            PreparedStatement _prepared = _connection.prepareStatement("INSERT INTO devices (Name, Mac, " +
-                                            "status) VALUES " +
+            PreparedStatement _prepared = _connection.prepareStatement("INSERT INTO devices (Name, Mac, status) VALUES " +
                                             "(?, ?, ?)");
             _prepared.setString(1, device.getName());
             _prepared.setString(2, device.getMac());
@@ -181,12 +180,6 @@ public class DatabaseHelper {
             _prepared.setString(1, device.getStatus());
             _prepared.setString(2, device.getMac());
             Execute(_prepared);
-            //
-            _prepared = _connection.prepareStatement("UPDATE devices SET Name=? WHERE " +
-                                            "Mac=?");
-            _prepared.setString(1, device.getName());
-            _prepared.setString(2, device.getMac());
-            Execute(_prepared);
         } catch(SQLException e) {
             _LOGGER.severe("Error: " + e);
         }
@@ -194,7 +187,7 @@ public class DatabaseHelper {
 
     public void removeDevice(DeviceUpdate device) {
         try {
-            PreparedStatement _prepared = _connection.prepareStatement("DELETE * FROM devices WHERE Mac=?");
+            PreparedStatement _prepared = _connection.prepareStatement("DELETE FROM devices WHERE Mac=?");
             _prepared.setString(1, device.getMac());
             this.Execute(_prepared);
         } catch(SQLException e) {
