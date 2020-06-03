@@ -194,6 +194,7 @@ public class ConsumerTopic
         receivedId = 0;
         accessAllowed = false;
         accessRequested = false;
+        this.status = new StatusUP();
     }
 
     public Integer getId()

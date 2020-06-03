@@ -48,12 +48,14 @@ public class View
         enter = new JButton("Enter");
         enter.setFont(new Font("Calibri", Font.BOLD, 40));
         
-        setLabelFont();
+        digits = new JLabel[4];
 
         fieldPanel.setLayout(new GridLayout(1,2));
+        buttonFont = new Font("Calibri", Font.BOLD, 128);
         for (int i = 3; i > -1; i--) {
             digits[i] = new JLabel("", SwingConstants.CENTER);
             fieldPanel.add(digits[i]);
+            digits[i].setFont(buttonFont);
         }
 
         frame.add(fieldPanel, BorderLayout.NORTH);
@@ -74,14 +76,6 @@ public class View
         frame.setVisible(true);
         frame.setAlwaysOnTop(true);
         device.setFullScreenWindow(frame);
-    }
-
-    private void setLabelFont()
-    {
-        Font buttonFont = new Font("Calibri", Font.BOLD, 128);
-        for (int i = 0; i < 4; i++) {
-            digits[i].setFont(buttonFont);
-        }
     }
 
     public < E > void setDigits(String[] v)

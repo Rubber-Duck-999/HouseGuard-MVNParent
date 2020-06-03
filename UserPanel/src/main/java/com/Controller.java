@@ -4,6 +4,7 @@ import java.awt.event.ActionListener;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 import java.awt.event.ActionEvent;
+import java.util.concurrent.TimeUnit;
 import com.house_guard.Common.*;
 import java.util.logging.Logger;
 
@@ -63,23 +64,19 @@ public class Controller implements ActionListener
         checkAction(input);
     }
 
-    private void killTime() {
-        int j = 0;
-        for(int i = 0; i < 99999; i++) {
-            j = j + 1;
-        }
-        System.out.println("Killed waiting time");
-    }
-
     private void Enter() {
-        if(_model.isValidPin()) {
-            System.out.println("Pin is valid number, proceeding");
-            this.enterCommand();
-            this.killTime();
-            this.checkAccess();
-            _view.setDigits(_model.initModel(Types.EMPTY));
-        } else {
-            System.out.println("User entered incorrect or empty pin");
+        try {
+            if(_model.isValidPin()) {
+                System.out.println("Pin is valid number, proceeding");
+                this.enterCommand();
+                TimeUnit.SECONDS.sleep(1);
+                this.checkAccess();
+                _view.setDigits(_model.initModel(Types.EMPTY));
+            } else {
+                System.out.println("User entered incorrect or empty pin");
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -101,13 +98,13 @@ public class Controller implements ActionListener
                 break;
             case Types.OFF:
                 _monitorView.setMonitorState(_model.setModelStateOFF());
-                this.sendMonitorUpdate(false);
                 this._consumer.setState(Types.OFF);
+                this.sendMonitorUpdate(false, Types.OFF);
                 break;
             case Types.ON:
                 _monitorView.setMonitorState(_model.setModelStateOn());
                 this._consumer.setState(Types.ON);
-                this.sendMonitorUpdate(true);
+                this.sendMonitorUpdate(true, Types.ON);
                 break;
             default:
                 _view.setDigits(_model.setValue(input));
@@ -116,10 +113,10 @@ public class Controller implements ActionListener
 
     }
 
-    public void sendMonitorUpdate(boolean state)
+    public void sendMonitorUpdate(boolean state, String state_string)
     {
         _monitorView.setMonitorState(_model.setModelStateOn());
-        this._consumer.setState(Types.ON);
+        this._consumer.setState(state_string);
         _consumer.sendMonitorState(state);
         _view.setView();
         _monitorView.close();
