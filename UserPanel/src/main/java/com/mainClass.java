@@ -24,7 +24,7 @@ public class mainClass
         cons = new ConsumerTopic();
         cons.setConnection(password);
         myController = new Controller(myView, monitorView, cons, new RequestTable());
-        myController.initmodel(Types.EMPTY, Types.ON);
+        myController.initmodel(Types.ZERO, Types.ON);
         myView.addController(myController);
         monitorView.addController(myController);
         cons.consumeRequired();

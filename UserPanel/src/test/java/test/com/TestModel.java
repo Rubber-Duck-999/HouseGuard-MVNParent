@@ -50,4 +50,21 @@ public class TestModel
         Integer expected = 9999;
         assertNotEquals(actual, expected);
     }
+
+
+    @Test
+    public void testLogic()
+    {
+        Model myModel = new Model();
+        String testBeforePasscode = "9";
+        @SuppressWarnings("unused")
+        String[] unneeded = myModel.initModel(testBeforePasscode);
+        @SuppressWarnings("unused")
+        Integer testPasscode = myModel.checkPass();
+        String[] unneeded2 = myModel.setValue("8");
+        String[] unneeded3 = myModel.setValue("<");
+        Integer actual = myModel.checkPass();
+        Integer expected = 999;
+        assertNotEquals(actual, expected);
+    }
 }

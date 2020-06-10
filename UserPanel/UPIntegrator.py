@@ -41,13 +41,14 @@ channel.basic_publish(exchange='topics', routing_key=topic_request, body='')
 
 id = 1
 def callback(ch, method, properties, body):
-    print(" DBM received an event [x] %r:%r" % (method.routing_key, body))
+    print(" UPIntegrator received an event [x] %r:%r" % (method.routing_key, body))
     if method.routing_key == topic_request_access:
         ##
         global id
         data = {
             "id": str(id), 
-            "result":"PASS" 
+            "result":"PASS",
+            "user": "Gatis"
         }
         id = id + 1
         payload = json.dumps(data)

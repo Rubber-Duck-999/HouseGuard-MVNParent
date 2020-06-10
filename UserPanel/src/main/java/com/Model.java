@@ -19,7 +19,7 @@ public class Model
         _lock = false;
         for(int i = 0; i < MAX; i++)
         {
-            _digitArray[i] = Types.EMPTY;
+            _digitArray[i] = Types.ZERO;
         }
     }
 
@@ -42,7 +42,7 @@ public class Model
             }
             else
             {
-                _digitArray[_currentDigit] = Types.EMPTY;
+                _digitArray[_currentDigit] = Types.ZERO;
                 _currentDigit++;
                 return;
             }
@@ -54,7 +54,7 @@ public class Model
                 _currentDigit++;
             }
         }
-        _digitArray[_currentDigit] = Types.EMPTY;
+        _digitArray[_currentDigit] = Types.ZERO;
     }
 
     public String[] setValue(String value)
@@ -65,7 +65,7 @@ public class Model
         }
         else if(value.equals(Types.CLEAR))
         {
-            initModel(Types.EMPTY);
+            initModel(Types.ZERO);
             _currentDigit = 3;
         }
         else
