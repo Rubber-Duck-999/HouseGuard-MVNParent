@@ -62,6 +62,7 @@ public class DatabaseHelper {
             _connection = DriverManager.getConnection(database_prefix + user_entry +
                           _username + password_entry +
                           _password + database_suffix);
+            removeOldData();
         } catch(SQLException e) {
             _LOGGER.severe("A connection could not be established because of : " + e );
             e.printStackTrace();
