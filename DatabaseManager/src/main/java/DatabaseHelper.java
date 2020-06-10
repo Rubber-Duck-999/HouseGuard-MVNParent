@@ -66,7 +66,20 @@ public class DatabaseHelper {
             _LOGGER.severe("A connection could not be established because of : " + e );
             e.printStackTrace();
         }
+    }
 
+    private void removeOldData() {
+        try {
+            PreparedStatement _prepared = _connection.prepareStatement("DELETE FROM event WHERE " +
+                                            "time_sent<=?");
+            LocalDateTime current = LocalDateTime.now();
+            LocalDateTime x = current.minusDays(3);
+            Timestamp timestamp = Timestamp.valueOf(x);
+            _prepared.setTimestamp(1, timestamp);
+            Execute(_prepared);
+        } catch(SQLException e) {
+            _LOGGER.severe("Error: " + e);
+        }
     }
 
     public boolean checkUserPin(int pin) throws SQLException {
