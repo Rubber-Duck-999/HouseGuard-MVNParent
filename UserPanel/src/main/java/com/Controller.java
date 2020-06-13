@@ -98,12 +98,10 @@ public class Controller implements ActionListener
                 break;
             case Types.OFF:
                 _monitorView.setMonitorState(_model.setModelStateOFF());
-                this._consumer.setState(Types.OFF);
                 this.sendMonitorUpdate(false, Types.OFF);
                 break;
             case Types.ON:
                 _monitorView.setMonitorState(_model.setModelStateOn());
-                this._consumer.setState(Types.ON);
                 this.sendMonitorUpdate(true, Types.ON);
                 break;
             default:
@@ -115,7 +113,6 @@ public class Controller implements ActionListener
 
     public void sendMonitorUpdate(boolean state, String state_string)
     {
-        _monitorView.setMonitorState(_model.setModelStateOn());
         this._consumer.setState(state_string);
         _consumer.sendMonitorState(state);
         _view.setView();
