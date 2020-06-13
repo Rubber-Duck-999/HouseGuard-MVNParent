@@ -11,23 +11,23 @@ mvn install
 if [ -f DatabaseManager/target/DatabaseManager* ];
 then
     echo "DBM File found"
-    if [ -f $HOME/Documents/HouseGuard-MVNParent/DatabaseManager.jar ];
+    if [ -f $HOME/Documents/Deploy/DatabaseManager.jar ];
     then
         echo "DBM old removed"
-        rm -f $HOME/Documents/Temp/DatabaseManager.jar
+        rm -f $HOME/Documents/Deploy/DatabaseManager.jar
     fi
-    mv DatabaseManager/target/DatabaseManager* $HOME/Documents/Temp/DatabaseManager.jar
+    mv DatabaseManager/target/DatabaseManager* $HOME/Documents/Deploy/DatabaseManager.jar
 fi
 
 if [ -f UserPanel/target/UserPanel* ];
 then
     echo "UP File found"
-    if [ -f $HOME/Documents/HouseGuard-MVNParent/UserPanel.jar ];
+    if [ -f $HOME/Documents/Deploy/UserPanel.jar ];
     then
         echo "UP old removed"
-        rm -f $HOME/Documents/Temp/UserPanel.jar
+        rm -f $HOME/Documents/Deploy/UserPanel.jar
     fi
-    mv UserPanel/target/UserPanel* $HOME/Documents/Temp/UserPanel.jar
+    mv UserPanel/target/UserPanel* $HOME/Documents/Deploy/UserPanel.jar
 fi
 
 mvn clean
