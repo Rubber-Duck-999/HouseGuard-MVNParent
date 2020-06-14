@@ -3,3 +3,4 @@
 *.project
 app.config
 DBM.yml
+dependency-reduced-pom.xml
