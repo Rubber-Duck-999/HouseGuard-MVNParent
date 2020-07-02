@@ -15,9 +15,11 @@ public class Controller implements ActionListener
     private MonitorView _monitorView;
     private ConsumerTopic _consumer;
     private RequestTable _pinTable;
+    private Logger _LOGGER;
 
-    public Controller(View v, MonitorView monitorView, 
+    public Controller(Logger LOGGER, View v, MonitorView monitorView, 
         ConsumerTopic consumer, RequestTable requestTable) {
+        _LOGGER = LOGGER;
         // Constructor
         this._model = new Model();
         this._view = v;
@@ -29,7 +31,7 @@ public class Controller implements ActionListener
     public void enterCommand() {
         Integer val = _model.checkPass();
         Integer key = _pinTable.addRecordNextKeyReturn(val);
-        System.out.println("Getting request key");
+        _LOGGER.info("Getting request key");
         _consumer.askForAccess(key, val);
     }
 
@@ -67,13 +69,13 @@ public class Controller implements ActionListener
     private void Enter() {
         try {
             if(_model.isValidPin()) {
-                System.out.println("Pin is valid number, proceeding");
+                _LOGGER.info("Pin is valid number, proceeding");
                 this.enterCommand();
                 TimeUnit.SECONDS.sleep(1);
                 this.checkAccess();
                 _view.setDigits(_model.initModel(Types.EMPTY));
             } else {
-                System.out.println("User entered incorrect or empty pin");
+                _LOGGER.info("User entered incorrect or empty pin");
             }
         } catch(Exception e) {
             e.printStackTrace();
@@ -87,7 +89,7 @@ public class Controller implements ActionListener
         }
         switch(input) {
             case Types.ENTER:
-                System.out.println("User entered enter");
+                _LOGGER.info("User entered enter");
                 this.Enter();
                 break;
             case Types.CLEAR:

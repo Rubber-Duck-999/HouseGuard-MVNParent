@@ -122,18 +122,14 @@ public class Model
     public boolean checkUnlock()
     {
         int minute = LocalDateTime.now().getMinute();
-        System.out.println("Minute started: " + _timeMinute + 
-                " Minute now: " + minute);
         if((minute - _timeMinute) != 0)
         {
-            System.out.println("More than 1 minutes have occured, unlock");
             _lock = false;
             resetAttempts();
             return _lock;
         }
         else
         {
-            System.out.println("1 minutes have not occured, lock continues");
             return _lock;
         }
     }

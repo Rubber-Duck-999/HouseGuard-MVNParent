@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeoutException;
 import com.house_guard.Common.*;
+import java.util.logging.Logger;
 
 
 import com.google.gson.Gson;
@@ -24,6 +25,7 @@ public class ConsumerTopic
     private boolean accessRequested;
     private Integer receivedId;
     private StatusUP status;
+    private Logger _LOGGER;
 
     public void setGranted(String granted)
     {
@@ -68,7 +70,7 @@ public class ConsumerTopic
         }
         catch (IOException e)
         {
-            System.out.println("We have had issues publishing");
+            _LOGGER.info("We have had issues publishing");
             e.printStackTrace();
         }
     }
@@ -84,7 +86,7 @@ public class ConsumerTopic
 
     public void askForAccess(Integer key, Integer val)
     {
-        System.out.println("Requesting access ");
+        _LOGGER.info("Requesting access ");
         Gson gson = new Gson();
         RequestAccess req = new RequestAccess(key, val);
         String json = gson.toJson(req);
@@ -95,7 +97,7 @@ public class ConsumerTopic
 
     public void publishStatus()
     {
-        System.out.println("Publishing Status ");
+        _LOGGER.info("Publishing Status ");
         Gson gson = new Gson();
         String json = gson.toJson(this.status);
         publish(json, Types.STATUS_UP_TOPIC);
@@ -103,15 +105,14 @@ public class ConsumerTopic
 
     private void accessResponse(String delivery, String routingKey)
     {
-        System.out.println("Received response");
-        System.out.println(delivery);
+        _LOGGER.info("Received response");
         accessRequested = true;
         Gson gson = new Gson();
         AccessResponse data = gson.fromJson(delivery, AccessResponse.class);
         receivedId = data.getId();
         if(!data.getResult().equals(Types.PASS))
         {
-            System.out.println("Publishing event.Up topic");
+            _LOGGER.info("Publishing event.Up topic");
             accessAllowed = false;
             String pubMessage = createEventUpMessage();
             try
@@ -153,9 +154,9 @@ public class ConsumerTopic
             channel.queueBind(subscribeQueueName, EXCHANGE_NAME, Types.ACCESS_RESPONSE_TOPIC);
             channel.queueBind(subscribeQueueName, EXCHANGE_NAME, Types.STATUS_REQUEST_UP_TOPIC);
             //
-            System.out.println(" [*] Waiting for TOPICS. To exit press CTRL+C");
+            _LOGGER.info(" [*] Waiting for TOPICS. To exit press CTRL+C");
             DeliverCallback deliverCallback = (consumerTag, delivery) -> {
-                System.out.println("Message received");
+                _LOGGER.info("Message received");
                 if(delivery.getEnvelope().getRoutingKey().equals(Types.ACCESS_RESPONSE_TOPIC)) {
                     this.accessResponse(new String(delivery.getBody()), delivery.getEnvelope().getRoutingKey());
                 } else {
@@ -183,14 +184,15 @@ public class ConsumerTopic
         }
         catch (IOException | TimeoutException e)
         {
-            System.out.println("We have had trouble setting up the required connection");
+            _LOGGER.info("We have had trouble setting up the required connection");
             e.printStackTrace();
         }
     }
 
 
-    public ConsumerTopic()
+    public ConsumerTopic(Logger LOGGER)
     {
+
         receivedId = 0;
         accessAllowed = false;
         accessRequested = false;
