@@ -192,7 +192,7 @@ public class ConsumerTopic
 
     public ConsumerTopic(Logger LOGGER)
     {
-
+        _LOGGER = LOGGER;
         receivedId = 0;
         accessAllowed = false;
         accessRequested = false;
