@@ -77,6 +77,7 @@ public class ConsumerTopic
 
     public void sendMonitorState(boolean state)
     {
+        this.publishStatus();
         Gson gson = new Gson();
         MonitorState mon = new MonitorState();
         mon.setState(state);

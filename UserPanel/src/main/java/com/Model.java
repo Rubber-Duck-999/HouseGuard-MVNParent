@@ -15,7 +15,8 @@ public class Model
     public Model()
     {
         _digitArray = new String[4];
-        _attempts = _timeMinute = 0;
+        this._attempts = 0;
+        _timeMinute = LocalDateTime.now().getMinute();
         _lock = false;
         for(int i = 0; i < MAX; i++)
         {
@@ -103,13 +104,13 @@ public class Model
 
     public void resetAttempts()
     {
-        _attempts = 0;
+        this._attempts = 0;
     }
 
     public boolean checkAttempts()
     {
-        _attempts++;
-        if(_attempts >= 3)
+        this._attempts++;
+        if(this._attempts >= 3)
         {
             _timeMinute = LocalDateTime.now().getMinute();
             _lock = true;
@@ -122,7 +123,7 @@ public class Model
     public boolean checkUnlock()
     {
         int minute = LocalDateTime.now().getMinute();
-        if((minute - _timeMinute) != 0)
+        if((minute - _timeMinute) > 5)
         {
             _lock = false;
             resetAttempts();

@@ -67,4 +67,25 @@ public class TestModel
         Integer expected = 999;
         assertNotEquals(actual, expected);
     }
+
+    @Test
+    public void checkAttemptsLogic()
+    {
+        Model myModel = new Model();
+        assertFalse(myModel.checkAttempts());
+        assertFalse(myModel.checkAttempts());
+        assertTrue(myModel.checkAttempts());
+        myModel.resetAttempts();
+        assertTrue(myModel.checkAttempts());
+    }
+
+    @Test
+    public void checkUnlock()
+    {
+        Model myModel = new Model();
+        assertFalse(myModel.checkAttempts());
+        assertFalse(myModel.checkAttempts());
+        assertTrue(myModel.checkAttempts());
+        assertTrue(myModel.checkUnlock());
+    }
 }

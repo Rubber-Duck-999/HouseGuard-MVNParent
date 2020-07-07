@@ -38,15 +38,16 @@ public class Controller implements ActionListener
     private void stateUpdate(boolean state) {
         LocalDateTime time = LocalDateTime.now();  
         if(state) {
-            this._consumer.setGranted(time.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"))); 
+            this._consumer.setGranted(time.format(DateTimeFormatter.ofPattern("HH:mm:ss"))); 
             _view.displayPassMessage("Hello " + _consumer.getUser());
         } else { 
-            this._consumer.setBlocked(time.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")));
-            _view.displayErrorMessage("Try again in 5 minutes");  
+            this._consumer.setBlocked(time.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+            _view.displayErrorMessage("Try again in 1 minute");  
         }
     }
 
     public void checkAccess() {
+        _LOGGER.info("checkAccess()");
         if(_consumer.getAccessState() && _pinTable.doesKeyExist(_consumer.getId())) {
             _model.resetAttempts();
             stateUpdate(true);
@@ -54,8 +55,10 @@ public class Controller implements ActionListener
             this._monitorView.setMonitor();
         } else {
             if(_model.checkAttempts()) {
+                _LOGGER.info("attempts reached");
                 stateUpdate(false);               
             } else {
+                _LOGGER.info("Incorrect passcode");
                 _view.displayErrorMessage("Wrong Passcode");
             }
         }
@@ -67,13 +70,16 @@ public class Controller implements ActionListener
     }
 
     private void Enter() {
+        if(_model.checkUnlock()) {
+            return;
+        }
         try {
             if(_model.isValidPin()) {
                 _LOGGER.info("Pin is valid number, proceeding");
                 this.enterCommand();
                 TimeUnit.SECONDS.sleep(1);
                 this.checkAccess();
-                _view.setDigits(_model.initModel(Types.EMPTY));
+                _view.setDigits(_model.initModel(Types.ZERO));
             } else {
                 _LOGGER.info("User entered incorrect or empty pin");
             }
@@ -84,12 +90,8 @@ public class Controller implements ActionListener
 
 
     public void checkAction(String input) {
-        if(_model.checkUnlock()) {
-            return;
-        }
         switch(input) {
             case Types.ENTER:
-                _LOGGER.info("User entered enter");
                 this.Enter();
                 break;
             case Types.CLEAR:
