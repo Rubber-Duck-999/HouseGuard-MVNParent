@@ -81,7 +81,7 @@
           <manifest>
             <addClasspath>true</addClasspath>
             <classpathPrefix>lib/</classpathPrefix>
-            <mainClass>com.mainClass</mainClass>
+            <mainClass>com.house_guard.user_panel.mainClass</mainClass>
           </manifest>
         </archive>
       </configuration>

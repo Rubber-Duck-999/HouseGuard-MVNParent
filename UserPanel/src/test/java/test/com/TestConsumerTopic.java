@@ -15,7 +15,7 @@ import java.io.*;
 import com.google.gson.Gson;
 import java.util.*;
 import java.lang.*;
-import com.*;
+import com.house_guard.user_panel.*;
 import com.house_guard.Common.*;
 
 public class TestConsumerTopic

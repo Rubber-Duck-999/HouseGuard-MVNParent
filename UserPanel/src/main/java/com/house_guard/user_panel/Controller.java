@@ -1,12 +1,12 @@
-package com;
+package com.house_guard.user_panel;
 
 import java.awt.event.ActionListener;
-import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
-import java.awt.event.ActionEvent;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
-import com.house_guard.Common.*;
 import java.util.logging.Logger;
+
+import com.house_guard.Common.Types;
 
 public class Controller implements ActionListener
 {
@@ -42,20 +42,27 @@ public class Controller implements ActionListener
             _view.displayPassMessage("Hello " + _consumer.getUser());
         } else { 
             this._consumer.setBlocked(time.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-            _view.displayErrorMessage("Try again in 1 minute");  
+            this._consumer.publishStatus();
+            _view.displayErrorMessage("Try again in 5 minutes");  
         }
     }
 
     public void checkAccess() {
         _LOGGER.info("checkAccess()");
-        if(_consumer.getAccessState() && _pinTable.doesKeyExist(_consumer.getId())) {
-            _model.resetAttempts();
-            stateUpdate(true);
-            this._view.close();
-            this._monitorView.setMonitor();
+        if(!_consumer.getAccessRequested() && _consumer.getAccessState()) {
+            _LOGGER.info("Correct pin");
+            if(_pinTable.doesKeyExist(_consumer.getId())) {
+                _model.resetAttempts();
+                stateUpdate(true);
+                this._view.close();
+                this._monitorView.setMonitor();
+            } else {
+                _LOGGER.info("Ids for pin request and response do not match");
+            }
         } else {
             if(_model.checkAttempts()) {
                 _LOGGER.info("attempts reached");
+                _model.lock();
                 stateUpdate(false);               
             } else {
                 _LOGGER.info("Incorrect passcode");
@@ -70,12 +77,9 @@ public class Controller implements ActionListener
     }
 
     private void Enter() {
-        if(_model.checkUnlock()) {
-            return;
-        }
         try {
             if(_model.isValidPin()) {
-                _LOGGER.info("Pin is valid number, proceeding");
+                _LOGGER.info("Pin is a valid number, proceeding");
                 this.enterCommand();
                 TimeUnit.SECONDS.sleep(1);
                 this.checkAccess();
@@ -90,6 +94,9 @@ public class Controller implements ActionListener
 
 
     public void checkAction(String input) {
+        if(_model.checkUnlock()) {
+            return;
+        }
         switch(input) {
             case Types.ENTER:
                 this.Enter();
@@ -98,7 +105,7 @@ public class Controller implements ActionListener
                 _view.setDigits(_model.setValue(Types.CLEAR));
                 break;
             case Types.BACK:
-                _view.setDigits(_model.setValue(Types.BACK));
+                _view.displayErrorMessage("This feature is currently disabled");
                 break;
             case Types.OFF:
                 _monitorView.setMonitorState(_model.setModelStateOFF());

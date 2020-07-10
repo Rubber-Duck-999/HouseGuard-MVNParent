@@ -4,7 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.*;
+import com.house_guard.user_panel.*;
+import com.house_guard.Common.*;
 
 public class TestModel
 {
@@ -61,11 +62,11 @@ public class TestModel
         String[] unneeded = myModel.initModel(testBeforePasscode);
         @SuppressWarnings("unused")
         Integer testPasscode = myModel.checkPass();
-        String[] unneeded2 = myModel.setValue("8");
-        String[] unneeded3 = myModel.setValue("<");
+        String[] unneeded2 = myModel.setValue("X");
+        String[] unneeded3 = myModel.setValue("8");
         Integer actual = myModel.checkPass();
-        Integer expected = 999;
-        assertNotEquals(actual, expected);
+        Integer expected = 8000;
+        assertEquals(actual, expected);
     }
 
     @Test

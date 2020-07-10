@@ -1,4 +1,4 @@
-package com;
+package com.house_guard.user_panel;
 
 import com.house_guard.Common.*;
 import java.time.LocalDateTime;
@@ -34,40 +34,11 @@ public class Model
         return _digitArray;
     }
 
-    private void back() {
-        if(_currentDigit == 0)
-        {
-            if(_digitArray[_currentDigit] == Types.EMPTY)
-            {
-                _currentDigit++;
-            }
-            else
-            {
-                _digitArray[_currentDigit] = Types.ZERO;
-                _currentDigit++;
-                return;
-            }
-        }
-        else
-        {
-            if(_digitArray[_currentDigit] == Types.EMPTY)
-            {
-                _currentDigit++;
-            }
-        }
-        _digitArray[_currentDigit] = Types.ZERO;
-    }
-
     public String[] setValue(String value)
     {
-        if(value.equals(Types.BACK))
-        {
-            back();
-        }
-        else if(value.equals(Types.CLEAR))
+        if(value.equals(Types.CLEAR))
         {
             initModel(Types.ZERO);
-            _currentDigit = 3;
         }
         else
         {
@@ -110,6 +81,7 @@ public class Model
     public boolean checkAttempts()
     {
         this._attempts++;
+        System.out.println("Atempts: " + this._attempts);
         if(this._attempts >= 3)
         {
             _timeMinute = LocalDateTime.now().getMinute();
@@ -144,4 +116,10 @@ public class Model
     {
         return Types.OFF;
     }
+
+    public void lock() 
+    {
+        _timeMinute = LocalDateTime.now().getMinute();
+        _lock = true; 
+	}
 }

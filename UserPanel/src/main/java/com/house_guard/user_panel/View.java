@@ -1,12 +1,9 @@
-package com;
+package com.house_guard.user_panel;
 
 import java.awt.BorderLayout;
-import com.house_guard.Common.*;
-import java.awt.FlowLayout;
+import com.house_guard.Common.Types;
 import java.awt.Font;
 import java.awt.GraphicsDevice;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.*;
 
@@ -15,7 +12,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 public class View

@@ -1,4 +1,4 @@
-package com;
+package com.house_guard.user_panel;
 
 public class Password
 {

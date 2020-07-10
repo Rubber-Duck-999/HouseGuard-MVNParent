@@ -1,4 +1,4 @@
-package com;
+package com.house_guard.user_panel;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -30,6 +30,7 @@ public class ConsumerTopic
     public void setGranted(String granted)
     {
         this.status.setGranted(granted);
+        
     }
 
     public void setBlocked(String granted)
@@ -91,7 +92,7 @@ public class ConsumerTopic
         Gson gson = new Gson();
         RequestAccess req = new RequestAccess(key, val);
         String json = gson.toJson(req);
-        accessRequested = false;
+        accessRequested = true;
         accessAllowed = false;
         publish(json, Types.REQUEST_ACCESS_TOPIC);
     }
@@ -106,8 +107,8 @@ public class ConsumerTopic
 
     private void accessResponse(String delivery, String routingKey)
     {
+        accessRequested = false;
         _LOGGER.info("Received response");
-        accessRequested = true;
         Gson gson = new Gson();
         AccessResponse data = gson.fromJson(delivery, AccessResponse.class);
         receivedId = data.getId();

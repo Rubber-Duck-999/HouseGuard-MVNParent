@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.*;
+import com.house_guard.user_panel.*;
 import com.house_guard.Common.*;
 
 public class TestJsonTypes
