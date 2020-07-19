@@ -2,4 +2,5 @@
 *.classpath
 *.project
 UP.yml
+*.settings
 dependency-reduced-pom.xml
