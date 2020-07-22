@@ -33,8 +33,7 @@ public class Controller implements ActionListener
         //Coding Part of LOGIN button
         if (input.contentEquals("LOGIN")) {
             if (this._view.getUserText().equalsIgnoreCase("m") 
-                && 
-                this._view.getPasswd().equalsIgnoreCase("1")) {
+                && this._view.getPasswd().equalsIgnoreCase("1")) {
                 this._view.displayPassMessage("Login Successful");
             } else {
                 this._view.displayErrorMessage("Invalid Username or Password");

@@ -20,17 +20,25 @@ public class View
         container = frame.getContentPane();
         setLayoutManager();
         setLocationAndSize();
+        setButtonDesign();
         addComponentsToContainer();
         frame.setTitle("House Guard Internal");
         frame.setVisible(true);
         frame.setSize(500, 300);
         frame.setBounds(10, 10, 370, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
+        frame.setResizable(true);
     }
  
     public void setLayoutManager() {
         container.setLayout(null);
+    }
+
+    private void setButtonDesign() {
+        loginButton.setBackground(Color.DARK_GRAY);
+            // these next two lines do the magic..
+        loginButton.setContentAreaFilled(false);
+        loginButton.setOpaque(true);
     }
  
     public void setLocationAndSize() {

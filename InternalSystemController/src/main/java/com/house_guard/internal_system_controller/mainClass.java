@@ -40,9 +40,10 @@ public class mainClass
     public static void startUI()
     {
         LOGGER.setLevel(Level.FINEST);
-        View view = new View();
-        Controller controller = new Controller(LOGGER, view);
-        view.addController(controller);
+        //View view = new View();
+        //Controller controller = new Controller(LOGGER, view);
+        //view.addController(controller);
+        RestAPI.call();
     }
 
     public static void main(String[] argv) throws Exception
