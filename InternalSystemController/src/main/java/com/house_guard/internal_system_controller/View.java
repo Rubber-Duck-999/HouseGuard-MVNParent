@@ -8,10 +8,12 @@ public class View
 {
     JFrame frame = new JFrame();
     Container container = new Container();
-    JLabel userLabel = new JLabel("USERNAME");
+    JLabel ipLabel = new JLabel("IP ADDRESS");
+    JLabel portLabel = new JLabel("PORT");
     JLabel passwordLabel = new JLabel("GUID");
-    JTextField userTextField = new JTextField();
-    JPasswordField passwordField = new JPasswordField();
+    JTextField ipTextField = new JTextField();
+    JTextField portTextField = new JTextField();
+    JPasswordField guidField = new JPasswordField();
     JButton loginButton = new JButton("LOGIN");
     JButton resetButton = new JButton("RESET");
     JCheckBox showPassword = new JCheckBox("Show guid");
@@ -24,10 +26,10 @@ public class View
         addComponentsToContainer();
         frame.setTitle("House Guard Internal");
         frame.setVisible(true);
-        frame.setSize(500, 300);
-        frame.setBounds(10, 10, 370, 600);
+        frame.setSize(500, 500);
+        frame.setBounds(10, 10, 500, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(true);
+        frame.setResizable(false);
     }
  
     public void setLayoutManager() {
@@ -36,26 +38,29 @@ public class View
 
     private void setButtonDesign() {
         loginButton.setBackground(Color.DARK_GRAY);
-            // these next two lines do the magic..
         loginButton.setContentAreaFilled(false);
         loginButton.setOpaque(true);
     }
  
     public void setLocationAndSize() {
-        userLabel.setBounds(50, 150, 100, 30);
-        passwordLabel.setBounds(50, 220, 100, 30);
-        userTextField.setBounds(150, 150, 150, 30);
-        passwordField.setBounds(150, 220, 150, 30);
-        showPassword.setBounds(150, 250, 150, 30);
-        loginButton.setBounds(50, 300, 100, 30);
-        resetButton.setBounds(200, 300, 100, 30);
+        ipLabel.setBounds(50, 100, 100, 50);
+        portLabel.setBounds(50, 170, 100, 50);
+        passwordLabel.setBounds(50, 240, 100, 50);
+        ipTextField.setBounds(150, 100, 150, 50);
+        portTextField.setBounds(150, 170, 150, 50);
+        guidField.setBounds(150, 240, 150, 50);
+        showPassword.setBounds(150, 270, 150, 50);
+        loginButton.setBounds(50, 300, 100, 50);
+        resetButton.setBounds(200, 300, 100, 50);
     }
  
     public void addComponentsToContainer() {
-        container.add(userLabel);
+        container.add(ipLabel);
+        container.add(portLabel);
         container.add(passwordLabel);
-        container.add(userTextField);
-        container.add(passwordField);
+        container.add(ipTextField);
+        container.add(portTextField);
+        container.add(guidField);
         container.add(showPassword);
         container.add(loginButton);
         container.add(resetButton);
@@ -71,28 +76,36 @@ public class View
         resetButton.addActionListener(listenerButtons);
     }
 
-    public String getUserText() {
-        return userTextField.getText();
+    public String getIpText() {
+        return ipTextField.getText();
+    }
+
+    public String getPortText() {
+        return portTextField.getText();
     }
 
     public void setUserText(String text) {
-        userTextField.setText("");
+        ipTextField.setText("");
     }
 
     public void setPasswd(String text) {
-        passwordField.setText("");
+        guidField.setText("");
     }
 
     public String getPasswd() {
-        return String.valueOf(passwordField.getPassword());
+        return String.valueOf(guidField.getPassword());
     }
 
     public void showPasswd() {
         if (showPassword.isSelected()) {
-            passwordField.setEchoChar((char) 0);
+            guidField.setEchoChar((char) 0);
         } else {
-            passwordField.setEchoChar('*');
+            guidField.setEchoChar('*');
         }
+    }
+
+    public void changeLogin(boolean state) {
+        frame.setVisible(state);
     }
 
     public void displayErrorMessage(String message)

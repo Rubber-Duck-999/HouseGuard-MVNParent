@@ -2,30 +2,19 @@ package com.house_guard.internal_system_controller;
 
 public class RequestData {
 
-    private String  guid;
     private Integer request_id;
     private String event_type_id;
     private String time_from;
     private String time_to;
 
-    public RequestData(String guid, Integer request_id, 
+    public RequestData(Integer request_id, 
                         String event_type_id,
                         String time_from, String time_to)
     {
-        this.guid = guid;
         this.request_id = request_id;
         this.time_from = time_from;
         this.time_to = time_to;
         this.event_type_id = event_type_id;
-    }
-
-    public String getGUID()
-    {
-        return guid;
-    }
-    public void setGUID(String guid)
-    {
-        this.guid = guid;
     }
 
     public Integer getRequest_Id()

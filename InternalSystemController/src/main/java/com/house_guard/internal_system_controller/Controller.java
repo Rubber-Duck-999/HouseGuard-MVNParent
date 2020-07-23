@@ -32,7 +32,10 @@ public class Controller implements ActionListener
         //checkAction(input);
         //Coding Part of LOGIN button
         if (input.contentEquals("LOGIN")) {
-            if (this._view.getUserText().equalsIgnoreCase("m") 
+            _LOGGER.info("Ip address: " + this._view.getIpText());
+            _LOGGER.info("Port: " + this._view.getPortText());
+            _LOGGER.info("GUID: " + this._view.getPasswd());
+            if (this._view.getIpText().equalsIgnoreCase("m") 
                 && this._view.getPasswd().equalsIgnoreCase("1")) {
                 this._view.displayPassMessage("Login Successful");
             } else {
