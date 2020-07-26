@@ -4,17 +4,22 @@ import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 import java.util.logging.Logger;
 
-public class Controller implements ActionListener
-{
-    //public Model _model;
+public class Controller implements ActionListener {
+    public Model _model;
     public View _view;
+    public Menu _menu;
+    public Users _users;
+    public Logs _logs;
+    public Devices _devices;
+    public Settings _settings;
     private Logger _LOGGER;
 
-    public Controller(Logger LOGGER, View v) {
+    public Controller(Logger LOGGER, View v, Menu m) {
         _LOGGER = LOGGER;
         // Constructor
-        //this._model = new Model();
+        this._model = new Model();
         this._view = v;
+        this._menu = m;
     }
 
 
@@ -28,44 +33,42 @@ public class Controller implements ActionListener
     }
 
     public void actionPerformed(java.awt.event.ActionEvent e) {
-        String input = e.getActionCommand();
-        //checkAction(input);
-        //Coding Part of LOGIN button
-        if (input.contentEquals("LOGIN")) {
-            _LOGGER.info("Ip address: " + this._view.getIpText());
-            _LOGGER.info("Port: " + this._view.getPortText());
-            _LOGGER.info("GUID: " + this._view.getPasswd());
-            if (this._view.getIpText().equalsIgnoreCase("m") 
-                && this._view.getPasswd().equalsIgnoreCase("1")) {
-                this._view.displayPassMessage("Login Successful");
-            } else {
-                this._view.displayErrorMessage("Invalid Username or Password");
-            }
-    
-        }
-        //Coding Part of RESET button
-        if (input.contentEquals("RESET")) {
-            this._view.setPasswd("");
-        }
-        //Coding Part of showPassword JCheckBox
-        if (input.contentEquals("SHOW")) {
-            this._view.showPasswd();
-        }
-    }
-
-
-    public void checkAction(String input) {
-        switch(input) {
+        _LOGGER.warning("Checking Action");
+        switch(e.getActionCommand()) {
             case "LOGIN":
-                //this.Enter();
+                this._model.setConnection(this._view.getIpText(), 
+                    this._view.getPortText(), 
+                    this._view.getPasswd());
+                if (this._model.correctCredentials()) {
+                    this._view.displayPassMessage("Login Successful");
+                    this._view.changeLogin(false);
+                    this._menu.changeView(true);
+                } else {
+                    this._view.displayErrorMessage("Invalid Username or Password");
+                }
                 break;
             case "RESET":
-                //_view.setDigits(_model.setValue(Types.CLEAR));
+                this._view.setPasswd("");
+                break;
+            case "SHOW":
+                this._view.showPasswd();
+                break;
+            case "LOGS":
+                this._model.getLogs("", "", "");
+                //this._menu.changeView(false);
+                break;
+            case "USERS":
+                this._menu.changeView(false);
+                break;
+            case "DEVICES":
+                this._menu.changeView(false);
+                break;
+            case "SETTINGS":
+                this._menu.changeView(false);
                 break;
             default:
-                //_view.setDigits(_model.setValue(input));
+                _LOGGER.info("We should not have hit thus");
                 break;
-        }
-
+            }
     }
 }

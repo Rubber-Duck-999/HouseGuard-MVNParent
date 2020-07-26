@@ -13,7 +13,8 @@ public class Menu {
     JButton logsButton = new JButton("LOGS");
     JButton usersButton = new JButton("USERS");
     JButton devicesButton = new JButton("DEVICES");
-    JButton settingsButton = new JButton("SETTINGS");    
+    JButton settingsButton = new JButton("SETTINGS");   
+    JButton logoutButton = new JButton("LOGOUT"); 
    
     public Menu() {
         container = frame.getContentPane();
@@ -21,8 +22,8 @@ public class Menu {
         setLocationAndSize();
         addComponentsToContainer();
         frame.setTitle("House Guard Menu");
-        frame.setVisible(true);
-        frame.setSize(500, 500);
+        frame.setVisible(false);
+        frame.setSize(600, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
     }
@@ -32,21 +33,22 @@ public class Menu {
     }
  
     public void setLocationAndSize() {
-        logsButton.setBounds(200, 50, 150, 100);
-        usersButton.setBounds(200, 150, 150, 100);
-        devicesButton.setBounds(200, 250, 150, 100);
-        settingsButton.setBounds(200, 350, 150, 100);
+        logsButton.setBounds(100, 50, 300, 90);
+        usersButton.setBounds(100, 150, 300, 90);
+        devicesButton.setBounds(100, 250, 300, 90);
+        settingsButton.setBounds(100, 350, 300, 90);
+        logoutButton.setBounds(100, 450, 300, 90);
     }
  
     public void addComponentsToContainer() {
         container.add(logsButton);
         container.add(usersButton);
         container.add(devicesButton);
-        container.add(settingsButton);       
+        container.add(settingsButton);     
+        container.add(logoutButton);  
     }
  
-    public void addController(ActionListener listenerButtons)
-    {
+    public void addController(ActionListener listenerButtons) {
         logsButton.setActionCommand("LOGS");
         logsButton.addActionListener(listenerButtons);
         usersButton.setActionCommand("USERS");
@@ -55,17 +57,20 @@ public class Menu {
         devicesButton.addActionListener(listenerButtons);
         settingsButton.setActionCommand("SETTINGS");
         settingsButton.addActionListener(listenerButtons);
+        logoutButton.setActionCommand("LOGOUT");
+        logoutButton.addActionListener(listenerButtons);      
     }
 
-    public void close()
-    {
+    public void changeView(boolean state) {
+        frame.setVisible(state);
+    }
+
+    public void close() {
         frame.dispose();
     }
 
-    public static class CloseListener extends WindowAdapter
-    {
-        public void windowClosing(WindowEvent e)
-        {
+    public static class CloseListener extends WindowAdapter {
+        public void windowClosing(WindowEvent e) {
             e.getWindow().setVisible(false);
             e.getWindow().dispose();
         }

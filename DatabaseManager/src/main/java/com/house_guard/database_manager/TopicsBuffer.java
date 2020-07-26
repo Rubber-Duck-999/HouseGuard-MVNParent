@@ -1,8 +1,6 @@
 package com.house_guard.database_manager;
 
-import java.util.*;
 import java.util.logging.Logger;
-import java.lang.*;
 import com.house_guard.Common.Types; 
 import com.house_guard.Common.*;
 import java.util.Vector;

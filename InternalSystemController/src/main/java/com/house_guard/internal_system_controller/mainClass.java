@@ -41,10 +41,10 @@ public class mainClass
     {
         LOGGER.setLevel(Level.FINEST);
         View view = new View();
-        Controller controller = new Controller(LOGGER, view);
-        view.addController(controller);
         Menu menu = new Menu();
-        view.changeLogin(false);
+        Controller controller = new Controller(LOGGER, view, menu);
+        view.addController(controller);
+        menu.addController(controller);
     }
 
     public static void main(String[] argv) throws Exception
