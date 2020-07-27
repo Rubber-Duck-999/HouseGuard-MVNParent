@@ -2,6 +2,7 @@ package com.house_guard.internal_system_controller;
 
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.logging.Logger;
 
 public class Controller implements ActionListener {
@@ -14,12 +15,13 @@ public class Controller implements ActionListener {
     public Settings _settings;
     private Logger _LOGGER;
 
-    public Controller(Logger LOGGER, View v, Menu m) {
+    public Controller(Logger LOGGER, View v, Menu m, Logs l) {
         _LOGGER = LOGGER;
         // Constructor
-        this._model = new Model();
+        this._model = new Model(_LOGGER);
         this._view = v;
         this._menu = m;
+        this._logs = l;
     }
 
 
@@ -54,8 +56,8 @@ public class Controller implements ActionListener {
                 this._view.showPasswd();
                 break;
             case "LOGS":
-                this._model.getLogs("", "", "");
-                //this._menu.changeView(false);
+                this._logs.changeView(true);
+                this._menu.changeView(false);
                 break;
             case "USERS":
                 this._menu.changeView(false);
@@ -66,9 +68,24 @@ public class Controller implements ActionListener {
             case "SETTINGS":
                 this._menu.changeView(false);
                 break;
+            case "LOGS - CREATE":
+                getLogs();
+                break;
             default:
                 _LOGGER.info("We should not have hit thus");
                 break;
             }
+    }
+
+    private void getLogs() {
+        LocalTime timeFrom = this._logs.getTimeFrom();
+        LocalTime timeTo   = this._logs.getTimeTo();
+        String event = this._logs.getEventType();
+        if(timeFrom.isBefore(timeTo) &&
+            (!timeFrom.equals(timeTo))) {
+            _LOGGER.info("Time is a suitable value");
+            this._logs.displayPassMessage("Retrieving Logs, please wait...");
+            this._model.getLogs(timeFrom.toString(), timeTo.toString(), event);
+        }
     }
 }

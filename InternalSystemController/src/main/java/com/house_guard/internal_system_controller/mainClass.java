@@ -42,9 +42,11 @@ public class mainClass
         LOGGER.setLevel(Level.FINEST);
         View view = new View();
         Menu menu = new Menu();
-        Controller controller = new Controller(LOGGER, view, menu);
+        Logs logs = new Logs();
+        Controller controller = new Controller(LOGGER, view, menu, logs);
         view.addController(controller);
         menu.addController(controller);
+        logs.addController(controller);
     }
 
     public static void main(String[] argv) throws Exception

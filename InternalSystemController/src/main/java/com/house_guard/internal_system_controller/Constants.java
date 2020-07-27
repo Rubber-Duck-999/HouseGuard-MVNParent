@@ -27,4 +27,8 @@ public interface Constants {
 
     // Camera Monitor
     final String ImageLimit = "CM1";
+
+    final String[] kEventTypes = 
+        new String[] {"Email Server Malfunction",
+                      "Motion Detected in Flat"};
 }

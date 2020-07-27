@@ -10,39 +10,45 @@ public class DataResponse {
     public DataResponse() {
 
     }
-
-    public int getId() {
-        return _id;
+    public DataResponse(int _id, int _messageNum, int _totalMessage, String _topicMessage, String _timeSent) {
+        this._id = _id;
+        this._messageNum = _messageNum;
+        this._totalMessage = _totalMessage;
+        this._topicMessage = _topicMessage;
+        this._timeSent = _timeSent;
     }
-    public void setId(int id) {
-        this._id = id;
+    public int getId() {
+        return this._id;
+    }
+    public void setId(int _id) {
+        this._id = _id;
     }
     public int getMessageNum() {
-        return _messageNum;
+        return this._messageNum;
     }
-    public void setMessageNum(int num) {
-        this._messageNum = num;
+    public void setMessageNum(int _messageNum) {
+        this._messageNum = _messageNum;
     }
     public int getTotalMessage() {
-        return _totalMessage;
+        return this._totalMessage;
     }
-    public void setTotalMessage(int total) {
-        this._totalMessage = total;
+    public void setTotalMessage(int _totalMessage) {
+        this._totalMessage = _totalMessage;
     }
 
     public String getTimeSent() {
-        return _timeSent;
+        return this._timeSent;
     }
 
-    public void setTimeSent(String time) {
-        _timeSent = time;
+    public void setTimeSent(String _timeSent) {
+        this._timeSent = _timeSent;
     }
 
     public String getTopicMessage() {
-        return _topicMessage;
+        return this._topicMessage;
     }
 
-    public void setTopicMessage(String message) {
-        _topicMessage = message;
+    public void setTopicMessage(String _topicMessage) {
+        this._topicMessage = _topicMessage;
     }
 }

@@ -23,7 +23,7 @@ public class Menu {
         addComponentsToContainer();
         frame.setTitle("House Guard Menu");
         frame.setVisible(false);
-        frame.setSize(600, 500);
+        frame.setSize(500, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
     }
