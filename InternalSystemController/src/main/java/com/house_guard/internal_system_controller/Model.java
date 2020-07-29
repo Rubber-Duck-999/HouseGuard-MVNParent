@@ -1,5 +1,6 @@
 package com.house_guard.internal_system_controller;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 public class Model 
@@ -19,10 +20,15 @@ public class Model
         }
     }
 
-    public void getLogs(String time_from, String time_to, String event_type) {
+    public String[][] getLogs(String time_from, String time_to, String event_type) {
         _logger.info("Requesting logs");
         RequestData data = new RequestData(event_type, time_from, time_to);
-        _rest.getLogs(data);
+        if(_rest.getLogs(data)) {
+            _logger.info("Logs retrieved correctly");
+        } else {
+            _logger.severe("Error retrieving logs");
+        }
+        return _rest.getArray();
     }
 
     public boolean correctCredentials() {

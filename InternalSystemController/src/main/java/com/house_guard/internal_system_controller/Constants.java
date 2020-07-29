@@ -21,14 +21,18 @@ public interface Constants {
     final String kUnknown = "NAC3";
 
     // User Panel
-    final String StateChanged = "UP1";
-    final String Incorrect = "UP2";
-    final String MaxAttempts = "UP3";
+    final String kStateChanged = "UP1";
+    final String kIncorrect = "UP2";
+    final String kMaxAttempts = "UP3";
 
     // Camera Monitor
-    final String ImageLimit = "CM1";
+    final String kImageLimit = "CM1";
+
+    //Event Switch Types
+    final String kEmailServer = "Email Server Malfunction";
+    final String kMotionDetected = "Motion Detected in Flat";
+
 
     final String[] kEventTypes = 
-        new String[] {"Email Server Malfunction",
-                      "Motion Detected in Flat"};
+        new String[] {kEmailServer, kMotionDetected};
 }

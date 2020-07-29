@@ -38,16 +38,7 @@ public class Controller implements ActionListener {
         _LOGGER.warning("Checking Action");
         switch(e.getActionCommand()) {
             case "LOGIN":
-                this._model.setConnection(this._view.getIpText(), 
-                    this._view.getPortText(), 
-                    this._view.getPasswd());
-                if (this._model.correctCredentials()) {
-                    this._view.displayPassMessage("Login Successful");
-                    this._view.changeLogin(false);
-                    this._menu.changeView(true);
-                } else {
-                    this._view.displayErrorMessage("Invalid Username or Password");
-                }
+                this.getLogin();
                 break;
             case "RESET":
                 this._view.setPasswd("");
@@ -72,20 +63,54 @@ public class Controller implements ActionListener {
                 getLogs();
                 break;
             default:
-                _LOGGER.info("We should not have hit thus");
+                _LOGGER.info("We should not have hit this");
                 break;
             }
+    }
+
+    private void getLogin() {
+        _LOGGER.info("Checking login details");
+        this._model.setConnection(this._view.getIpText(), 
+        this._view.getPortText(), 
+        this._view.getPasswd());
+        if (this._model.correctCredentials()) {
+            this._view.displayPassMessage("Login Successful");
+            this._view.changeLogin(false);
+            this._menu.changeView(true);
+        } else {
+            this._view.displayErrorMessage("Invalid Username or Password");
+        }
     }
 
     private void getLogs() {
         LocalTime timeFrom = this._logs.getTimeFrom();
         LocalTime timeTo   = this._logs.getTimeTo();
-        String event = this._logs.getEventType();
-        if(timeFrom.isBefore(timeTo) &&
-            (!timeFrom.equals(timeTo))) {
-            _LOGGER.info("Time is a suitable value");
+        String event = convertEvent(this._logs.getEventType());
+        _LOGGER.info("Time: " + timeFrom + ", Time: " + timeTo);
+        if(timeFrom.isBefore(timeTo)) {
+            _LOGGER.info("Time range is suitable");
+            String[][] array = this._model.getLogs(timeFrom.toString(), timeTo.toString(), event);
             this._logs.displayPassMessage("Retrieving Logs, please wait...");
-            this._model.getLogs(timeFrom.toString(), timeTo.toString(), event);
+            System.out.println("Array values length: " + array.length);
+            Graph _graph = new Graph(array);
+        } else {
+            _LOGGER.warning("Time range was invalid");
         }
+    }
+
+    private String convertEvent(String eventType) {
+        String choice;
+        switch(eventType) {
+            case Constants.kEmailServer:
+                choice = Constants.kEmail;
+                break;
+            case Constants.kMotionDetected:
+                choice = Constants.kMotion;
+                break;
+            default:
+                choice = "";
+                break;
+        }
+        return choice;
     }
 }

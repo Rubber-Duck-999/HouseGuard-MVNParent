@@ -80,7 +80,7 @@ public class Logs {
     }
 
     public LocalTime getTimeTo() {
-        return timeFromPicker.getTime();
+        return timeToPicker.getTime();
     }
 
     public String getEventType() {
