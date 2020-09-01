@@ -88,7 +88,8 @@ public class RestAPI {
             }
             conn.disconnect();
         } catch (Exception e) {
-            System.out.println("Exception in NetClientGet:- " + e);
+            System.out.println("Exception in NetClientGet: " + e);
+            return false;
         }
         return true;
     }

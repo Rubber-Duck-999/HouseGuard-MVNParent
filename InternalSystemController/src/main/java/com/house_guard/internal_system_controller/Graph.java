@@ -11,7 +11,7 @@ public class Graph {
     JFrame f; 
     // Table 
     JTable j; 
-    private String[] columnNames = { "Index", "Time", "Type" };
+    private String[] columnNames = { "Index", "Type", "Time Sent" };
 
 
     // Constructor 
@@ -21,7 +21,7 @@ public class Graph {
         f = new JFrame(); 
   
         // Frame Title 
-        f.setTitle("JTable Example");
+        f.setTitle("Type: ");
   
         // Initializing the JTable 
         j = new JTable(array, columnNames); 

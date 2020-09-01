@@ -91,7 +91,7 @@ public class Controller implements ActionListener {
             _LOGGER.info("Time range is suitable");
             String[][] array = this._model.getLogs(timeFrom.toString(), timeTo.toString(), event);
             this._logs.displayPassMessage("Retrieving Logs, please wait...");
-            System.out.println("Array values length: " + array.length);
+            _LOGGER.info("Array values length: " + array.length);
             Graph _graph = new Graph(array);
         } else {
             _LOGGER.warning("Time range was invalid");
