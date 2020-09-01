@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
+import java.awt.Color;
 
 import com.house_guard.Common.Types;
 
@@ -108,11 +109,11 @@ public class Controller implements ActionListener
                 _view.displayErrorMessage("This feature is currently disabled");
                 break;
             case Types.OFF:
-                _monitorView.setMonitorState(_model.setModelStateOFF());
+                _monitorView.setMonitorState(_model.setModelStateOFF(), Color.RED);
                 this.sendMonitorUpdate(false, Types.OFF);
                 break;
             case Types.ON:
-                _monitorView.setMonitorState(_model.setModelStateOn());
+                _monitorView.setMonitorState(_model.setModelStateOn(), Color.GREEN);
                 this.sendMonitorUpdate(true, Types.ON);
                 break;
             default:
@@ -134,6 +135,6 @@ public class Controller implements ActionListener
     {
         this._consumer.setState(state);
         _view.setDigits(_model.initModel(x));
-        _monitorView.setMonitorState(state);
+        _monitorView.setMonitorState(state, Color.GREEN);
     }
 }

@@ -78,7 +78,7 @@ public class MonitorView
         ONButton.setFont(buttonFont);
         ONButton.setForeground(Color.GREEN);
         OFFButton.setFont(buttonFont);
-        OFFButton.setForeground(Color.GREEN);
+        OFFButton.setForeground(Color.RED);
     }
 
     public void close()
@@ -86,9 +86,10 @@ public class MonitorView
         frame.dispose();
     }
 
-    public < E > void setMonitorState(E v)
+    public < E > void setMonitorState(E v, Color colour)
     {
         monitorState.setText("" + v);
+        monitorState.setForeground(colour);
     }
 
     public void addController(ActionListener listenerButtons)
