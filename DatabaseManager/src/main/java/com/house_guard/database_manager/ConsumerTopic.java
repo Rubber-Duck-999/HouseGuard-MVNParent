@@ -57,6 +57,13 @@ public class ConsumerTopic {
         PublishMessage(json, Types.ACCESS_RESPONSE_TOPIC);
     }   
 
+    public void PublishFailureDatabase() {
+        gson = new Gson();
+        FailureDatabase db = new FailureDatabase("00:00:00", "Failure");
+        String json = gson.toJson(db);
+        PublishMessage(json, Types.FAILURE_DATABASE_TOPIC);
+    }
+
     public void PublishStatus() {
         gson = new Gson();
         String json = gson.toJson(_buffer.GetStatus());
@@ -129,6 +136,16 @@ public class ConsumerTopic {
         } catch (IOException e) {
             e.printStackTrace();
             _LOGGER.severe("Exception setting up consumption : " + e);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            _LOGGER.severe("Rabbitmq failed");
+
+        }
+    }
+
+    public void setupBuffer() {
+        if(_buffer.getSetup() == false) {
+            this.PublishFailureDatabase();
         }
     }
 

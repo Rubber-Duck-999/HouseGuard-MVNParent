@@ -61,4 +61,8 @@ public class TopicsBuffer {
         _db = new DatabaseHelper(log, password);
         _status = new StatusDBM();
     }
+
+    public boolean getSetup() {
+        return _db.getSetup();
+    }
 }

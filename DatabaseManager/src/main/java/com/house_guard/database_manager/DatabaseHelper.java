@@ -12,6 +12,7 @@ import java.text.DateFormat;
 public class DatabaseHelper {
     private Connection _connection;
     private Logger _LOGGER;
+    private boolean _setup;
 
     /*
     +---------------+-------------+------+-----+---------+----------------+
@@ -63,10 +64,16 @@ public class DatabaseHelper {
                           _username + password_entry +
                           _password + database_suffix);
             removeOldData();
+            _setup = true;
         } catch(SQLException e) {
             _LOGGER.severe("A connection could not be established because of : " + e );
             e.printStackTrace();
+            _setup = false;
         }
+    }
+
+    public boolean getSetup() {
+        return _setup;
     }
 
     private void removeOldData() {
