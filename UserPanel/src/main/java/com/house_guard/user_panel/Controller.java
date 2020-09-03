@@ -17,6 +17,7 @@ public class Controller implements ActionListener
     private ConsumerTopic _consumer;
     private RequestTable _pinTable;
     private Logger _LOGGER;
+    private String _lastChanged;
 
     public Controller(Logger LOGGER, View v, MonitorView monitorView, 
         ConsumerTopic consumer, RequestTable requestTable) {
@@ -27,6 +28,7 @@ public class Controller implements ActionListener
         this._monitorView = monitorView;
         this._consumer = consumer;
         _pinTable = requestTable;
+        _lastChanged = "";
     }
 
     public void enterCommand() {
@@ -36,13 +38,17 @@ public class Controller implements ActionListener
         _consumer.askForAccess(key, val);
     }
 
+    private String getTime() {
+        LocalDateTime time = LocalDateTime.now();
+        return time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+    }
+
     private void stateUpdate(boolean state) {
-        LocalDateTime time = LocalDateTime.now();  
         if(state) {
-            this._consumer.setGranted(time.format(DateTimeFormatter.ofPattern("HH:mm:ss"))); 
+            this._consumer.setGranted(getTime()); 
             _view.displayPassMessage("Hello " + _consumer.getUser());
         } else { 
-            this._consumer.setBlocked(time.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+            this._consumer.setBlocked(getTime());
             this._consumer.publishStatus();
             _view.displayErrorMessage("Try again in 5 minutes");  
         }
@@ -56,6 +62,7 @@ public class Controller implements ActionListener
                 _model.resetAttempts();
                 stateUpdate(true);
                 this._view.close();
+                this._monitorView.setTimeLabel(_lastChanged, getTime());
                 this._monitorView.setMonitor();
             } else {
                 _LOGGER.info("Ids for pin request and response do not match");
@@ -129,6 +136,8 @@ public class Controller implements ActionListener
         _consumer.sendMonitorState(state);
         _view.setView();
         _monitorView.close();
+        _lastChanged = getTime();
+        this._monitorView.setTimeLabel(_lastChanged, getTime());
     }
 
     public void initmodel(String x, String state)

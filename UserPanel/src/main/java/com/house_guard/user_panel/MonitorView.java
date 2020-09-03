@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 public class MonitorView
 {
     private JFrame frame;
-    private JLabel monitorState;
+    private JLabel monitorState, timeLabel;
     private JButton ONButton, OFFButton;
 
     public MonitorView()
@@ -49,8 +49,10 @@ public class MonitorView
     private void setFieldPanel() {
         JPanel fieldPanel = new JPanel();
         monitorState = new JLabel("", SwingConstants.CENTER);
+        timeLabel = new JLabel("", SwingConstants.CENTER);
         fieldPanel.add(monitorState);
-        fieldPanel.setLayout(new GridLayout(1,2));
+        fieldPanel.add(timeLabel);
+        fieldPanel.setLayout(new GridLayout(2,2));
         frame.add(fieldPanel, BorderLayout.NORTH);
     }
 
@@ -90,6 +92,11 @@ public class MonitorView
     {
         monitorState.setText("" + v);
         monitorState.setForeground(colour);
+    }
+
+    public < E > void setTimeLabel(E timeChanged, E timeNow)
+    {
+        timeLabel.setText("Current Time: " + timeNow + ", Last Changed: " + timeChanged);
     }
 
     public void addController(ActionListener listenerButtons)

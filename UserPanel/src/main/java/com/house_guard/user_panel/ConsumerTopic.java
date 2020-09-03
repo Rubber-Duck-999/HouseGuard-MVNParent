@@ -30,7 +30,6 @@ public class ConsumerTopic
     public void setGranted(String granted)
     {
         this.status.setGranted(granted);
-        
     }
 
     public void setBlocked(String granted)
