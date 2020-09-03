@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 public class MonitorView
 {
     private JFrame frame;
-    private JLabel monitorState, timeLabel;
+    private JLabel monitorState, timeLabel, userLabel;
     private JButton ONButton, OFFButton;
 
     public MonitorView()
@@ -50,9 +50,11 @@ public class MonitorView
         JPanel fieldPanel = new JPanel();
         monitorState = new JLabel("", SwingConstants.CENTER);
         timeLabel = new JLabel("", SwingConstants.CENTER);
+        userLabel = new JLabel("", SwingConstants.CENTER);
         fieldPanel.add(monitorState);
         fieldPanel.add(timeLabel);
-        fieldPanel.setLayout(new GridLayout(2,2));
+        fieldPanel.add(userLabel);
+        fieldPanel.setLayout(new GridLayout(3,1));
         frame.add(fieldPanel, BorderLayout.NORTH);
     }
 
@@ -72,6 +74,8 @@ public class MonitorView
     {
         Font buttonFont = new Font("Calibri", Font.BOLD, 128);
         monitorState.setFont(buttonFont);
+        timeLabel.setFont(new Font("Calibri", Font.ITALIC, 24));
+        userLabel.setFont(new Font("Calibri", Font.ITALIC, 24));
     }
 
     private void setButtonFont()
@@ -97,6 +101,11 @@ public class MonitorView
     public < E > void setTimeLabel(E timeChanged, E timeNow)
     {
         timeLabel.setText("Current Time: " + timeNow + ", Last Changed: " + timeChanged);
+    }
+
+    public < E > void setUser(E user)
+    {
+        userLabel.setText("Last User to set Alarm: " + user);
     }
 
     public void addController(ActionListener listenerButtons)

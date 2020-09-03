@@ -17,7 +17,7 @@ public class Controller implements ActionListener
     private ConsumerTopic _consumer;
     private RequestTable _pinTable;
     private Logger _LOGGER;
-    private String _lastChanged;
+    private String _lastChanged, _lastUser;
 
     public Controller(Logger LOGGER, View v, MonitorView monitorView, 
         ConsumerTopic consumer, RequestTable requestTable) {
@@ -28,7 +28,7 @@ public class Controller implements ActionListener
         this._monitorView = monitorView;
         this._consumer = consumer;
         _pinTable = requestTable;
-        _lastChanged = "";
+        _lastChanged = _lastUser = "N/A";
     }
 
     public void enterCommand() {
@@ -63,6 +63,7 @@ public class Controller implements ActionListener
                 stateUpdate(true);
                 this._view.close();
                 this._monitorView.setTimeLabel(_lastChanged, getTime());
+                this._monitorView.setUser(_lastUser);
                 this._monitorView.setMonitor();
             } else {
                 _LOGGER.info("Ids for pin request and response do not match");
@@ -137,7 +138,7 @@ public class Controller implements ActionListener
         _view.setView();
         _monitorView.close();
         _lastChanged = getTime();
-        this._monitorView.setTimeLabel(_lastChanged, getTime());
+        _lastUser = _consumer.getUser();
     }
 
     public void initmodel(String x, String state)
