@@ -49,8 +49,8 @@ public class MonitorView
     private void setFieldPanel() {
         JPanel fieldPanel = new JPanel();
         monitorState = new JLabel("", SwingConstants.CENTER);
-        timeLabel = new JLabel("", SwingConstants.CENTER);
-        userLabel = new JLabel("", SwingConstants.CENTER);
+        timeLabel = new JLabel("", SwingConstants.LEFT);
+        userLabel = new JLabel("", SwingConstants.LEFT);
         fieldPanel.add(timeLabel);
         fieldPanel.add(monitorState);
         fieldPanel.add(userLabel);
@@ -74,8 +74,8 @@ public class MonitorView
     {
         Font buttonFont = new Font("Calibri", Font.BOLD, 128);
         monitorState.setFont(buttonFont);
-        timeLabel.setFont(new Font("Calibri", Font.ITALIC, 24));
-        userLabel.setFont(new Font("Calibri", Font.ITALIC, 24));
+        timeLabel.setFont(new Font("Calibri", Font.ITALIC, 12));
+        userLabel.setFont(new Font("Calibri", Font.ITALIC, 12));
     }
 
     private void setButtonFont()
