@@ -51,10 +51,10 @@ public class MonitorView
         monitorState = new JLabel("", SwingConstants.CENTER);
         timeLabel = new JLabel("", SwingConstants.CENTER);
         userLabel = new JLabel("", SwingConstants.CENTER);
-        fieldPanel.add(monitorState);
         fieldPanel.add(timeLabel);
+        fieldPanel.add(monitorState);
         fieldPanel.add(userLabel);
-        fieldPanel.setLayout(new GridLayout(3,1));
+        fieldPanel.setLayout(new GridLayout(1,3));
         frame.add(fieldPanel, BorderLayout.NORTH);
     }
 
