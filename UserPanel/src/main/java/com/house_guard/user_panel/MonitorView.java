@@ -50,7 +50,7 @@ public class MonitorView
         JPanel fieldPanel = new JPanel();
         monitorState = new JLabel("", SwingConstants.CENTER);
         timeLabel = new JLabel("", SwingConstants.LEFT);
-        userLabel = new JLabel("", SwingConstants.LEFT);
+        userLabel = new JLabel("", SwingConstants.CENTER);
         fieldPanel.add(timeLabel);
         fieldPanel.add(monitorState);
         fieldPanel.add(userLabel);
@@ -100,7 +100,7 @@ public class MonitorView
 
     public < E > void setTimeLabel(E timeChanged, E timeNow)
     {
-        timeLabel.setText("Current Time: " + timeNow + ", Last Changed: " + timeChanged);
+        timeLabel.setText("Time: " + timeNow + ", Last: " + timeChanged);
     }
 
     public < E > void setUser(E user)
