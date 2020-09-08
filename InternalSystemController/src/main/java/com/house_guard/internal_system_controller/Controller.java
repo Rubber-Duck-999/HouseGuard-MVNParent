@@ -15,20 +15,23 @@ public class Controller implements ActionListener {
     public Settings _settings;
     private Logger _LOGGER;
 
-    public Controller(Logger LOGGER, View v, Menu m, Logs l) {
+    public Controller(Logger LOGGER, View v, Menu m, Logs l, Users u, Devices d, Settings s) {
         _LOGGER = LOGGER;
         // Constructor
         this._model = new Model(_LOGGER);
         this._view = v;
         this._menu = m;
         this._logs = l;
+        this._users = u;
+        this._devices = d;
+        this._settings = s;
     }
 
 
     private void stateUpdate(boolean state) {
         LocalDateTime time = LocalDateTime.now();  
         if(state) {
-            this._view.displayPassMessage("Hello ");//_consumer.getUser());
+            this._view.displayPassMessage("Hello ");
         } else { 
             this._view.displayErrorMessage("Try again in 5 minutes");  
         }
@@ -48,16 +51,15 @@ public class Controller implements ActionListener {
                 break;
             case "LOGS":
                 this._logs.changeView(true);
-                this._menu.changeView(false);
                 break;
             case "USERS":
-                this._menu.changeView(false);
+                this._users.changeView(true);
                 break;
             case "DEVICES":
-                this._menu.changeView(false);
+                this._devices.changeView(true);
                 break;
             case "SETTINGS":
-                this._menu.changeView(false);
+                this._settings.changeView(true);
                 break;
             case "LOGS - CREATE":
                 getLogs();

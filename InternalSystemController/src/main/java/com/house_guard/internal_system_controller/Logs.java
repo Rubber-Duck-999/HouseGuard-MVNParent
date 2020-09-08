@@ -106,7 +106,6 @@ public class Logs {
     public static class CloseListener extends WindowAdapter {
         public void windowClosing(WindowEvent e) {
             e.getWindow().setVisible(false);
-            System.exit(0);
         }
     }
 }

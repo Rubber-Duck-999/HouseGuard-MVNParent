@@ -72,7 +72,7 @@ public class MonitorView
 
     private void setLabelFont()
     {
-        Font buttonFont = new Font("Calibri", Font.BOLD, 128);
+        Font buttonFont = new Font("Calibri", Font.BOLD, 104);
         monitorState.setFont(buttonFont);
         timeLabel.setFont(new Font("Calibri", Font.ITALIC, 12));
         userLabel.setFont(new Font("Calibri", Font.ITALIC, 12));

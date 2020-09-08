@@ -43,10 +43,16 @@ public class mainClass
         View view = new View();
         Menu menu = new Menu();
         Logs logs = new Logs();
-        Controller controller = new Controller(LOGGER, view, menu, logs);
+        Users users = new Users();
+        Devices devices = new Devices();
+        Settings settings = new Settings();
+        Controller controller = new Controller(LOGGER, view, menu, logs, users, devices, settings);
         view.addController(controller);
         menu.addController(controller);
         logs.addController(controller);
+        users.addController(controller);
+        devices.addController(controller);
+        settings.addController(controller);
     }
 
     public static void main(String[] argv) throws Exception
