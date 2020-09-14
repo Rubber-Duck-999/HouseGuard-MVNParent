@@ -7,6 +7,7 @@ public class AccessResponse extends Topic
     private Integer id;
     private String result;
     private String user;
+    private String role;
     public Integer getId()
     {
         return id;
@@ -30,5 +31,13 @@ public class AccessResponse extends Topic
     public void setUser(String user)
     {
         this.user = user;
+    }
+    public String getRole()
+    {
+        return role;
+    }
+    public void setRole(String role)
+    {
+        this.role = role;
     }
 }

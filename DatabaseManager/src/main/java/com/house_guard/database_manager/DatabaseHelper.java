@@ -323,12 +323,14 @@ public class DatabaseHelper {
             local.setId(access.getId());
             while(rs.next()) {
                 local.setUser(rs.getString("username"));
+                local.setRole(rs.getString("role"));
                 local.setResult("PASS");
                 count = 1;
             }
             if(count == 0) {
                 _LOGGER.info("Didn't find any data");
                 local.setUser("N/A");
+                local.setRole("N/A");
                 local.setResult("FAIL");
             }
         } catch(SQLException e) {
