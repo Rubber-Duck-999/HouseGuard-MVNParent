@@ -34,6 +34,8 @@ public class DatabaseHelper {
     +---------------+-------------+-------+-----+---------+----------------+
     | id            | int(11)     | NO    | PRI | NULL    | auto_increment |
     | username      | varchar(50) | YES   |     | NULL    |                |
+    | role          | varchar(15) | NO    |     | NULL    |                |  
+    | email         | varchar(50) | NO    |     | NULL    |                | 
     | pin_code      | int(4)      | YES   |     | NULL    |                |
     +---------------+-------------+-------+-----+---------+----------------+
     */
@@ -88,18 +90,6 @@ public class DatabaseHelper {
         } catch(SQLException e) {
             _LOGGER.severe("Error: " + e);
         }
-    }
-
-    public boolean checkUserPin(int pin) throws SQLException {
-        _LOGGER.info("Creating statement for checking pin");
-        PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM users WHERE pin_code=?");
-        _prepared.setInt(1, pin);
-        ResultSet rs = _prepared.executeQuery();
-        boolean count = false;
-        while(rs.next()) {
-            count = true;
-        }
-        return count;
     }
 
     public Integer getTotalEvents() {
@@ -180,6 +170,43 @@ public class DatabaseHelper {
             _LOGGER.severe("Error: " + e);
         }
     }
+
+    public void addUser(UserUpdate user) {
+        try {
+            PreparedStatement _prepared = _connection.prepareStatement("INSERT INTO users (username, role, email, pin_code) VALUES " +
+                                            "(?, ?, ?, ?)");
+            _prepared.setString(1, user.getUsername());
+            _prepared.setString(2, user.getRole());
+            _prepared.setString(3, user.getEmail());
+            _prepared.setString(3, user.getPincode());
+            this.Execute(_prepared);
+        } catch(SQLException e) {
+            _LOGGER.severe("Error: " + e);
+        }
+    }
+
+    public void editUser(UserUpdate user) {
+        try {
+            PreparedStatement _prepared = _connection.prepareStatement("UPDATE users SET pin_code=? WHERE " +
+                                            "username=?");
+            _prepared.setString(1, user.getPincode());
+            _prepared.setString(2, user.getUsername());
+            Execute(_prepared);
+        } catch(SQLException e) {
+            _LOGGER.severe("Error: " + e);
+        }
+    }
+
+    public void removeUser(UserUpdate user) {
+        try {
+            PreparedStatement _prepared = _connection.prepareStatement("DELETE FROM users WHERE username=?");
+            _prepared.setString(1, user.getUsername());
+            this.Execute(_prepared);
+        } catch(SQLException e) {
+            _LOGGER.severe("Error: " + e);
+        }
+    }
+
 
     public void addDevice(DeviceUpdate device) {
         try {

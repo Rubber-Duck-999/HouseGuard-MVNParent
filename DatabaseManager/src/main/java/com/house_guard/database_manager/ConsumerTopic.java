@@ -89,6 +89,9 @@ public class ConsumerTopic {
             case Types.DEVICE_UPDATE_TOPIC:
                 _buffer.CreateDevice(gson.fromJson(message, DeviceUpdate.class));
                 break;
+            case Types.USER_UPDATE_TOPIC:
+                _buffer.CreateUser(gson.fromJson(message, UserUpdate.class));
+                break;
             case Types.REQUEST_ACCESS_TOPIC:
                 PublishAccessResponse(_buffer.GetUser(gson.fromJson(message, RequestAccess.class)));
                 break;
@@ -120,6 +123,7 @@ public class ConsumerTopic {
             _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.EVENT_TOPIC_ALL);
             _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.REQUEST_DATABASE_TOPIC);
             _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.DEVICE_UPDATE_TOPIC);
+            _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.USER_UPDATE_TOPIC);
             _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.DEVICE_REQUEST_TOPIC);
             _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.REQUEST_ACCESS_TOPIC);
             _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.STATUS_REQUEST_DBM_TOPIC);

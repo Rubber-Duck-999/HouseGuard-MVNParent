@@ -15,6 +15,26 @@ public class TopicsBuffer {
         _db.addMessage(topic);
     }
 
+    public void CreateUser(UserUpdate user)
+    {
+        String state = user.getState();
+        LOGGER.info("The device will be " + state);
+        switch(state) {
+            case Types.ADD_STATE:
+                _db.addUser(user);
+                break;
+            case Types.EDIT_STATE:
+                _db.editUser(user);
+                break;
+            case Types.REMOVE_STATE:
+                _db.removeUser(user);
+                break;
+            default:
+                LOGGER.info("What happened here!");
+                break;
+        }
+    }
+
     public void CreateDevice(DeviceUpdate device)
     {
         String state = device.getState();
