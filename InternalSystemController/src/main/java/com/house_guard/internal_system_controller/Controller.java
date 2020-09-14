@@ -3,6 +3,7 @@ package com.house_guard.internal_system_controller;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Logger;
 
 public class Controller implements ActionListener {
@@ -85,13 +86,13 @@ public class Controller implements ActionListener {
     }
 
     private void getLogs() {
-        LocalTime timeFrom = this._logs.getTimeFrom();
-        LocalTime timeTo   = this._logs.getTimeTo();
+        String from = this._logs.getBox() + "-" + this._logs.getTimeFrom().toString() + ":00";
+        String to = this._logs.getBox() + "-" +  this._logs.getTimeTo().toString() + ":00";
         String event = convertEvent(this._logs.getEventType());
-        _LOGGER.info("Time: " + timeFrom + ", Time: " + timeTo);
-        if(timeFrom.isBefore(timeTo)) {
+        _LOGGER.info("Time: " + from + ", Time: " + to);
+        if(this._logs.getTimeFrom().isBefore(this._logs.getTimeTo())) {
             _LOGGER.info("Time range is suitable");
-            String[][] array = this._model.getLogs(timeFrom.toString(), timeTo.toString(), event);
+            String[][] array = this._model.getLogs(from, to, event);
             this._logs.displayPassMessage("Retrieving Logs, please wait...");
             _LOGGER.info("Array values length: " + array.length);
             Graph _graph = new Graph(array);

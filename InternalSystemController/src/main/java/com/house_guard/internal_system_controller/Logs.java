@@ -13,9 +13,11 @@ import java.time.LocalTime;
 public class Logs {
     JFrame frame = new JFrame();
     Container container = new Container();
+    JLabel dayLabel = new JLabel("Day");
     JLabel timeFromLabel = new JLabel("Time from");
     JLabel timeToLabel = new JLabel("Time To");
     JLabel eventLabel = new JLabel("Logs Type");
+    JTextField dayBox = new JTextField();
     TimePicker timeFromPicker = new TimePicker();
     TimePicker timeToPicker = new TimePicker();
     JComboBox<String> eventCombo = new JComboBox<>(Constants.kEventTypes);
@@ -47,21 +49,27 @@ public class Logs {
     }
  
     public void setLocationAndSize() {
-        timeFromLabel.setBounds(50, 50, 100, 30);
-        timeToLabel.setBounds(50, 120, 100, 30);
-        eventLabel.setBounds(50, 190, 100, 30);
-        timeFromPicker.setBounds(150, 50, 150, 30);
-        timeToPicker.setBounds(150, 120, 150, 30);
-        eventCombo.setBounds(150, 190, 150, 30);
+        dayLabel.setBounds(50, 50, 100, 30);    
+        timeFromLabel.setBounds(50, 120, 100, 30);
+        timeToLabel.setBounds(50, 190, 100, 30);
+        eventLabel.setBounds(50, 260, 100, 30);
+        //
+        dayBox.setBounds(150, 50, 150, 30);
+        timeFromPicker.setBounds(150, 120, 150, 30);
+        timeToPicker.setBounds(150, 190, 150, 30);
+        eventCombo.setBounds(150, 260, 150, 30);
+        //
         createButton.setBounds(50, 300, 100, 50);
         resetButton.setBounds(200, 300, 100, 50);
     }
  
     public void addComponentsToContainer() {
+        container.add(dayLabel);
         container.add(timeFromLabel);
         container.add(timeToLabel);
         container.add(eventLabel);
         container.add(eventCombo);
+        container.add(dayBox);
         container.add(timeFromPicker);
         container.add(timeToPicker);
         container.add(createButton);
@@ -73,6 +81,10 @@ public class Logs {
         createButton.addActionListener(listenerButtons);;
         resetButton.setActionCommand("LOGS - RESET");
         resetButton.addActionListener(listenerButtons);
+    }
+
+    public String getBox() {
+        return dayBox.getText();
     }
 
     public LocalTime getTimeFrom() {
@@ -105,7 +117,7 @@ public class Logs {
 
     public static class CloseListener extends WindowAdapter {
         public void windowClosing(WindowEvent e) {
-            e.getWindow().setVisible(false);
+            e.getWindow().dispose();
         }
     }
 }

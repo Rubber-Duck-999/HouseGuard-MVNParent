@@ -351,7 +351,7 @@ public class DatabaseHelper {
             PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM event WHERE event_type_id=?" +
                                           " AND time_sent >=? AND time_sent <=?");
             _prepared.setString(1, event_type_id);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             Date parsedDate = sdf.parse(dateFrom);
             Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
             _prepared.setTimestamp(2, timestamp);

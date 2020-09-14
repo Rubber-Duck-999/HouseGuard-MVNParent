@@ -71,7 +71,6 @@ public class Menu {
 
     public static class CloseListener extends WindowAdapter {
         public void windowClosing(WindowEvent e) {
-            e.getWindow().setVisible(false);
             e.getWindow().dispose();
         }
     }
