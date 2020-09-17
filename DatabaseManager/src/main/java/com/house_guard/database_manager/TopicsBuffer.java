@@ -15,6 +15,23 @@ public class TopicsBuffer {
         _db.addMessage(topic);
     }
 
+    public void GetEmails(EmailRequest email)
+    {
+        String role = email.getRole();
+        LOGGER.info("The device will be " + state);
+        switch(role) {
+            case Types.BOTH_ROLES:
+                _db.getEmails("All");
+                break;
+            case Types.ADMIN_ROLES:
+                _db.getEmails("Admin");
+                break;
+            default:
+                LOGGER.info("What happened here!");
+                break;
+        }
+    }
+
     public void CreateUser(UserUpdate user)
     {
         String state = user.getState();

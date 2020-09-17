@@ -75,6 +75,8 @@ public class ConsumerTopic {
         boolean type_found = false;
         gson = new Gson();
         switch(routingKey) {
+            case Types.EMAIL_REQUEST_TOPIC:
+                PublisEmailResponse(_buffer.GetEmails(gson.fromJson(message, EmailRequest.class)))
             case Types.STATUS_REQUEST_DBM_TOPIC:
                 PublishStatus();
                 break;
@@ -126,6 +128,7 @@ public class ConsumerTopic {
             _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.USER_UPDATE_TOPIC);
             _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.DEVICE_REQUEST_TOPIC);
             _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.REQUEST_ACCESS_TOPIC);
+            _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.EMAIL_REQUEST_TOPIC);
             _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.STATUS_REQUEST_DBM_TOPIC);
             //
             _LOGGER.info("Beginning consumption of topics, please ctrl+c to escape");

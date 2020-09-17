@@ -35,6 +35,9 @@ public interface Types
     final String EDIT_STATE = "PATCH";
     final String REMOVE_STATE = "DELETE";
     //
+    final String BOTH_ROLES = "BOTH";
+    final String ADMIN_ROLE = "ADMIN";
+    //
     final String REQUEST_ACCESS_TOPIC = "Request.Access";
     final String MONITOR_STATE_TOPIC = "Monitor.State";
     final String DEVICE_UPDATE_TOPIC = "Device.Update";
@@ -60,6 +63,9 @@ public interface Types
     final String STATUS_DBM_TOPIC = "Status.DBM";
     final String STATUS_REQUEST_UP_TOPIC  = "Status.Request.UP";
     final String STATUS_REQUEST_DBM_TOPIC = "Status.Request.DBM";
+
+    final String EMAIL_REQUEST_TOPIC = "Email.Request";
+    final String EMAIL_RESPONSE_TOPIC = "Email.Response";
 
     final String COMPONENT_NAME = "UP";
     final Integer ACCESS_NOT_RECEIVED = 4;

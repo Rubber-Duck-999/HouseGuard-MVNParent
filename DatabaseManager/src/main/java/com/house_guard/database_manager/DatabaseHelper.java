@@ -342,6 +342,33 @@ public class DatabaseHelper {
         return local;
     }
 
+    public EmailResponse checkUser(String role) {
+        try {
+            _LOGGER.info("Creating statement for finding matching user");
+            PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM users WHERE role=?");
+            _prepared.setInt(1, role);
+            //
+            ResultSet rs = _prepared.executeQuery();
+            int count = 0;
+            while(rs.next()) {
+                local.setUser(rs.getString("username"));
+                local.setRole(rs.getString("role"));
+                count = 1;
+            }
+            if(count == 0) {
+                _LOGGER.info("Didn't find any data");
+                local.setUser("N/A");
+                local.setRole("N/A");
+            }
+        } catch(SQLException e) {
+            _LOGGER.severe("Error");
+        } catch(Exception e) {
+            _LOGGER.severe("Error: " + e);
+            e.printStackTrace();
+        }
+        return local;
+    }
+
 
     public Vector<DataInfoTopic> getEventMessages(Integer id, String event_type_id, String dateFrom, String dateTo) {
         Vector<DataInfoTopic> localVector = new Vector<>();
