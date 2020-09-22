@@ -25,7 +25,6 @@ public class TopicRabbitmq {
         Gson gson = new Gson();
         try {
             EventTopic eventData = gson.fromJson(_topicMessage, EventTopic.class);
-            _topicMessage = eventData.getMessage();
             _timeSent = LocalDateTime.parse(eventData.getTime(), 
                 DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
             System.out.println(_timeSent);
@@ -53,10 +52,6 @@ public class TopicRabbitmq {
 
     public String getComponent() {
         return _component;
-    }
-
-    public String getTopicMessage() {
-        return _topicMessage;
     }
 
     public String getRoutingKey() {
