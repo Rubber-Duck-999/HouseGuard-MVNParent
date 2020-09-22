@@ -81,6 +81,10 @@ public class ConsumerTopic
         Gson gson = new Gson();
         MonitorState mon = new MonitorState();
         mon.setState(state);
+        if(!state) 
+        {
+            publishEventUP("UP1");
+        }
         String json = gson.toJson(mon);
         publish(json, Types.MONITOR_STATE_TOPIC);
     }
@@ -115,15 +119,6 @@ public class ConsumerTopic
         {
             _LOGGER.info("Publishing event.Up topic");
             accessAllowed = false;
-            String pubMessage = createEventUpMessage();
-            try
-            {
-                channel.basicPublish(EXCHANGE_NAME, Types.EVENT_TOPIC_UP, null, pubMessage.getBytes());
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
         }
         else if(data.getResult().equals(Types.PASS))
         {
@@ -132,18 +127,25 @@ public class ConsumerTopic
         }
     }
 
-    private String createEventUpMessage()
+
+    public void publishEventUP(String event_type_id)
     {
         EventTopic user_event = new EventTopic();
         user_event.setComponent(Types.COMPONENT_NAME);
-        user_event.setMessage(Types.RequestFailure);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
         Date date = new Date();
         user_event.setTime(formatter.format(date));
-        user_event.setEventTypeId("UP2");
+        user_event.setEventTypeId(event_type_id);
         Gson gson = new Gson();
         String pubMessage = gson.toJson(user_event);
-        return pubMessage;
+        try
+        {
+            channel.basicPublish(EXCHANGE_NAME, Types.EVENT_TOPIC_UP, null, pubMessage.getBytes());
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public void consumeRequired()

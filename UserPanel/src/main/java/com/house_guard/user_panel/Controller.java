@@ -72,10 +72,12 @@ public class Controller implements ActionListener
             if(_model.checkAttempts()) {
                 _LOGGER.info("attempts reached");
                 _model.lock();
-                stateUpdate(false);               
+                stateUpdate(false);
+                _consumer.publishEventUP("UP3");               
             } else {
                 _LOGGER.info("Incorrect passcode");
                 _view.displayErrorMessage("Wrong Passcode");
+                _consumer.publishEventUP("UP2");
             }
         }
     }

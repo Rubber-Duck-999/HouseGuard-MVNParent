@@ -10,14 +10,6 @@ public class EventTopic extends Topic
     {
         this.component = component;
     }
-    public String getMessage()
-    {
-        return message;
-    }
-    public void setMessage(String message)
-    {
-        this.message = message;
-    }
     public String getTime()
     {
         return time;
@@ -35,7 +27,6 @@ public class EventTopic extends Topic
         this.event_type_id = event_type_id;
     }
     private String component;
-    private String message;
     private String time;
     private String event_type_id;
 
