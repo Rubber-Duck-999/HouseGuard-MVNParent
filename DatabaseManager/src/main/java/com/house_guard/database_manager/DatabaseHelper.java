@@ -21,7 +21,6 @@ public class DatabaseHelper {
     | id            | int(11)     | NO   | PRI | NULL    | auto_increment |
     | routing_key   | varchar(50) | NO   |     | NULL    |                |
     | component     | varchar(5)  | NO   |     | NULL    |                |
-    | message       | varchar(30) | NO   |     | NULL    |                |
     | time_sent     | datetime    | YES  |     | NULL    |                |
     | time_received | datetime    | YES  |     | NULL    |                |
     | event_type_id | varchar(7)  | YES  |     | NULL    |                |
@@ -113,19 +112,19 @@ public class DatabaseHelper {
         return count;
     }
 
-    public String getCommonMessage() {
-        String message = "";
+    public String getCommonEvent() {
+        String event_type_id = "";
         try {
-            PreparedStatement _prepared = _connection.prepareStatement("SELECT message FROM event GROUP " +
-                "BY message ORDER BY COUNT(*) DESC LIMIT 1");
+            PreparedStatement _prepared = _connection.prepareStatement("SELECT event_type_id FROM event GROUP " +
+                "BY event_type_id ORDER BY COUNT(*) DESC LIMIT 1");
             ResultSet rs = _prepared.executeQuery();
             while(rs.next()) {
-                message = rs.getString("message");
+                event_type_id = rs.getString("event_type_id");
             }
         } catch(SQLException e) {
             _LOGGER.severe("Error: " + e);
         }
-        return message;
+        return event_type_id;
     }
 
     public int getTotalComponentCount(String component)
@@ -157,14 +156,13 @@ public class DatabaseHelper {
     public void addMessage(TopicRabbitmq input) {
         try{
             PreparedStatement _prepared = _connection.prepareStatement("INSERT INTO event (routing_key, component, " +
-                                            "message,  time_sent, time_received, event_type_id) VALUES " +
-                                            "(?, ?, ?, ?, ?, ?)");
+                                            "time_sent, time_received, event_type_id) VALUES " +
+                                            "(?, ?, ?, ?, ?)");
             _prepared.setString(1, input.getRoutingKey());
             _prepared.setString(2, input.getComponent());
-            _prepared.setString(3, input.getTopicMessage());
-            _prepared.setTimestamp(4, Timestamp.valueOf(input.getTimeSent()));
-            _prepared.setTimestamp(5, Timestamp.valueOf(input.getTimeReceived()));
-            _prepared.setString(6, input.getEventTypeId());
+            _prepared.setTimestamp(3, Timestamp.valueOf(input.getTimeSent()));
+            _prepared.setTimestamp(4, Timestamp.valueOf(input.getTimeReceived()));
+            _prepared.setString(5, input.getEventTypeId());
             this.Execute(_prepared);
         } catch(SQLException e) {
             _LOGGER.severe("Error: " + e);
@@ -243,12 +241,12 @@ public class DatabaseHelper {
         }
     }
 
-    public int getMessageCount(String message, LocalDateTime dateFrom, LocalDateTime dateTo)
+    public int getMessageCount(String event_type_id, LocalDateTime dateFrom, LocalDateTime dateTo)
     throws SQLException {
-        _LOGGER.info("Creating statement for finding message count of: " + message);
-        PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM event WHERE message=?" +
+        _LOGGER.info("Creating statement for finding message count of: " + event_type_id);
+        PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM event WHERE event_type_id=?" +
                                       " AND time_sent >=? AND time_sent <= ?");
-        _prepared.setString(1, message);
+        _prepared.setString(1, event_type_id);
         _prepared.setTimestamp(2, Timestamp.valueOf(dateFrom));
         _prepared.setTimestamp(3, Timestamp.valueOf(dateTo));
         ResultSet rs = _prepared.executeQuery();
@@ -342,23 +340,23 @@ public class DatabaseHelper {
         return local;
     }
 
-    public EmailResponse checkUser(String role) {
+    public EmailResponse getRole(String role) {
+        EmailResponse email = new EmailResponse();
         try {
             _LOGGER.info("Creating statement for finding matching user");
             PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM users WHERE role=?");
-            _prepared.setInt(1, role);
+            _prepared.setString(1, role);
             //
             ResultSet rs = _prepared.executeQuery();
-            int count = 0;
+            int i = 0;
+            Account[] accounts = {new Account(), new Account(), new Account()};
             while(rs.next()) {
-                local.setUser(rs.getString("username"));
-                local.setRole(rs.getString("role"));
-                count = 1;
+                Account local = new Account(rs.getString("role"), rs.getString("username"));
+                accounts[i] = local;
+                i = 1;
             }
-            if(count == 0) {
-                _LOGGER.info("Didn't find any data");
-                local.setUser("N/A");
-                local.setRole("N/A");
+            if(i > 0) {
+                email.setAccounts(accounts);
             }
         } catch(SQLException e) {
             _LOGGER.severe("Error");
@@ -366,7 +364,7 @@ public class DatabaseHelper {
             _LOGGER.severe("Error: " + e);
             e.printStackTrace();
         }
-        return local;
+        return email;
     }
 
 
@@ -400,7 +398,6 @@ public class DatabaseHelper {
                 data.setId(id);
                 data.setTotalMessage(total);
                 data.setMessageNum(count + 1);
-                data.setTopicMessage(rs.getString("message"));
                 data.setTimeSent(rs.getTimestamp("time_sent").toString());
                 localVector.add(data);
                 _LOGGER.info("Found record ID: " + data.getId());
@@ -412,7 +409,6 @@ public class DatabaseHelper {
                 data.setTotalMessage(1);
                 data.setMessageNum(1);
                 data.setId(id);
-                data.setTopicMessage("No data found");
                 data.setTimeSent(LocalDateTime.now().toString());
                 localVector.add(data);
             }

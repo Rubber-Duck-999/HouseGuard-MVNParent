@@ -5,7 +5,6 @@ public class DataInfoTopic extends Topic {
     private String _routingKey;
     private int _messageNum;
     private int _totalMessage;
-    private String _topicMessage;
     private String _timeSent;
 
     public DataInfoTopic() {
@@ -43,14 +42,6 @@ public class DataInfoTopic extends Topic {
 
     public void setTimeSent(String time) {
         _timeSent = time;
-    }
-
-    public String getTopicMessage() {
-        return _topicMessage;
-    }
-
-    public void setTopicMessage(String message) {
-        _topicMessage = message;
     }
 
     public String getRoutingKey() {

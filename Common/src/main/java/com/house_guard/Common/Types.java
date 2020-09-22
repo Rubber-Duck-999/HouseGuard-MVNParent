@@ -35,7 +35,7 @@ public interface Types
     final String EDIT_STATE = "PATCH";
     final String REMOVE_STATE = "DELETE";
     //
-    final String BOTH_ROLES = "BOTH";
+    final String BOTH_ROLE  = "BOTH";
     final String ADMIN_ROLE = "ADMIN";
     //
     final String REQUEST_ACCESS_TOPIC = "Request.Access";

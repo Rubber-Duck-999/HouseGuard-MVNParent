@@ -15,21 +15,23 @@ public class TopicsBuffer {
         _db.addMessage(topic);
     }
 
-    public void GetEmails(EmailRequest email)
+    public EmailResponse GetEmails(EmailRequest email_request)
     {
-        String role = email.getRole();
-        LOGGER.info("The device will be " + state);
+        String role = email_request.getRole();
+        LOGGER.info("Looking for users with role of " + role);
+        EmailResponse email = new EmailResponse();
         switch(role) {
-            case Types.BOTH_ROLES:
-                _db.getEmails("All");
+            case Types.BOTH_ROLE:
+                email = _db.getRole("*");
                 break;
-            case Types.ADMIN_ROLES:
-                _db.getEmails("Admin");
+            case Types.ADMIN_ROLE:
+                email = _db.getRole("Admin");
                 break;
             default:
                 LOGGER.info("What happened here!");
                 break;
         }
+        return email;
     }
 
     public void CreateUser(UserUpdate user)
@@ -89,7 +91,7 @@ public class TopicsBuffer {
 
     public StatusDBM GetStatus() {
         _status.setTotalEvents(_db.getTotalEvents());
-        _status.setCommonEvent(_db.getCommonMessage());
+        _status.setCommonEvent(_db.getCommonEvent());
         return _status;
     }
 

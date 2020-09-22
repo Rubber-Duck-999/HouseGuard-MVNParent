@@ -70,13 +70,19 @@ public class ConsumerTopic {
         PublishMessage(json, Types.STATUS_DBM_TOPIC);   
     }
 
+    public void PublishEmailResponse(EmailResponse email) {
+        gson = new Gson();
+        String json = gson.toJson(email);
+        PublishMessage(json, Types.EMAIL_RESPONSE_TOPIC);   
+    }
+
     public boolean ConvertTopics(String routingKey, String message) {
         _LOGGER.info("Converting topics = " + routingKey);
         boolean type_found = false;
         gson = new Gson();
         switch(routingKey) {
             case Types.EMAIL_REQUEST_TOPIC:
-                PublisEmailResponse(_buffer.GetEmails(gson.fromJson(message, EmailRequest.class)))
+                PublishEmailResponse(_buffer.GetEmails(gson.fromJson(message, EmailRequest.class)));
             case Types.STATUS_REQUEST_DBM_TOPIC:
                 PublishStatus();
                 break;

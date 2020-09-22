@@ -1,13 +1,20 @@
 package com.house_guard.Common;
 
-public class EmailRequest extends Topic {
-    private String role;
+public class EmailResponse extends Topic {
+    private Account[] Accounts;
 
-    public String getRole() {
-        return role;
+    public EmailResponse() {
+        for(int i = 0; i < 1; i++) {
+            Accounts[i] = new Account("N/A", "N/A");
+        }
     }
 
-    public void setRoutingKey(String role) {
-        this.role = role;
+    public Account[] getAccounts() {
+        return Accounts;
+    }
+
+    public void setAccounts(Account[] accounts) {
+        this.Accounts = accounts;
     }
 }
+
