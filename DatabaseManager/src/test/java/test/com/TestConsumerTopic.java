@@ -78,7 +78,6 @@ public class TestConsumerTopic
         Vector<DataInfoTopic> localVector = new Vector<>();
         DataInfoTopic data = new DataInfoTopic();
         data.setId(1);
-        data.setTopicMessage("message");
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime dateTime = LocalDateTime.parse("2020/02/01 12:10:10", dtf);
         data.setTimeSent(dateTime.toString());
