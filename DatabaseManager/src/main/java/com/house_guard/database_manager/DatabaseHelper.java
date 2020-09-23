@@ -350,7 +350,7 @@ public class DatabaseHelper {
             ResultSet rs = _prepared.executeQuery();
             int i = 0;
             while(rs.next()) {
-                Account account = new Account(rs.getString("role"), rs.getString("username"));
+                Account account = new Account(rs.getString("role"), rs.getString("email"));
                 email.addAccount(account);
                 i = 1;
             }
