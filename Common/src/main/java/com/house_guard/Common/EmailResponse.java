@@ -1,20 +1,20 @@
 package com.house_guard.Common;
 
+import java.util.ArrayList;
+
 public class EmailResponse extends Topic {
-    private Account[] Accounts;
+    private ArrayList<Account> Accounts;
 
     public EmailResponse() {
-        for(int i = 0; i < 1; i++) {
-            Accounts[i] = new Account("N/A", "N/A");
-        }
+        this.Accounts = new ArrayList<Account>();
     }
 
-    public Account[] getAccounts() {
-        return Accounts;
+    public void addAccount(Account account) {
+        Accounts.add(account);
     }
 
-    public void setAccounts(Account[] accounts) {
-        this.Accounts = accounts;
+    public ArrayList getAccounts() {
+        return this.Accounts;
     }
 }
 

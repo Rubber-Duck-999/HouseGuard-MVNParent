@@ -32,6 +32,7 @@ public class TestDatabaseHelper
         }
     }
 
+    /*
     @Test
     public void testFindDevice()
     {
@@ -52,6 +53,6 @@ public class TestDatabaseHelper
             System.out.println("File is not there, drop out");
             e.printStackTrace();
         }
-    }
+    }*/
 
 }

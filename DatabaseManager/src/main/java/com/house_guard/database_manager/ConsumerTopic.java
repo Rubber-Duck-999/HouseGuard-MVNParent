@@ -82,7 +82,9 @@ public class ConsumerTopic {
         gson = new Gson();
         switch(routingKey) {
             case Types.EMAIL_REQUEST_TOPIC:
+                _LOGGER.info("Email request conversion");
                 PublishEmailResponse(_buffer.GetEmails(gson.fromJson(message, EmailRequest.class)));
+                break;
             case Types.STATUS_REQUEST_DBM_TOPIC:
                 PublishStatus();
                 break;
@@ -105,6 +107,7 @@ public class ConsumerTopic {
                 break;
             default:
                 type_found = true;
+                break;
         }
         return type_found;
     }

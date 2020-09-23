@@ -10,8 +10,8 @@ public class Account {
     }
 
     public Account() {
-        this.role = "N/A";
-        this.email = "N/A";
+        this.role = "cheese";
+        this.email = "cheese";
     }
 
     public String getRole() {

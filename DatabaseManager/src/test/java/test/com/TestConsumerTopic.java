@@ -57,7 +57,7 @@ public class TestConsumerTopic
         boolean valid = consumer.ConvertTopics(routingKey, message);
         assertTrue(valid);
     }
-
+/*
     @Test
     public void testRequestDatabase()
     {
@@ -87,5 +87,5 @@ public class TestConsumerTopic
         ConsumerTopic consumer = new ConsumerTopic("blank", buffer, LOGGER);
         //exception.expect(IOException.class);
         consumer.PublishDataInfo(localVector);
-    }
+    }*/
 }

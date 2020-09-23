@@ -343,24 +343,28 @@ public class DatabaseHelper {
     public EmailResponse getRole(String role) {
         EmailResponse email = new EmailResponse();
         try {
-            _LOGGER.info("Creating statement for finding matching user");
+            _LOGGER.info("Creating statement for finding matching user roles");
             PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM users WHERE role=?");
             _prepared.setString(1, role);
             //
             ResultSet rs = _prepared.executeQuery();
             int i = 0;
-            Account[] accounts = {new Account(), new Account(), new Account()};
             while(rs.next()) {
-                Account local = new Account(rs.getString("role"), rs.getString("username"));
-                accounts[i] = local;
+                Account account = new Account(rs.getString("role"), rs.getString("username"));
+                email.addAccount(account);
                 i = 1;
             }
             if(i > 0) {
-                email.setAccounts(accounts);
+                Account account = new Account("N/A", "N/A");
+                email.addAccount(account);
             }
         } catch(SQLException e) {
+            Account account = new Account("N/A", "N/A");
+            email.addAccount(account);
             _LOGGER.severe("Error");
         } catch(Exception e) {
+            Account account = new Account("N/A", "N/A");
+            email.addAccount(account);
             _LOGGER.severe("Error: " + e);
             e.printStackTrace();
         }

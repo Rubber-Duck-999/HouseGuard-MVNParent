@@ -4,6 +4,8 @@ import java.util.logging.Logger;
 import com.house_guard.Common.Types; 
 import com.house_guard.Common.*;
 import java.util.Vector;
+import java.util.ArrayList;
+
 
 public class TopicsBuffer {
     private Logger LOGGER;
@@ -17,19 +19,32 @@ public class TopicsBuffer {
 
     public EmailResponse GetEmails(EmailRequest email_request)
     {
-        String role = email_request.getRole();
-        LOGGER.info("Looking for users with role of " + role);
         EmailResponse email = new EmailResponse();
-        switch(role) {
-            case Types.BOTH_ROLE:
-                email = _db.getRole("*");
-                break;
-            case Types.ADMIN_ROLE:
-                email = _db.getRole("Admin");
-                break;
-            default:
-                LOGGER.info("What happened here!");
-                break;
+        try {
+            String role = email_request.getRole();
+            LOGGER.info("Looking for users with role of " + role);
+            switch(role) {
+                case Types.BOTH_ROLE:
+                    LOGGER.info("Both check");
+                    email = _db.getRole("*");
+                    break;
+                case Types.ADMIN_ROLE:
+                    LOGGER.info("Admin check");
+                    email = _db.getRole("Admin");
+                    break;
+                default:
+                    LOGGER.info("What happened here!");
+                    break;
+            }
+            ArrayList<Account> Accounts = email.getAccounts();
+            for(int i = 0; i < Accounts.size(); i++) {
+                LOGGER.info("Row: " + i + ", Role: " + 
+                Accounts.get(i).getRole() + ", Email: " + Accounts.get(i).getEmail());
+            }
+            LOGGER.info("Returning email to publish");
+        } catch(Exception e) {
+            LOGGER.severe("Error: " + e);
+            e.printStackTrace();
         }
         return email;
     }
