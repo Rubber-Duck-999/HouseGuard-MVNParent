@@ -354,7 +354,7 @@ public class DatabaseHelper {
                 email.addAccount(account);
                 i = 1;
             }
-            if(i > 0) {
+            if(i == 0) {
                 Account account = new Account("N/A", "N/A");
                 email.addAccount(account);
             }
