@@ -25,7 +25,7 @@ public class MonitorView
 {
     private JFrame frame;
     private JLabel monitorState, timeLabel, userLabel;
-    private JButton ONButton, OFFButton;
+    private JButton ONButton, OFFButton, HIDEButton;
 
     public MonitorView()
     {
@@ -40,9 +40,11 @@ public class MonitorView
         JPanel buttonPanel = new JPanel();
         ONButton = new JButton(Types.ON);
         OFFButton = new JButton(Types.OFF);
+        HIDEButton = new JButton("HIDE");
         buttonPanel.add(ONButton);
         buttonPanel.add(OFFButton);
-        buttonPanel.setLayout(new GridLayout(2,4));
+        buttonPanel.add(HIDEButton);
+        buttonPanel.setLayout(new GridLayout(3,4));
         frame.add(buttonPanel, BorderLayout.CENTER);
     }
 
@@ -80,16 +82,28 @@ public class MonitorView
 
     private void setButtonFont()
     {
-        Font buttonFont = new Font("Calibri", Font.BOLD, 40);
+        Font buttonFont = new Font("Calibri", Font.BOLD, 34);
         ONButton.setFont(buttonFont);
         ONButton.setForeground(Color.GREEN);
         OFFButton.setFont(buttonFont);
         OFFButton.setForeground(Color.RED);
+        HIDEButton.setFont(buttonFont);
+        HIDEButton.setForeground(Color.BLUE);
     }
 
     public void close()
     {
         frame.dispose();
+    }
+
+    public void hide()
+    {
+        frame.setVisible(false);
+    }
+
+    public void show()
+    {
+        frame.setVisible(true);
     }
 
     public < E > void setMonitorState(E v, Color colour)
@@ -114,6 +128,8 @@ public class MonitorView
         OFFButton.setActionCommand(Types.OFF);
         ONButton.addActionListener(listenerButtons);
         OFFButton.addActionListener(listenerButtons);
+        HIDEButton.setActionCommand("HIDE");
+        HIDEButton.addActionListener(listenerButtons);
     }
 
     public static class CloseListener extends WindowAdapter

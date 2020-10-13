@@ -9,8 +9,7 @@ import java.awt.Color;
 
 import com.house_guard.Common.Types;
 
-public class Controller implements ActionListener
-{
+public class Controller implements ActionListener {
     public Model _model;
     public View _view;
     private MonitorView _monitorView;
@@ -126,6 +125,15 @@ public class Controller implements ActionListener
                 _monitorView.setMonitorState(_model.setModelStateOn(), Color.GREEN);
                 this.sendMonitorUpdate(true, Types.ON);
                 break;
+            case "HIDE":
+                _monitorView.hide();
+                try {
+                    Thread.sleep(5000);
+                } catch(InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                }
+                _monitorView.show();
+                break;
             default:
                 _view.setDigits(_model.setValue(input));
                 break;
@@ -133,8 +141,7 @@ public class Controller implements ActionListener
 
     }
 
-    public void sendMonitorUpdate(boolean state, String state_string)
-    {
+    public void sendMonitorUpdate(boolean state, String state_string) {
         this._consumer.setState(state_string);
         _consumer.sendMonitorState(state);
         _view.setView();
@@ -143,8 +150,7 @@ public class Controller implements ActionListener
         _lastUser = _consumer.getUser();
     }
 
-    public void initmodel(String x, String state)
-    {
+    public void initmodel(String x, String state) {
         this._consumer.setState(state);
         _view.setDigits(_model.initModel(x));
         _monitorView.setMonitorState(state, Color.GREEN);
