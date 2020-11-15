@@ -8,7 +8,6 @@
     <modules>
         <module>Common</module>
         <module>DatabaseManager</module>
-        <module>InternalSystemController</module>
         <module>UserPanel</module>
     </modules>
 

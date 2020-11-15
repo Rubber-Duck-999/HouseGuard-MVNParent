@@ -1,7 +1,0 @@
-/target/
-*.classpath
-*.project
-*.class
-*.settings
-UP.yml
-dependency-reduced-pom.xml
