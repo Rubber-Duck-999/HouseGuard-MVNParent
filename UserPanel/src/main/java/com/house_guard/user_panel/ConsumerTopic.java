@@ -26,6 +26,8 @@ public class ConsumerTopic
     private Integer receivedId;
     private StatusUP status;
     private Logger _LOGGER;
+    private boolean stateUpdated;
+    private boolean alarmState;
 
     public void setGranted(String granted)
     {
@@ -40,6 +42,21 @@ public class ConsumerTopic
     public void setState(String state)
     {
         this.status.setState(state);
+    }
+
+    public boolean getAlarmState()
+    {
+        return this.alarmState;
+    }
+
+    public void setStateUpdated(boolean val)
+    {
+        stateUpdated = val;
+    }
+
+    public boolean isStateUpdated()
+    {
+        return stateUpdated;
     }
 
     public boolean getAccessState()
@@ -127,6 +144,37 @@ public class ConsumerTopic
         }
     }
 
+    public void alarmUpdate(boolean update)
+    {
+        _LOGGER.info("Updating alarm to db");
+        Gson gson = new Gson();
+        AlarmResponse alarm = new AlarmResponse();
+        alarm.setState(update);
+        String json = gson.toJson(alarm);
+        publish(json, Types.ALARM_UPDATE_TOPIC);
+    }
+
+
+    private void updateAlarmResponse(String received)
+    {
+        _LOGGER.info("Received alarm response");
+        Gson gson = new Gson();
+        AlarmResponse data = gson.fromJson(received, AlarmResponse.class);
+        _LOGGER.info("Changing state from: " + this.alarmState + " to " + data.getState());
+        this.alarmState = data.getState();
+        this.setStateUpdated(true);
+    }
+
+    public void requestAlarm()
+    {
+        _LOGGER.info("Request alarm request topic");
+        Gson gson = new Gson();
+        AlarmResponse alarm = new AlarmResponse();
+        alarm.setState(false);
+        String json = gson.toJson(alarm);
+        publish(json, Types.ALARM_REQUEST_TOPIC);
+    }
+
 
     public void publishEventUP(String event_type_id)
     {
@@ -156,12 +204,17 @@ public class ConsumerTopic
             //
             channel.queueBind(subscribeQueueName, EXCHANGE_NAME, Types.ACCESS_RESPONSE_TOPIC);
             channel.queueBind(subscribeQueueName, EXCHANGE_NAME, Types.STATUS_REQUEST_UP_TOPIC);
+            channel.queueBind(subscribeQueueName, EXCHANGE_NAME, Types.ALARM_RESPONSE_TOPIC);
             //
             _LOGGER.info(" [*] Waiting for TOPICS. To exit press CTRL+C");
             DeliverCallback deliverCallback = (consumerTag, delivery) -> {
                 _LOGGER.info("Message received");
-                if(delivery.getEnvelope().getRoutingKey().equals(Types.ACCESS_RESPONSE_TOPIC)) {
-                    this.accessResponse(new String(delivery.getBody()), delivery.getEnvelope().getRoutingKey());
+                String received = new String(delivery.getBody());
+                String key = delivery.getEnvelope().getRoutingKey();
+                if(key.equals(Types.ACCESS_RESPONSE_TOPIC)) {
+                    this.accessResponse(received, key);
+                } else if(key.equals(Types.ALARM_RESPONSE_TOPIC)) {
+                    this.updateAlarmResponse(received);
                 } else {
                     this.publishStatus();
                 }
@@ -199,6 +252,8 @@ public class ConsumerTopic
         receivedId = 0;
         accessAllowed = false;
         accessRequested = false;
+        stateUpdated = false;
+        alarmState = false;
         this.status = new StatusUP();
     }
 

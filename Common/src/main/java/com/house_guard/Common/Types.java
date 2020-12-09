@@ -63,10 +63,14 @@ public interface Types
     final String STATUS_DBM_TOPIC = "Status.DBM";
     final String STATUS_REQUEST_UP_TOPIC  = "Status.Request.UP";
     final String STATUS_REQUEST_DBM_TOPIC = "Status.Request.DBM";
-
+    //
     final String EMAIL_REQUEST_TOPIC = "Email.Request";
     final String EMAIL_RESPONSE_TOPIC = "Email.Response";
-
+    //
+    final String ALARM_REQUEST_TOPIC = "Alarm.Request";
+    final String ALARM_RESPONSE_TOPIC = "Alarm.Response";
+    final String ALARM_UPDATE_TOPIC = "Alarm.Update";
+    //
     final String COMPONENT_NAME = "UP";
     final Integer ACCESS_NOT_RECEIVED = 4;
     final Object PASS = "PASS";

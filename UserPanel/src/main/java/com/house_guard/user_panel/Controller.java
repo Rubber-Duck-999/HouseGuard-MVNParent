@@ -17,6 +17,7 @@ public class Controller implements ActionListener {
     private RequestTable _pinTable;
     private Logger _LOGGER;
     private String _lastChanged, _lastUser;
+    private boolean _disabled;
 
     public Controller(Logger LOGGER, View v, MonitorView monitorView, 
         ConsumerTopic consumer, RequestTable requestTable) {
@@ -28,6 +29,7 @@ public class Controller implements ActionListener {
         this._consumer = consumer;
         _pinTable = requestTable;
         _lastChanged = _lastUser = "N/A";
+        _disabled = false;
     }
 
     public void enterCommand() {
@@ -87,21 +89,24 @@ public class Controller implements ActionListener {
     }
 
     private void Enter() {
-        try {
-            if(_model.isValidPin()) {
-                _LOGGER.info("Pin is a valid number, proceeding");
-                this.enterCommand();
-                TimeUnit.SECONDS.sleep(1);
-                this.checkAccess();
-                _view.setDigits(_model.initModel(Types.ZERO));
-            } else {
-                _LOGGER.info("User entered incorrect or empty pin");
+        if(this._disabled == false) {
+            try {
+                if(_model.isValidPin()) {
+                    _LOGGER.info("Pin is a valid number, proceeding");
+                    this.enterCommand();
+                    TimeUnit.SECONDS.sleep(1);
+                    this.checkAccess();
+                    _view.setDigits(_model.initModel(Types.ZERO));
+                } else {
+                    _LOGGER.info("User entered incorrect or empty pin");
+                }
+            } catch(Exception e) {
+                e.printStackTrace();
             }
-        } catch(Exception e) {
-            e.printStackTrace();
+        } else {
+            _view.displayErrorMessage("This feature is currently disabled");
         }
     }
-
 
     public void checkAction(String input) {
         if(_model.checkUnlock()) {
@@ -118,7 +123,7 @@ public class Controller implements ActionListener {
                 _view.displayErrorMessage("This feature is currently disabled");
                 break;
             case Types.OFF:
-                _monitorView.setMonitorState(_model.setModelStateOFF(), Color.RED);
+                _monitorView.setMonitorState(_model.setModelStateOff(), Color.RED);
                 this.sendMonitorUpdate(false, Types.OFF);
                 break;
             case Types.ON:
@@ -144,15 +149,35 @@ public class Controller implements ActionListener {
     public void sendMonitorUpdate(boolean state, String state_string) {
         this._consumer.setState(state_string);
         _consumer.sendMonitorState(state);
+        _consumer.alarmUpdate(state);
         _view.setView();
         _monitorView.close();
         _lastChanged = getTime();
         _lastUser = _consumer.getUser();
     }
 
+    private void switchAlarm(boolean val)
+    {
+        if(val) {
+            _monitorView.setMonitorState(_model.setModelStateOn(), Color.GREEN);
+        } else {
+            _monitorView.setMonitorState(_model.setModelStateOff(), Color.RED);
+        }
+    }
+
     public void initmodel(String x, String state) {
-        this._consumer.setState(state);
+        this._consumer.requestAlarm();
         _view.setDigits(_model.initModel(x));
-        _monitorView.setMonitorState(state, Color.GREEN);
+        try {
+            TimeUnit.SECONDS.sleep(5);
+            if (this._consumer.isStateUpdated()) {
+                this.switchAlarm(this._consumer.getAlarmState());
+                this._disabled = false;
+            } else {
+                this._disabled = true;
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 }

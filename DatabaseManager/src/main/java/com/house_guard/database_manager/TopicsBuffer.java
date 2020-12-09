@@ -49,6 +49,24 @@ public class TopicsBuffer {
         return email;
     }
 
+    public void UpdateState(AlarmResponse alarm)
+    {
+        LOGGER.info("Updating state to " + alarm.getState());
+        _db.updateState(alarm.getState());
+    }
+
+    public boolean GetState() 
+    {   try {
+            LOGGER.info("Checking alarm state");
+            return _db.getState();
+        } catch(Exception e) {
+            LOGGER.severe("Error: " + e);
+            e.printStackTrace();
+            return true;
+        }
+            
+    }
+
     public void CreateUser(UserUpdate user)
     {
         String state = user.getState();

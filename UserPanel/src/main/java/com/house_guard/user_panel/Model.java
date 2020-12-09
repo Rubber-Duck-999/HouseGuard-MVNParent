@@ -112,7 +112,7 @@ public class Model
         return Types.ON;
     }
 
-    public String setModelStateOFF()
+    public String setModelStateOff()
     {
         return Types.OFF;
     }

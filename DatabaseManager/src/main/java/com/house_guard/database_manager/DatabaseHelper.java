@@ -231,6 +231,31 @@ public class DatabaseHelper {
         }
     }
 
+    public void updateState(boolean stateUpdate) {
+        try {
+            PreparedStatement _prepared = _connection.prepareStatement("UPDATE state SET state=? WHERE " +
+                                            "id=?");
+            _prepared.setBoolean(1, stateUpdate);
+            _prepared.setInt(2, 1);
+            Execute(_prepared);
+        } catch(SQLException e) {
+            _LOGGER.severe("Error: " + e);
+        }
+    }
+
+    public boolean getState()
+        throws SQLException {
+            _LOGGER.info("Creating statement for getting state of alarm");
+            PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM state WHERE id=?");
+            _prepared.setInt(1, 1);
+            ResultSet rs = _prepared.executeQuery();
+            boolean state = true;
+            while(rs.next()) {
+                return rs.getBoolean("state");
+            }
+            return state;
+    }
+
     public void removeDevice(DeviceUpdate device) {
         try {
             PreparedStatement _prepared = _connection.prepareStatement("DELETE FROM devices WHERE Mac=?");

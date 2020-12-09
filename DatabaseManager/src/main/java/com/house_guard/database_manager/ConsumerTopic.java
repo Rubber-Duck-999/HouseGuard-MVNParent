@@ -76,6 +76,14 @@ public class ConsumerTopic {
         PublishMessage(json, Types.EMAIL_RESPONSE_TOPIC);   
     }
 
+    public void PublishAlarmResponse(boolean state) {
+        gson = new Gson();
+        AlarmResponse alarm = new AlarmResponse();
+        alarm.setState(state);
+        String json = gson.toJson(alarm);
+        PublishMessage(json, Types.ALARM_RESPONSE_TOPIC);   
+    }
+
     public boolean ConvertTopics(String routingKey, String message) {
         _LOGGER.info("Converting topics = " + routingKey);
         boolean type_found = false;
@@ -105,6 +113,12 @@ public class ConsumerTopic {
             case Types.REQUEST_ACCESS_TOPIC:
                 PublishAccessResponse(_buffer.GetUser(gson.fromJson(message, RequestAccess.class)));
                 break;
+            case Types.ALARM_REQUEST_TOPIC:
+                PublishAlarmResponse(_buffer.GetState());
+                break;
+            case Types.ALARM_UPDATE_TOPIC:
+                _buffer.UpdateState(gson.fromJson(message, AlarmResponse.class));
+                break;
             default:
                 type_found = true;
                 break;
@@ -115,7 +129,7 @@ public class ConsumerTopic {
 
     private void EventsTopicSubscribe(String routingKey, String message) {
         _LOGGER.info("Attempting to split message up by key");
-        if((this.ConvertTopics(routingKey, message)) != false) {
+        if((this.ConvertTopics(routingKey, message)) == true) {
             TopicRabbitmq local = new TopicRabbitmq(routingKey, message);
             _LOGGER.info("Topic is a Event.* Topic");
             if(local.convertMessage() == false) {
@@ -139,6 +153,8 @@ public class ConsumerTopic {
             _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.REQUEST_ACCESS_TOPIC);
             _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.EMAIL_REQUEST_TOPIC);
             _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.STATUS_REQUEST_DBM_TOPIC);
+            _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.ALARM_UPDATE_TOPIC);
+            _channel.queueBind(_subscribeQueueName, kEXCHANGE_NAME, Types.ALARM_REQUEST_TOPIC);
             //
             _LOGGER.info("Beginning consumption of topics, please ctrl+c to escape");
             //
