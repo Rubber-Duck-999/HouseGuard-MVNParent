@@ -11,6 +11,7 @@ public class TopicsBuffer {
     private Logger LOGGER;
     private DatabaseHelper _db;
     private StatusDBM _status;
+    private boolean _dbActive;
 
     public void AddTopic(TopicRabbitmq topic) {
         _status.setDailyEvents(_status.getDailyEvents() + 1);
@@ -132,9 +133,15 @@ public class TopicsBuffer {
         LOGGER = log;
         _db = new DatabaseHelper(log, password);
         _status = new StatusDBM();
+        _dbActive = true;
     }
 
     public boolean getSetup() {
-        return _db.getSetup();
+        if(_db.getSetup()) {
+            return _dbActive;
+        } else {
+            _dbActive = false;
+            return _db.getSetup();
+        }
     }
 }

@@ -30,8 +30,14 @@ topic_response = "Access.Response"
 topic_event = "Event.UP"
 topic_status_up = "Status.UP"
 topic_request = "Status.Request.UP"
+topic_alarm_request = "Alarm.Request"
+topic_alarm_response = "Alarm.Response"
+topic_alarm_update = "Alarm.Update"
 channel.queue_bind(exchange='topics', queue=queue_name, routing_key=topic_status_up)
 channel.queue_bind(exchange='topics', queue=queue_name, routing_key=topic_request_access)
+channel.queue_bind(exchange='topics', queue=queue_name, routing_key=topic_alarm_request)
+channel.queue_bind(exchange='topics', queue=queue_name, routing_key=topic_alarm_update)
+channel.queue_bind(exchange='topics', queue=queue_name, routing_key=topic_monitor)
 print(' UP Integrator [*] Waiting for topics. To exit press CTRL+C')
 
 time.sleep(0.5)
@@ -55,7 +61,14 @@ def callback(ch, method, properties, body):
         print(payload)
         channel.basic_publish(exchange='topics', routing_key=topic_response, body=payload)
         print("Sent %r " % topic_response)
-
+    elif method.routing_key == topic_alarm_request:
+        print("Alarm")
+        data = {
+            "state": False
+        }
+        payload = json.dumps(data)
+        channel.basic_publish(exchange='topics', routing_key=topic_alarm_response, body=payload)
+        print("Sent %r " % topic_alarm_response)
 
 channel.basic_consume(queue=queue_name, on_message_callback=callback, auto_ack=True)
 

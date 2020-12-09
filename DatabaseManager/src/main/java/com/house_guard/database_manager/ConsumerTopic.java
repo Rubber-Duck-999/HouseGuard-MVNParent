@@ -1,10 +1,12 @@
 package com.house_guard.database_manager;
 
 import com.house_guard.Common.*;
+import java.time.LocalDateTime;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
+import java.time.format.DateTimeFormatter;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
@@ -59,7 +61,10 @@ public class ConsumerTopic {
 
     public void PublishFailureDatabase() {
         gson = new Gson();
-        FailureDatabase db = new FailureDatabase("00:00:00", "Failure");
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+        String formattedDateTime = currentDateTime.format(formatter);
+        FailureDatabase db = new FailureDatabase(formattedDateTime, "SQL server unresponsive");
         String json = gson.toJson(db);
         PublishMessage(json, Types.FAILURE_DATABASE_TOPIC);
     }
@@ -196,6 +201,7 @@ public class ConsumerTopic {
             _LOGGER.severe("We have had trouble setting up the required connection");
             e.printStackTrace();
         }
+        this.setupBuffer();
     }
 
 }

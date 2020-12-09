@@ -18,6 +18,7 @@ public class Controller implements ActionListener {
     private Logger _LOGGER;
     private String _lastChanged, _lastUser;
     private boolean _disabled;
+    private boolean _init;
 
     public Controller(Logger LOGGER, View v, MonitorView monitorView, 
         ConsumerTopic consumer, RequestTable requestTable) {
@@ -30,6 +31,7 @@ public class Controller implements ActionListener {
         _pinTable = requestTable;
         _lastChanged = _lastUser = "N/A";
         _disabled = false;
+        _init = true;
     }
 
     public void enterCommand() {
@@ -85,10 +87,20 @@ public class Controller implements ActionListener {
 
     public void actionPerformed(java.awt.event.ActionEvent e) {
         String input = e.getActionCommand();
+        if(_init) {
+            this._consumer.requestAlarm();
+            _init = false;
+        }
         checkAction(input);
     }
 
     private void Enter() {
+        if (this._consumer.isStateUpdated()) {
+            this.switchAlarm(this._consumer.getAlarmState());
+            this._disabled = false;
+        } else {
+            this._disabled = true;
+        }
         if(this._disabled == false) {
             try {
                 if(_model.isValidPin()) {
@@ -166,18 +178,8 @@ public class Controller implements ActionListener {
     }
 
     public void initmodel(String x, String state) {
-        this._consumer.requestAlarm();
         _view.setDigits(_model.initModel(x));
-        try {
-            TimeUnit.SECONDS.sleep(5);
-            if (this._consumer.isStateUpdated()) {
-                this.switchAlarm(this._consumer.getAlarmState());
-                this._disabled = false;
-            } else {
-                this._disabled = true;
-            }
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+        this.switchAlarm(true);
+    
     }
 }

@@ -208,9 +208,9 @@ public class ConsumerTopic
             //
             _LOGGER.info(" [*] Waiting for TOPICS. To exit press CTRL+C");
             DeliverCallback deliverCallback = (consumerTag, delivery) -> {
-                _LOGGER.info("Message received");
                 String received = new String(delivery.getBody());
                 String key = delivery.getEnvelope().getRoutingKey();
+                _LOGGER.info("Message received: " + key);
                 if(key.equals(Types.ACCESS_RESPONSE_TOPIC)) {
                     this.accessResponse(received, key);
                 } else if(key.equals(Types.ALARM_RESPONSE_TOPIC)) {

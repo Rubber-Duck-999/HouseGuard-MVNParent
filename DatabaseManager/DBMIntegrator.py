@@ -31,6 +31,7 @@ topic_device_request = "Device.Request"
 topic_device_response = "Device.Response"
 topic_data_info = "Data.Info"
 topic_event = "Event.*"
+topic_alarm_update = "Alarm.Update"
 channel.queue_bind(exchange='topics', queue=queue_name, routing_key=topic_failure)
 channel.queue_bind(exchange='topics', queue=queue_name, routing_key=topic_data_info)
 channel.queue_bind(exchange='topics', queue=queue_name, routing_key=topic_device_response)
