@@ -95,13 +95,11 @@ public class Controller implements ActionListener {
     }
 
     private void Enter() {
-        if (this._consumer.isStateUpdated()) {
+        if(this._consumer.isStateUpdated()) {
             this.switchAlarm(this._consumer.getAlarmState());
-            this._disabled = false;
-        } else {
             this._disabled = true;
         }
-        if(this._disabled == false) {
+        if(this._disabled == true) {
             try {
                 if(_model.isValidPin()) {
                     _LOGGER.info("Pin is a valid number, proceeding");
@@ -180,6 +178,5 @@ public class Controller implements ActionListener {
     public void initmodel(String x, String state) {
         _view.setDigits(_model.initModel(x));
         this.switchAlarm(true);
-    
     }
 }

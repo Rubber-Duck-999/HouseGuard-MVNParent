@@ -51,12 +51,13 @@ public class ConsumerTopic
 
     public void setStateUpdated(boolean val)
     {
-        stateUpdated = val;
+        this.stateUpdated = val;
     }
 
     public boolean isStateUpdated()
     {
-        return stateUpdated;
+        _LOGGER.info("State is updated: " + this.stateUpdated);
+        return this.stateUpdated;
     }
 
     public boolean getAccessState()
