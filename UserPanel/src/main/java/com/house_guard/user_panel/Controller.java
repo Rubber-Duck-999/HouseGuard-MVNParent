@@ -30,7 +30,7 @@ public class Controller implements ActionListener {
         this._consumer = consumer;
         _pinTable = requestTable;
         _lastChanged = _lastUser = "N/A";
-        _disabled = false;
+        _disabled = true;
         _init = true;
     }
 
@@ -97,9 +97,10 @@ public class Controller implements ActionListener {
     private void Enter() {
         if(this._consumer.isStateUpdated()) {
             this.switchAlarm(this._consumer.getAlarmState());
-            this._disabled = true;
+            this._consumer.setSetUpdated(false);
+            this._disabled = false;
         }
-        if(this._disabled == true) {
+        if(this._disabled == false) {
             try {
                 if(_model.isValidPin()) {
                     _LOGGER.info("Pin is a valid number, proceeding");
