@@ -97,7 +97,7 @@ public class Controller implements ActionListener {
     private void Enter() {
         if(this._consumer.isStateUpdated()) {
             this.switchAlarm(this._consumer.getAlarmState());
-            this._consumer.setSetUpdated(false);
+            this._consumer.setStateUpdated(false);
             this._disabled = false;
         }
         if(this._disabled == false) {
