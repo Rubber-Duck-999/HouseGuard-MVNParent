@@ -6,7 +6,7 @@
       <version>0.0.1</version>
   </parent>
   <artifactId>UserPanel</artifactId>
-  <version>1.0.2</version>
+  <version>1.1.0</version>
 
   <dependencies>
   	<dependency>
@@ -14,6 +14,12 @@
   		<artifactId>junit</artifactId>
   		<version>4.13.1</version>
 	  </dependency>
+
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.22</version>
+    </dependency>
 
     <dependency>
         <groupId>com.fasterxml.jackson.dataformat</groupId>
@@ -82,7 +88,7 @@
             <addClasspath>true</addClasspath>
             <classpathPrefix>lib/</classpathPrefix>
             <mainClass>com.house_guard.user_panel.mainClass</mainClass>
-          </manifest>
+          </manifest>    
         </archive>
       </configuration>
     </plugin>

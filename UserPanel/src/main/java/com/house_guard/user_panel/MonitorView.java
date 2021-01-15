@@ -3,29 +3,22 @@ package com.house_guard.user_panel;
 import java.awt.BorderLayout;
 import com.house_guard.Common.*;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GraphicsDevice;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.*;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-
-import java.util.logging.Logger;
 
 public class MonitorView
 {
     private JFrame frame;
-    private JLabel monitorState, timeLabel, userLabel;
-    private JButton ONButton, OFFButton, HIDEButton;
+    private JLabel monitorState;
+    private JButton ONButton, OFFButton, HIDEButton, CHANGEButton;
 
     public MonitorView()
     {
@@ -41,21 +34,19 @@ public class MonitorView
         ONButton = new JButton(Types.ON);
         OFFButton = new JButton(Types.OFF);
         HIDEButton = new JButton("HIDE");
+        CHANGEButton = new JButton("Change Pin");
         buttonPanel.add(ONButton);
         buttonPanel.add(OFFButton);
         buttonPanel.add(HIDEButton);
-        buttonPanel.setLayout(new GridLayout(3,4));
+        buttonPanel.add(CHANGEButton);
+        buttonPanel.setLayout(new GridLayout(4,4));
         frame.add(buttonPanel, BorderLayout.CENTER);
     }
 
     private void setFieldPanel() {
         JPanel fieldPanel = new JPanel();
         monitorState = new JLabel("", SwingConstants.CENTER);
-        timeLabel = new JLabel("", SwingConstants.LEFT);
-        userLabel = new JLabel("", SwingConstants.CENTER);
-        fieldPanel.add(timeLabel);
         fieldPanel.add(monitorState);
-        fieldPanel.add(userLabel);
         fieldPanel.setLayout(new GridLayout(1,3));
         frame.add(fieldPanel, BorderLayout.NORTH);
     }
@@ -76,8 +67,6 @@ public class MonitorView
     {
         Font buttonFont = new Font("Calibri", Font.BOLD, 104);
         monitorState.setFont(buttonFont);
-        timeLabel.setFont(new Font("Calibri", Font.ITALIC, 12));
-        userLabel.setFont(new Font("Calibri", Font.ITALIC, 12));
     }
 
     private void setButtonFont()
@@ -89,6 +78,8 @@ public class MonitorView
         OFFButton.setForeground(Color.RED);
         HIDEButton.setFont(buttonFont);
         HIDEButton.setForeground(Color.BLUE);
+        CHANGEButton.setFont(buttonFont);
+        CHANGEButton.setForeground(Color.BLACK);
     }
 
     public void close()
@@ -112,16 +103,6 @@ public class MonitorView
         monitorState.setForeground(colour);
     }
 
-    public < E > void setTimeLabel(E timeChanged, E timeNow)
-    {
-        timeLabel.setText("Time: " + timeNow + ", Last: " + timeChanged);
-    }
-
-    public < E > void setUser(E user)
-    {
-        userLabel.setText("Last User to set Alarm: " + user);
-    }
-
     public void addController(ActionListener listenerButtons)
     {
         ONButton.setActionCommand(Types.ON);
@@ -130,6 +111,8 @@ public class MonitorView
         OFFButton.addActionListener(listenerButtons);
         HIDEButton.setActionCommand("HIDE");
         HIDEButton.addActionListener(listenerButtons);
+        CHANGEButton.setActionCommand("CHANGE");
+        CHANGEButton.addActionListener(listenerButtons);
     }
 
     public static class CloseListener extends WindowAdapter

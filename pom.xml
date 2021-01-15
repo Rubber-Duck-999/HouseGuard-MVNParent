@@ -7,7 +7,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>Common</module>
-        <module>DatabaseManager</module>
         <module>UserPanel</module>
     </modules>
 

@@ -30,31 +30,9 @@ public interface Types
     final int CORRECT = 2;
     final int TIMEOUT = 3;
 
-    // Device.Update.State choices
-    final String ADD_STATE = "POST";
-    final String EDIT_STATE = "PATCH";
-    final String REMOVE_STATE = "DELETE";
     //
-    final String BOTH_ROLE  = "BOTH";
-    final String ADMIN_ROLE = "ADMIN";
-    //
-    final String REQUEST_ACCESS_TOPIC = "Request.Access";
     final String MONITOR_STATE_TOPIC = "Monitor.State";
-    final String DEVICE_UPDATE_TOPIC = "Device.Update";
-    final String USER_UPDATE_TOPIC = "User.Update";
-    final String DEVICE_REQUEST_TOPIC = "Device.Request";
     final String ACCESS_RESPONSE_TOPIC = "Access.Response";
-    final String DEVICE_RESPONSE_TOPIC = "Device.Response";
-
-    final String EVENT_TOPIC_ALL = "Event.*";
-    final String EVENT_TOPIC     = "Event.";
-    final String EVENT_TOPIC_UP  = "Event.UP";
-    final String EVENT_TOPIC_SYP = "Event.SYP";
-    final String EVENT_TOPIC_DBM = "Event.DBM";
-    final String EVENT_TOPIC_NAC = "Event.NAC";
-    final String EVENT_TOPIC_EVM = "Event.EVM";
-    final String EVENT_TOPIC_FH  = "Event.FH";
-    final String DATA_INFO_TOPIC = "Data.Info";
 
     final String REQUEST_DATABASE_TOPIC = "Request.Database";
     final String FAILURE_DATABASE_TOPIC = "Failure.Database";
@@ -63,13 +41,6 @@ public interface Types
     final String STATUS_DBM_TOPIC = "Status.DBM";
     final String STATUS_REQUEST_UP_TOPIC  = "Status.Request.UP";
     final String STATUS_REQUEST_DBM_TOPIC = "Status.Request.DBM";
-    //
-    final String EMAIL_REQUEST_TOPIC = "Email.Request";
-    final String EMAIL_RESPONSE_TOPIC = "Email.Response";
-    //
-    final String ALARM_REQUEST_TOPIC = "Alarm.Request";
-    final String ALARM_RESPONSE_TOPIC = "Alarm.Response";
-    final String ALARM_UPDATE_TOPIC = "Alarm.Update";
     //
     final String COMPONENT_NAME = "UP";
     final Integer ACCESS_NOT_RECEIVED = 4;

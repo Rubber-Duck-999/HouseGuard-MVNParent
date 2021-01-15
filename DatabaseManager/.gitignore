@@ -1,7 +1,0 @@
-/target/
-*.classpath
-*.project
-app.config
-*.settings
-DBM.yml
-dependency-reduced-pom.xml

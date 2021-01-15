@@ -42,20 +42,4 @@ public class TestConsumerTopic
         LOGGER = Logger.getLogger(TestConsumerTopic.class.getName());
         return LOGGER;
     }
-
-    @Test
-    public void testGetAccessRequested()
-    {
-        ConsumerTopic topic = new ConsumerTopic(getLogger());
-        assertFalse(topic.getAccessRequested());
-    }
-
-    @Test
-    public void testSetAccessRequested()
-    {
-        ConsumerTopic topic = new ConsumerTopic(getLogger());
-        assertFalse(topic.getAccessState());
-        topic.setAccessRequestedOff();
-        assertFalse(topic.getAccessRequested());
-    }
 }

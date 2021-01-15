@@ -14,7 +14,6 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 public class mainClass
 {
-    private static Model myModel;
     private static View myView;
     private static Controller myController;
     private static ConsumerTopic cons;
@@ -41,7 +40,7 @@ public class mainClass
         LOGGER = Logger.getLogger(mainClass.class.getName());
     }
 
-    public static void startUI(String password)
+    public static void startUI(String password, String pass)
     {
         LOGGER.setLevel(Level.FINEST);
         myView = new View();
@@ -49,7 +48,8 @@ public class mainClass
         MonitorView monitorView = new MonitorView();
         cons = new ConsumerTopic(LOGGER);
         cons.setConnection(password);
-        myController = new Controller(LOGGER, myView, monitorView, cons, new RequestTable());
+        DatabaseHelper db = new DatabaseHelper(LOGGER, pass);
+        myController = new Controller(LOGGER, myView, monitorView, cons, db);
         myController.initmodel(Types.ZERO, Types.ON);
         myView.addController(myController);
         monitorView.addController(myController);
@@ -62,7 +62,7 @@ public class mainClass
         try
         {
             Password strings = mapper.readValue(new File("UP.yml"), Password.class);
-            startUI(strings.getRabbitmq());
+            startUI(strings.getRabbitmq(), strings.getPass());
         }
         catch (Exception e)
         {
