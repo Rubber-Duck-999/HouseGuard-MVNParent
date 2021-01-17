@@ -10,7 +10,7 @@ import com.house_guard.Common.AccessResponse;
 import com.house_guard.Common.StatusUP;
 import com.house_guard.Common.Types;
 
-public class Controller implements ActionListener {
+public class Controller implements ActionListener, EventListener {
     public Model _model;
     public View _view;
     private MonitorView _monitorView;
@@ -29,6 +29,10 @@ public class Controller implements ActionListener {
         this._monitorView = monitorView;
         this._consumer = consumer;
         this._status = new StatusUP();
+    }
+
+    public void onEvent() {
+        _LOGGER.info("Received event");
     }
 
     private String getTime() {

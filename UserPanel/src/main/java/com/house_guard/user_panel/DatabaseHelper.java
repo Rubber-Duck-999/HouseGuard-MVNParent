@@ -170,4 +170,36 @@ public class DatabaseHelper {
         }
         return email;
     }
+
+    public DeviceResponse getDevice(Integer id, String name, String mac) {
+        DeviceResponse local = new DeviceResponse();
+        try {
+            _LOGGER.info("Creating statement for finding matching device for: " + name);
+            PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM devices WHERE Mac=?");
+            _prepared.setString(1, mac);
+            //
+            ResultSet rs = _prepared.executeQuery();
+            int count = 0;
+            while(rs.next()) {
+                local.setId(id);
+                local.setName(rs.getString("Name"));
+                local.setMac(rs.getString("Mac"));
+                local.setStatus(rs.getString("status"));
+                count = 1;
+            }
+            if(count == 0) {
+                _LOGGER.info("Didn't find any data");
+                local.setId(id);
+                local.setName(name);
+                local.setMac(mac);
+                local.setStatus("UNKNOWN");
+            }
+        } catch(SQLException e) {
+            _LOGGER.severe("Error");
+        } catch(Exception e) {
+            _LOGGER.severe("Error: " + e);
+            e.printStackTrace();
+        }
+        return local;
+    }
 }

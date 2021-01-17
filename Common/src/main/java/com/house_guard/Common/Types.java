@@ -34,7 +34,7 @@ public interface Types
     final String MONITOR_STATE_TOPIC = "Monitor.State";
     final String ACCESS_RESPONSE_TOPIC = "Access.Response";
 
-    final String REQUEST_DATABASE_TOPIC = "Request.Database";
+    final String DEVICE_REQUEST_TOPIC = "Device.Request";
     final String FAILURE_DATABASE_TOPIC = "Failure.Database";
     //
     final String STATUS_UP_TOPIC  = "Status.UP";

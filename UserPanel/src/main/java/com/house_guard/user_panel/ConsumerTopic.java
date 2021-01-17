@@ -11,7 +11,6 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
 
-
 public class ConsumerTopic
 {
     private static final String EXCHANGE_NAME = "topics";
@@ -19,6 +18,7 @@ public class ConsumerTopic
     private static Connection connection;
     private static Channel channel;
     private Logger _LOGGER;
+    private EventListener listener;
 
     private void publish(String json, String routingKey)
     {
@@ -31,6 +31,11 @@ public class ConsumerTopic
             _LOGGER.info("We have had issues publishing");
             e.printStackTrace();
         }
+    }
+
+    public void setEventListener(EventListener listener) 
+    {
+        this.listener = listener;
     }
 
     public void sendMonitorState(boolean state)
@@ -57,12 +62,21 @@ public class ConsumerTopic
             String subscribeQueueName = channel.queueDeclare().getQueue();
             //
             channel.queueBind(subscribeQueueName, EXCHANGE_NAME, Types.STATUS_REQUEST_UP_TOPIC);
+            channel.queueBind(subscribeQueueName, EXCHANGE_NAME, Types.DEVICE_REQUEST_TOPIC);
             //
             _LOGGER.info(" [*] Waiting for TOPICS. To exit press CTRL+C");
             DeliverCallback deliverCallback = (consumerTag, delivery) -> {
                 String key = delivery.getEnvelope().getRoutingKey();
                 _LOGGER.info("Message received: " + key);
                 // this.publishStatus();
+                if(key.equals(Types.DEVICE_REQUEST_TOPIC)) 
+                {
+                    _LOGGER.info("Found");
+                    if(listener != null)
+                    {
+                        listener.onEvent();
+                    }
+                }
             };
             channel.basicConsume(subscribeQueueName, true, deliverCallback, consumerTag -> { });
         }
