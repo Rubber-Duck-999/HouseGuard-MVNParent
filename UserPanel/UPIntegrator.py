@@ -25,30 +25,37 @@ print("## Beginning UP Integrator")
 result = channel.queue_declare('', exclusive=False, durable=True)
 queue_name = result.method.queue
 topic_monitor = "Monitor.State"
-topic_request_access = "Request.Access"
-topic_response = "Access.Response"
-topic_event = "Event.UP"
 topic_status_up = "Status.UP"
 topic_request = "Status.Request.UP"
-topic_alarm_request = "Alarm.Request"
-topic_alarm_response = "Alarm.Response"
-topic_alarm_update = "Alarm.Update"
+topic_device_request = "Device.Request"
+topic_device_response = "Device.Response"
 channel.queue_bind(exchange='topics', queue=queue_name, routing_key=topic_status_up)
-channel.queue_bind(exchange='topics', queue=queue_name, routing_key=topic_request_access)
-channel.queue_bind(exchange='topics', queue=queue_name, routing_key=topic_alarm_request)
-channel.queue_bind(exchange='topics', queue=queue_name, routing_key=topic_alarm_update)
+channel.queue_bind(exchange='topics', queue=queue_name, routing_key=topic_device_response)
 channel.queue_bind(exchange='topics', queue=queue_name, routing_key=topic_monitor)
 print(' UP Integrator [*] Waiting for topics. To exit press CTRL+C')
 
 time.sleep(0.5)
 #
-channel.basic_publish(exchange='topics', routing_key=topic_request, body='')
-#print("Sent %r " % topic_data_request)
+data = {
+    "id": 1,
+    "name": "Samsung",
+    "mac": "23:DF:56:89:89:67"
+}
+channel.basic_publish(exchange='topics', routing_key=topic_device_request, body=json.dumps(data))
+print("Sent %r " % topic_device_request)
+data = {
+    "id": 2,
+    "name": "Samsung",
+    "mac": "AA:AA:AA:AA:AA:AA"
+}
+channel.basic_publish(exchange='topics', routing_key=topic_device_request, body=json.dumps(data))
+print("Sent %r " % topic_device_request)
 
 id = 1
 def callback(ch, method, properties, body):
     print(" UPIntegrator received an event [x] %r:%r" % (method.routing_key, body))
-    if method.routing_key == topic_request_access:
+    '''
+    if method.routing_key == topic_device_response:
         ##
         global id
         data = {
@@ -60,15 +67,7 @@ def callback(ch, method, properties, body):
         payload = json.dumps(data)
         print(payload)
         channel.basic_publish(exchange='topics', routing_key=topic_response, body=payload)
-        print("Sent %r " % topic_response)
-    elif method.routing_key == topic_alarm_request:
-        print("Alarm")
-        data = {
-            "state": False
-        }
-        payload = json.dumps(data)
-        channel.basic_publish(exchange='topics', routing_key=topic_alarm_response, body=payload)
-        print("Sent %r " % topic_alarm_response)
+        print("Sent %r " % topic_response)'''
 
 channel.basic_consume(queue=queue_name, on_message_callback=callback, auto_ack=True)
 

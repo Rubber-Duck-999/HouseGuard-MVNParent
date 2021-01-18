@@ -6,9 +6,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.logging.Logger;
 import java.awt.Color;
 
-import com.house_guard.Common.AccessResponse;
-import com.house_guard.Common.StatusUP;
-import com.house_guard.Common.Types;
+import com.house_guard.user_panel.AccessResponse;
+import com.house_guard.user_panel.DeviceRequest;
+import com.house_guard.user_panel.StatusUP;
+import com.house_guard.user_panel.Types;
 
 public class Controller implements ActionListener, EventListener {
     public Model _model;
@@ -29,10 +30,18 @@ public class Controller implements ActionListener, EventListener {
         this._monitorView = monitorView;
         this._consumer = consumer;
         this._status = new StatusUP();
+        this._consumer.setEventListener(this);
     }
 
-    public void onEvent() {
-        _LOGGER.info("Received event");
+    public void onEventDevice(DeviceRequest device) {
+        _LOGGER.info("Received Device Request");
+        _LOGGER.info("Device name: " + device.getName());
+        this._consumer.publishDeviceResponse(_db.getDevice(device));
+    }
+
+    public void onEventStatus() {
+        _LOGGER.info("Received Status Request");
+        this._consumer.publishStatus(this._status);
     }
 
     private String getTime() {
@@ -43,10 +52,12 @@ public class Controller implements ActionListener, EventListener {
     private void stateUpdate(boolean state, String user) {
         if(state) {
             this._status.setGranted(getTime());
+            this._status.setUser(user);
             this._consumer.publishStatus(this._status);
             _view.displayPassMessage("Hello " + user);
         } else { 
             this._status.setBlocked(getTime());
+            this._status.setUser(user);
             this._consumer.publishStatus(this._status);
             _view.displayErrorMessage("Try again in 5 minutes");  
         }
@@ -64,7 +75,7 @@ public class Controller implements ActionListener, EventListener {
             if(_model.checkAttempts()) {
                 _LOGGER.info("attempts reached");
                 _model.lock();
-                stateUpdate(false, "");       
+                stateUpdate(false, "N/A");
             } else {
                 _LOGGER.info("Incorrect passcode");
                 _view.displayErrorMessage("Wrong Passcode");

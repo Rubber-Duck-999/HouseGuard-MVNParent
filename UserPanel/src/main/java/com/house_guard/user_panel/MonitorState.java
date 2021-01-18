@@ -1,14 +1,17 @@
-package com.house_guard.Common;
+package com.house_guard.user_panel;
 
-public class AlarmResponse extends Topic
+public class MonitorState extends Topic
 {
     private boolean state;
-    public boolean getState()
+
+    public boolean isState()
     {
         return state;
     }
+
     public void setState(boolean state)
     {
         this.state = state;
     }
+
 }

@@ -2,7 +2,7 @@ package com.house_guard.user_panel;
 
 import java.sql.*;
 import java.util.logging.Logger;
-import com.house_guard.Common.*;
+import com.house_guard.user_panel.*;
 
 public class DatabaseHelper {
     private Connection _connection;
@@ -25,8 +25,8 @@ public class DatabaseHelper {
     +---------------+--------------+------+-----+---------+----------------+
     | Field         | Type         | Null | Key | Default | Extra          |
     +---------------+--------------+------+-----+---------+----------------+
-    | Name          | varchar(100) | YES  |     | NULL    |                |
-    | Mac           | varchar(20)  | YES  |     | NULL    |                |
+    | name          | varchar(100) | YES  |     | NULL    |                |
+    | mac           | varchar(20)  | YES  |     | NULL    |                |
     | device_id     | int(11)      | NO   | PRI | NULL    | auto_increment |
     | status        | varchar(10)  | YES  |     | NULL    |                |
     +---------------+--------------+------+-----+---------+----------------+
@@ -171,17 +171,17 @@ public class DatabaseHelper {
         return email;
     }
 
-    public DeviceResponse getDevice(Integer id, String name, String mac) {
+    public DeviceResponse getDevice(DeviceRequest device) {
         DeviceResponse local = new DeviceResponse();
         try {
-            _LOGGER.info("Creating statement for finding matching device for: " + name);
-            PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM devices WHERE Mac=?");
-            _prepared.setString(1, mac);
+            _LOGGER.info("Creating statement for finding matching device for: " + device.getName());
+            PreparedStatement _prepared = _connection.prepareStatement("SELECT * FROM devices WHERE mac=?");
+            _prepared.setString(1, device.getMac());
             //
             ResultSet rs = _prepared.executeQuery();
             int count = 0;
             while(rs.next()) {
-                local.setId(id);
+                local.setId(device.getId());
                 local.setName(rs.getString("Name"));
                 local.setMac(rs.getString("Mac"));
                 local.setStatus(rs.getString("status"));
@@ -189,9 +189,9 @@ public class DatabaseHelper {
             }
             if(count == 0) {
                 _LOGGER.info("Didn't find any data");
-                local.setId(id);
-                local.setName(name);
-                local.setMac(mac);
+                local.setId(device.getId());
+                local.setName(device.getName());
+                local.setMac(device.getMac());
                 local.setStatus("UNKNOWN");
             }
         } catch(SQLException e) {

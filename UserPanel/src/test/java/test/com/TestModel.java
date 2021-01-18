@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.house_guard.user_panel.*;
-import com.house_guard.Common.*;
+import com.house_guard.user_panel.*;
 
 public class TestModel
 {

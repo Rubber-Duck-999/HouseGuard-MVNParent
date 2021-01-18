@@ -2,7 +2,7 @@ package com.house_guard.user_panel;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
-import com.house_guard.Common.*;
+import com.house_guard.user_panel.*;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
@@ -47,12 +47,32 @@ public class ConsumerTopic
         publish(json, Types.MONITOR_STATE_TOPIC);
     }
 
+    public void publishDeviceResponse(DeviceResponse device)
+    {
+        Gson gson = new Gson();
+        String json = gson.toJson(device);
+        publish(json, Types.DEVICE_RESPONSE_TOPIC);
+    }
+
     public void publishStatus(StatusUP status)
     {
         _LOGGER.info("Publishing Status ");
         Gson gson = new Gson();
         String json = gson.toJson(status);
         publish(json, Types.STATUS_UP_TOPIC);
+    }
+
+    public void filterMessage(String key, String message)
+    {
+        if(listener != null) {
+            if(key.equals(Types.DEVICE_REQUEST_TOPIC)) {
+                Gson gson = new Gson();
+                DeviceRequest device = gson.fromJson(message, DeviceRequest.class);
+                listener.onEventDevice(device);
+            } else if(key.equals(Types.STATUS_REQUEST_UP_TOPIC)) {
+                listener.onEventStatus();
+            }
+        }
     }
 
     public void consumeRequired()
@@ -67,16 +87,7 @@ public class ConsumerTopic
             _LOGGER.info(" [*] Waiting for TOPICS. To exit press CTRL+C");
             DeliverCallback deliverCallback = (consumerTag, delivery) -> {
                 String key = delivery.getEnvelope().getRoutingKey();
-                _LOGGER.info("Message received: " + key);
-                // this.publishStatus();
-                if(key.equals(Types.DEVICE_REQUEST_TOPIC)) 
-                {
-                    _LOGGER.info("Found");
-                    if(listener != null)
-                    {
-                        listener.onEvent();
-                    }
-                }
+                filterMessage(key, new String(delivery.getBody()));
             };
             channel.basicConsume(subscribeQueueName, true, deliverCallback, consumerTag -> { });
         }

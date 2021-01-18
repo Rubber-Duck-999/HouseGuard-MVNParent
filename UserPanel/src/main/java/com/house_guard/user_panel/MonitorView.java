@@ -1,7 +1,7 @@
 package com.house_guard.user_panel;
 
 import java.awt.BorderLayout;
-import com.house_guard.Common.*;
+import com.house_guard.user_panel.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsDevice;

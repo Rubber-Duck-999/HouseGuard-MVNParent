@@ -1,6 +1,6 @@
 package com.house_guard.user_panel;
 
-import com.house_guard.Common.*;
+import com.house_guard.user_panel.*;
 import java.time.LocalDateTime;
 
 public class Model

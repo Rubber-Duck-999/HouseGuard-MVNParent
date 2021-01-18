@@ -1,4 +1,4 @@
-package com.house_guard.Common;
+package com.house_guard.user_panel;
 
 public class StatusUP extends Topic {
     private String _accessGranted;

@@ -15,7 +15,7 @@ import java.io.*;
 import com.google.gson.Gson;
 import java.util.*;
 import com.house_guard.user_panel.*;
-import com.house_guard.Common.*;
+import com.house_guard.user_panel.*;
 
 public class TestController {
     @Test

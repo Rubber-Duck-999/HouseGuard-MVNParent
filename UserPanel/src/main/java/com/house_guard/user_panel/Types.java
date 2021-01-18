@@ -1,4 +1,4 @@
-package com.house_guard.Common;
+package com.house_guard.user_panel;
 
 public interface Types
 {
@@ -35,6 +35,7 @@ public interface Types
     final String ACCESS_RESPONSE_TOPIC = "Access.Response";
 
     final String DEVICE_REQUEST_TOPIC = "Device.Request";
+    final String DEVICE_RESPONSE_TOPIC = "Device.Response";
     final String FAILURE_DATABASE_TOPIC = "Failure.Database";
     //
     final String STATUS_UP_TOPIC  = "Status.UP";
