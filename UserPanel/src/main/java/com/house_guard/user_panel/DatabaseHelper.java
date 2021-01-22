@@ -65,12 +65,27 @@ public class DatabaseHelper {
             _LOGGER.info("Creating statement for inserting data into table");
             prepared.executeUpdate();
         } catch(SQLException e) {
-            _LOGGER.severe("Error: " + e);
+                _LOGGER.severe("Error: " + e);
         } catch(Exception e) {
             _LOGGER.severe("Error: " + e);
             e.printStackTrace();
             System.exit(0);
-        }       
+        } finally {
+            try {
+                if (prepared != null) { 
+                    prepared.close();
+                }
+            } catch (Exception e) {
+                _LOGGER.severe("Error: " + e);
+            } 
+            try {
+                if (this._connection != null) { 
+                  this._connection.close(); 
+                }
+            } catch (Exception e) {
+                _LOGGER.severe("Error: " + e);
+            }
+        }
     }
 
     public void addUser(UserUpdate user) {

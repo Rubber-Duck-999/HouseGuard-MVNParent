@@ -18,25 +18,26 @@ public class Controller implements ActionListener, EventListener {
     private ConsumerTopic _consumer;
     private Logger _LOGGER;
     private StatusUP _status;
-    private DatabaseHelper _db;
+    private String _pass;
 
     public Controller(Logger LOGGER, View v, MonitorView monitorView, 
-        ConsumerTopic consumer, DatabaseHelper db) {
+        ConsumerTopic consumer, String pass) {
         _LOGGER = LOGGER;
         // Constructor
         this._model = new Model();
         this._view = v;
-        this._db = db;
         this._monitorView = monitorView;
         this._consumer = consumer;
+        this._pass = pass;
         this._status = new StatusUP();
         this._consumer.setEventListener(this);
     }
 
     public void onEventDevice(DeviceRequest device) {
+        DatabaseHelper db = new DatabaseHelper(this._LOGGER, this._pass);
         _LOGGER.info("Received Device Request");
         _LOGGER.info("Device name: " + device.getName());
-        this._consumer.publishDeviceResponse(_db.getDevice(device));
+        this._consumer.publishDeviceResponse(db.getDevice(device));
     }
 
     public void onEventStatus() {
@@ -101,7 +102,8 @@ public class Controller implements ActionListener, EventListener {
         try {
             if(_model.isValidPin()) {
                 _LOGGER.info("Pin is a valid number, proceeding");
-                this.checkAccess(_db.checkUser(_model.checkPass()));
+                DatabaseHelper db = new DatabaseHelper(this._LOGGER, this._pass);
+                this.checkAccess(db.checkUser(_model.checkPass()));
                 _view.setDigits(_model.initModel(Types.ZERO));
             } else {
                 _LOGGER.info("User entered incorrect or empty pin");

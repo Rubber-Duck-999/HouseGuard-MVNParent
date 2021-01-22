@@ -48,8 +48,7 @@ public class mainClass
         MonitorView monitorView = new MonitorView();
         cons = new ConsumerTopic(LOGGER);
         cons.setConnection(password);
-        DatabaseHelper db = new DatabaseHelper(LOGGER, pass);
-        myController = new Controller(LOGGER, myView, monitorView, cons, db);
+        myController = new Controller(LOGGER, myView, monitorView, cons, pass);
         myController.initmodel(Types.ZERO, Types.ON);
         myView.addController(myController);
         monitorView.addController(myController);

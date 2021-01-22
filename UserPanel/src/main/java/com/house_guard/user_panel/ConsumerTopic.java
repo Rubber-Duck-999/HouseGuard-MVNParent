@@ -40,6 +40,7 @@ public class ConsumerTopic
 
     public void sendMonitorState(boolean state)
     {
+        _LOGGER.info("Publishing Monitor.State");
         Gson gson = new Gson();
         MonitorState mon = new MonitorState();
         mon.setState(state);
@@ -49,6 +50,7 @@ public class ConsumerTopic
 
     public void publishDeviceResponse(DeviceResponse device)
     {
+        _LOGGER.info("Publishing Device.Response");
         Gson gson = new Gson();
         String json = gson.toJson(device);
         publish(json, Types.DEVICE_RESPONSE_TOPIC);
