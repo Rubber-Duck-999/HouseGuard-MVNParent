@@ -132,7 +132,7 @@ public class DatabaseHelper {
                 local.setResult("FAIL");
             }
         } catch(SQLException e) {
-            _LOGGER.severe("Error");
+            _LOGGER.severe("Error: " + e);
         } catch(Exception e) {
             _LOGGER.severe("Error: " + e);
             e.printStackTrace();
@@ -161,7 +161,7 @@ public class DatabaseHelper {
         } catch(SQLException e) {
             Account account = new Account("N/A", "N/A");
             email.addAccount(account);
-            _LOGGER.severe("Error");
+            _LOGGER.severe("Error: " + e);
         } catch(Exception e) {
             Account account = new Account("N/A", "N/A");
             email.addAccount(account);
@@ -195,7 +195,7 @@ public class DatabaseHelper {
                 local.setStatus("UNKNOWN");
             }
         } catch(SQLException e) {
-            _LOGGER.severe("Error");
+            _LOGGER.severe("Error: " + e);
         } catch(Exception e) {
             _LOGGER.severe("Error: " + e);
             e.printStackTrace();
