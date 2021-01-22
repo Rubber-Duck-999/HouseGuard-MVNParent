@@ -65,22 +65,30 @@ public class Controller implements ActionListener, EventListener {
 
     public void checkAccess(AccessResponse access) {
         _LOGGER.info("checkAccess()");
-        if(access.getResult() == Types.PASS) {
-            _LOGGER.info("Correct pin");
-            _model.resetAttempts();
-            stateUpdate(true, access.getUser());
-            this._view.close();
-            this._monitorView.setMonitor();
-        } else {
-            if(_model.checkAttempts()) {
-                _LOGGER.info("attempts reached");
-                _model.lock();
-                stateUpdate(false, "N/A");
-            } else {
-                _LOGGER.info("Incorrect passcode");
-                _view.displayErrorMessage("Wrong Passcode");
-                this._consumer.publishStatus(this._status);
-            }
+        String result = access.getResult();
+        switch(result) {
+            case Types.PASS:
+                _LOGGER.info("Correct pin");
+                _model.resetAttempts();
+                stateUpdate(true, access.getUser());
+                this._view.close();
+                this._monitorView.setMonitor();
+                break;
+            case "SQLFAILURE":
+                _LOGGER.info("SQL Failure");
+                _view.displayErrorMessage("Contact support");
+                break;
+            default:
+                if(_model.checkAttempts()) {
+                    _LOGGER.info("attempts reached");
+                    _model.lock();
+                    stateUpdate(false, "N/A");
+                } else {
+                    _LOGGER.info("Incorrect passcode");
+                    _view.displayErrorMessage("Wrong Passcode");
+                    this._consumer.publishStatus(this._status);
+                }
+                break;
         }
     }
 

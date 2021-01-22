@@ -45,7 +45,7 @@ public interface Types
     //
     final String COMPONENT_NAME = "UP";
     final Integer ACCESS_NOT_RECEIVED = 4;
-    final Object PASS = "PASS";
+    final String PASS = "PASS";
     final String RequestFailure = "We have access failure";
     final int MAXPIN = 9999;
 }

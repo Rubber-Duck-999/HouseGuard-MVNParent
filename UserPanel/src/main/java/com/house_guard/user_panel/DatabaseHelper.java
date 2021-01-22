@@ -132,6 +132,7 @@ public class DatabaseHelper {
                 local.setResult("FAIL");
             }
         } catch(SQLException e) {
+            local.setResult("SQLFAILURE");
             _LOGGER.severe("Error: " + e);
         } catch(Exception e) {
             _LOGGER.severe("Error: " + e);
